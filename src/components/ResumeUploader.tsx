@@ -1,4 +1,3 @@
-
 import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { FileUp, File, AlertCircle, Check, X } from "lucide-react";
@@ -29,8 +28,7 @@ export const ResumeUploader = ({ onUploadComplete, onCancel }: ResumeUploaderPro
       toast({
         title: "Invalid file type",
         description: "Please upload a PDF or DOCX file.",
-        variant: "destructive",
-        icon: <AlertCircle className="h-4 w-4" />
+        variant: "destructive"
       });
       return;
     }
@@ -41,8 +39,7 @@ export const ResumeUploader = ({ onUploadComplete, onCancel }: ResumeUploaderPro
       toast({
         title: "File too large",
         description: "Please upload a file smaller than 5MB.",
-        variant: "destructive",
-        icon: <AlertCircle className="h-4 w-4" />
+        variant: "destructive"
       });
       return;
     }
@@ -50,8 +47,7 @@ export const ResumeUploader = ({ onUploadComplete, onCancel }: ResumeUploaderPro
     setFile(file);
     toast({
       title: "File uploaded",
-      description: `${file.name} has been uploaded successfully.`,
-      icon: <Check className="h-4 w-4" />
+      description: `${file.name} has been uploaded successfully.`
     });
   };
 

@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -47,15 +46,13 @@ export const ResumeBuilder = ({ onSave, onCancel }: ResumeBuilderProps) => {
       onSave(data);
       toast({
         title: "Resume saved",
-        description: "Your resume has been saved successfully.",
-        icon: <Check className="h-4 w-4" />
+        description: "Your resume has been saved successfully."
       });
     } catch (error) {
       toast({
         title: "Error saving resume",
         description: "There was an error saving your resume. Please try again.",
-        variant: "destructive",
-        icon: <AlertCircle className="h-4 w-4" />
+        variant: "destructive"
       });
     }
   };

@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -7,7 +6,7 @@ import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Check, Download, Wand2 } from "lucide-react";
+import { Wand2, Download } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const tailorFormSchema = z.object({
@@ -56,7 +55,6 @@ export const ResumeTailor = ({ onComplete, onBack }: ResumeTailorProps) => {
     
     setIsGenerating(true);
     
-    // Simulate AI generation (in a real app, this would call an AI service)
     setTimeout(() => {
       const aiGeneratedLetter = `Dear Hiring Manager,
 
@@ -76,8 +74,7 @@ Sincerely,
       
       toast({
         title: "Cover letter generated",
-        description: "A personalized cover letter has been created based on the job details.",
-        icon: <Check className="h-4 w-4" />
+        description: "A personalized cover letter has been created based on the job details."
       });
     }, 2000);
   };
@@ -96,7 +93,6 @@ Sincerely,
     
     setIsGenerating(true);
     
-    // Simulate AI skill extraction (in a real app, this would call an AI service)
     setTimeout(() => {
       const skills = "JavaScript, React, TypeScript, Node.js, Problem-solving, Team collaboration, Communication skills";
       form.setValue('highlightSkills', skills);
@@ -104,8 +100,7 @@ Sincerely,
       
       toast({
         title: "Skills analyzed",
-        description: "Key skills for this position have been identified.",
-        icon: <Check className="h-4 w-4" />
+        description: "Key skills for this position have been identified."
       });
     }, 1500);
   };
@@ -114,8 +109,7 @@ Sincerely,
     onComplete(data);
     toast({
       title: "Resume tailored",
-      description: "Your resume has been customized for this job application.",
-      icon: <Check className="h-4 w-4" />
+      description: "Your resume has been customized for this job application."
     });
   };
 
