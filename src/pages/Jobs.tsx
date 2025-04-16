@@ -9,7 +9,7 @@ import { useJobs } from "@/hooks/useJobs";
 const Jobs = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [location, setLocation] = useState("");
-  const { jobs, isLoading, error } = useJobs({ query: searchQuery, location });
+  const { data: jobs = [], isLoading, error } = useJobs({ query: searchQuery, location });
 
   return (
     <div className="min-h-screen flex flex-col">
