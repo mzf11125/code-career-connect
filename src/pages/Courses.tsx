@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Search } from "lucide-react";
+import { CourseGenerator } from "@/components/CourseGenerator";
 
 const Courses = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -94,10 +95,11 @@ const Courses = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      
+
       <main className="flex-grow">
         <section className="py-16 px-6 md:px-12">
           <div className="container mx-auto">
+            <CourseGenerator />
             <h1 className="text-4xl font-bold text-center mb-4">Connect with experienced professionals</h1>
             <p className="text-gray-400 text-center mb-12 max-w-3xl mx-auto">
               Connect with experienced professionals who can guide you through your CS career journey
@@ -167,10 +169,10 @@ const Courses = () => {
           </div>
         </section>
       </main>
-      
       <Footer />
     </div>
   );
 };
 
 export default Courses;
+
