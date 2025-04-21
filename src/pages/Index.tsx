@@ -76,9 +76,9 @@ const Index = () => {
         <section className="py-20 px-6 md:px-12">
           <div className="container mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-16">
-              <div className="relative">
+              <div className="relative flex gap-6 justify-center md:justify-start">
                 <div className="w-64 h-64 bg-cssecondary rounded-xl relative z-10"></div>
-                <div className="w-64 h-64 bg-csgreen/10 rounded-xl absolute -bottom-8 -right-8"></div>
+                <div className="w-64 h-64 bg-csgreen/10 rounded-xl"></div>
               </div>
               <div>
                 <h2 className="text-3xl font-bold mb-4">Mentors That Make a Difference</h2>
@@ -217,3 +217,4 @@ const Index = () => {
 };
 
 export default Index;
+
