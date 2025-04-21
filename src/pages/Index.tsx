@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
@@ -76,8 +75,8 @@ const Index = () => {
         <section className="py-20 px-6 md:px-12">
           <div className="container mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-16">
-              <div className="relative flex gap-6 justify-center md:justify-start">
-                <div className="w-64 h-64 bg-cssecondary rounded-xl relative z-10"></div>
+              <div className="relative flex gap-8 justify-center md:justify-start">
+                <div className="w-64 h-64 bg-cssecondary rounded-xl relative z-10 glass"></div>
                 <div className="w-64 h-64 bg-csgreen/10 rounded-xl"></div>
               </div>
               <div>
@@ -217,4 +216,3 @@ const Index = () => {
 };
 
 export default Index;
-
