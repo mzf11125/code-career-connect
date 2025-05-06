@@ -1,5 +1,7 @@
 
 import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import { BookOpen, Play, Check } from "lucide-react";
 
 interface CourseCardProps {
   title: string;
@@ -8,9 +10,10 @@ interface CourseCardProps {
   hourlyRate: number;
   skills: string[];
   imageUrl?: string;
+  progress?: number;
 }
 
-export const CourseCard = ({ title, reviewCount, description, hourlyRate, skills }: CourseCardProps) => {
+export const CourseCard = ({ title, reviewCount, description, hourlyRate, skills, progress = 0 }: CourseCardProps) => {
   return (
     <div className="bg-cssecondary rounded-xl p-6 hover:shadow-[0_0_20px_rgba(74,227,181,0.2)] transition-all">
       <div className="flex gap-3 mb-3">
@@ -33,10 +36,19 @@ export const CourseCard = ({ title, reviewCount, description, hourlyRate, skills
         {description}
       </p>
       
-      <div className="flex flex-col">
-        <span className="text-xs text-gray-400">Hourly Rate</span>
+      <div className="flex justify-between items-center mb-3">
         <span className="text-xl font-bold text-csgreen">${hourlyRate}/hr</span>
+        {progress > 0 && (
+          <div className="flex items-center gap-2">
+            <BookOpen className="text-csgreen" size={16} />
+            <span className="text-xs text-gray-300">{progress}% complete</span>
+          </div>
+        )}
       </div>
+
+      {progress > 0 && (
+        <Progress value={progress} className="h-1 bg-gray-700" />
+      )}
     </div>
   );
 };

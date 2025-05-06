@@ -1,9 +1,11 @@
+
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { BookOpen, Award } from "lucide-react";
 import { marked } from "marked";
+import { InteractiveCourseViewer } from "./InteractiveCourseViewer";
 
 const DEFAULT_PROMPT = `Create a comprehensive, milestone-based course roadmap for the following topic, using only free online resources accessible on the internet through scraping or public APIs. Provide an engaging title, a short description, a clear list of course goals, and 4-8 milestone modules. For each module, give a title, learning objectives, and suggest at least two *free* resources (with URLs) to help master the module. Use markdown formatting.`;
 
@@ -13,11 +15,14 @@ export function CourseGenerator() {
   const [loading, setLoading] = useState(false);
   const [courseMarkdown, setCourseMarkdown] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [interactiveView, setInteractiveView] = useState(false);
 
   const handleGenerate = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     setCourseMarkdown("");
+    setInteractiveView(false);
+    
     if (!apiKey || apiKey.length < 10) {
       setError("Please enter a valid Gemini API key.");
       return;
@@ -49,6 +54,7 @@ export function CourseGenerator() {
         );
       } else {
         setCourseMarkdown(answer);
+        setInteractiveView(true); // Automatically switch to interactive view
       }
     } catch (err: any) {
       setError("Error: " + err.message || "Unknown error");
@@ -101,10 +107,37 @@ export function CourseGenerator() {
       </form>
       {error && <div className="text-destructive mb-3">{error}</div>}
       {courseMarkdown && (
-        <div className="bg-cssecondary rounded-lg p-6 overflow-x-auto mt-6">
-          <Award className="inline text-csgreen mb-1 mr-2" />
-          <span className="font-semibold text-lg">Course Plan</span>
-          <div className="prose prose-invert max-w-none mt-4" dangerouslySetInnerHTML={{ __html: marked.parse(courseMarkdown) }} />
+        <div className="mt-6">
+          <div className="flex justify-between items-center mb-4">
+            <div className="flex items-center">
+              <Award className="inline text-csgreen mb-1 mr-2" />
+              <span className="font-semibold text-lg">Course Plan</span>
+            </div>
+            <div className="flex gap-2">
+              <Button 
+                variant="outline" 
+                className={!interactiveView ? "bg-csgreen/20 border-csgreen" : "border-gray-700"}
+                onClick={() => setInteractiveView(false)}
+              >
+                Simple View
+              </Button>
+              <Button 
+                variant="outline"
+                className={interactiveView ? "bg-csgreen/20 border-csgreen" : "border-gray-700"}
+                onClick={() => setInteractiveView(true)}
+              >
+                Interactive View
+              </Button>
+            </div>
+          </div>
+          
+          {interactiveView ? (
+            <InteractiveCourseViewer markdown={courseMarkdown} />
+          ) : (
+            <div className="bg-cssecondary rounded-lg p-6 overflow-x-auto">
+              <div className="prose prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: marked.parse(courseMarkdown) }} />
+            </div>
+          )}
         </div>
       )}
     </section>
