@@ -308,13 +308,6 @@ export function InteractiveCourseViewer({ markdown }: { markdown: string }) {
           </Card>
         </TabsContent>
       </Tabs>
-
-      {activeTab === "content" && (
-        <div className="mt-6 bg-csdark border border-gray-800 rounded-md p-4">
-          <h3 className="font-medium mb-3">Original Course Plan</h3>
-          <div className="prose prose-invert max-w-none text-sm" dangerouslySetInnerHTML={{ __html: markdown }} />
-        </div>
-      )}
     </div>
   );
 }
