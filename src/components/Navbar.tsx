@@ -24,8 +24,8 @@ export const Navbar = () => {
         <Link to="/resume" className="text-white hover:text-csgreen transition-colors">
           Resume
         </Link>
-        <Link to="/apply" className="text-white hover:text-csgreen transition-colors">
-          Apply
+        <Link to="/jobs" className="text-white hover:text-csgreen transition-colors">
+          Jobs
         </Link>
       </div>
       
