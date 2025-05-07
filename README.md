@@ -25,8 +25,8 @@ This repository is the Lovable-generated starter for your front-end application,
 
 ```bash
 # Clone the repository
-git clone <YOUR_GIT_URL>
-cd <YOUR_PROJECT_NAME>
+git clone https://github.com/mzf11125/code-career-connect
+cd code-career-connect
 
 # Install dependencies
 npm install
