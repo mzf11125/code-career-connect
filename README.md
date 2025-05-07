@@ -58,7 +58,6 @@ You have multiple options:
 ## Folder Structure
 
 ```plaintext
-/
 ├── public/             # Static assets & HTML template
 │   └── index.html      # App shell and mount point
 ├── src/                # Application source code
@@ -92,8 +91,7 @@ This is a modern React SPA scaffold:
 
 ## Deployment
 
-1. Go to the Lovable dashboard and click **Share → Publish** to deploy instantly. ([lovable.dev](https://lovable.dev/?utm_source=chatgpt.com))
-2. (Optional) For Vercel/Netlify: connect your GitHub repo, set build commands (`npm run build`), and publish directory (`dist`).
+Deployed in a custom server using digital Ocean, you can acces our deployed app here: https://unemployedcsstudents.com/
 
 ## Custom Domain
 
