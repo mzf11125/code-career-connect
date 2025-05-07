@@ -1,73 +1,112 @@
-# Welcome to your Lovable project
+# Welcome to your Lovable Project
 
-## Project info
+## Project Info
 
-**URL**: https://lovable.dev/projects/83fd5bd5-4cb0-4501-a2a5-a8e89b17212e
+**URL**: [https://lovable.dev/projects/83fd5bd5-4cb0-4501-a2a5-a8e89b17212e](https://lovable.dev/projects/83fd5bd5-4cb0-4501-a2a5-a8e89b17212e)
 
-## How can I edit this code?
+This repository is the Lovable-generated starter for your front-end application, created with Lovable.dev, an AI-powered app builder that streamlines the scaffolding process. ([lovable.dev](https://lovable.dev/?utm_source=chatgpt.com))
 
-There are several ways of editing your application.
+## Technologies Used
 
-**Use Lovable**
+* **Vite** for blazing-fast dev and build tooling ([vite.dev](https://vite.dev/?utm_source=chatgpt.com))
+* **React** for component-driven UI development ([react.dev](https://react.dev/?utm_source=chatgpt.com))
+* **TypeScript** for static typing and scalable codebases ([typescriptlang.org](https://www.typescriptlang.org/?utm_source=chatgpt.com))
+* **shadcn-ui** (Radix-based) for accessible, customizable components ([ui.shadcn.com](https://ui.shadcn.com/?utm_source=chatgpt.com))
+* **Tailwind CSS** for utility-first styling ([tailwindcss.com](https://tailwindcss.com/?utm_source=chatgpt.com))
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/83fd5bd5-4cb0-4501-a2a5-a8e89b17212e) and start prompting.
+## Getting Started
 
-Changes made via Lovable will be committed automatically to this repo.
+### Prerequisites
 
-**Use your preferred IDE**
+* **Node.js** (v14+ recommended) and **npm** installed ([nodejs.org](https://nodejs.org/en?utm_source=chatgpt.com))
+* (Optional) **nvm** for managing Node.js versions: install via the NVM script from the official repo ([github.com](https://github.com/nvm-sh/nvm?utm_source=chatgpt.com))
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Installation
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
+```bash
+# Clone the repository
 git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
 cd <YOUR_PROJECT_NAME>
 
-# Step 3: Install the necessary dependencies.
-npm i
+# Install dependencies
+npm install
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start dev server (hot-reload)
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+## Editing Your Code
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+You have multiple options:
 
-**Use GitHub Codespaces**
+1. **Use Lovable**
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+   * Visit the [Lovable Project](https://lovable.dev/projects/83fd5bd5-4cb0-4501-a2a5-a8e89b17212e) and prompt changes directly. Commit history syncs automatically.
+2. **Local IDE**
 
-## What technologies are used for this project?
+   * Edit in your favorite editor. Any pushes to GitHub will reflect back in Lovable.
+3. **GitHub Web UI**
 
-This project is built with:
+   * Click the pencil icon on any file in GitHub to make quick edits and commit.
+4. **GitHub Codespaces**
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+   * Spin up a full dev environment in the cloud. Learn more in [GitHub Codespaces docs](https://docs.github.com/en/codespaces) ([docs.github.com](https://docs.github.com/en/codespaces?utm_source=chatgpt.com))
+5. **GitHub Codespaces**
 
-## How can I deploy this project?
+   * Start a new Codespace via the green "Code" button in your repo. Develop in-browser or via VS Code.
 
-Simply open [Lovable](https://lovable.dev/projects/83fd5bd5-4cb0-4501-a2a5-a8e89b17212e) and click on Share -> Publish.
+## Folder Structure
 
-## Can I connect a custom domain to my Lovable project?
+```plaintext
+/
+├── public/             # Static assets & HTML template
+│   └── index.html      # App shell and mount point
+├── src/                # Application source code
+│   ├── components/     # UI components (shadcn-ui)
+│   ├── pages/          # Route-based pages (if used)
+│   ├── hooks/          # Custom React hooks
+│   └── styles/         # Tailwind CSS entrypoints
+├── components.json     # shadcn-ui component definitions
+├── package.json        # Project metadata & scripts
+├── tsconfig.json       # TypeScript compiler settings
+├── tailwind.config.ts  # Tailwind configuration
+└── vite.config.ts      # Vite build & dev config
+```
 
-Yes, you can!
+## Architecture Overview
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+This is a modern React SPA scaffold:
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+* **Dev Mode**: `npm run dev` launches Vite’s native ESM server with fast HMR.
+* **Prod Build**: `npm run build` triggers Rollup-powered bundling, code splitting, and tree-shaking.
+* **CSS Pipeline**: Tailwind JIT + PostCSS autoprefixer streamlines styling.
+* **Component System**: Atomic → Molecular → Organism via shadcn-ui and Radix primitives.
+
+## Tooling & Best Practices
+
+* **Linting**: ESLint + Prettier enforce consistent styles.
+* **Testing**: Add Vitest or React Testing Library in a `__tests__` folder.
+* **CI/CD**: Integrate GitHub Actions for lint/build/test on every push.
+* **State Management**: Introduce Context, Zustand, or Redux Toolkit when needed.
+* **Routing**: Use React Router or a preferred alternative for multi-page flows.
+
+## Deployment
+
+1. Go to the Lovable dashboard and click **Share → Publish** to deploy instantly. ([lovable.dev](https://lovable.dev/?utm_source=chatgpt.com))
+2. (Optional) For Vercel/Netlify: connect your GitHub repo, set build commands (`npm run build`), and publish directory (`dist`).
+
+## Custom Domain
+
+* In Lovable: **Project → Settings → Domains**, click **Connect Domain**. Follow the step-by-step guide at
+  [lovable.dev custom domain docs](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide).
+
+## Next Steps
+
+* **API Integration**: Add Axios or fetch wrappers; GraphQL via Apollo Client.
+* **Auth**: Plug in OAuth2/JWT or third-party like Auth0/Firebase.
+* **i18n**: Introduce `react-i18next` for multi-language support.
+* **Performance**: Audit with Lighthouse, lazy-load components.
+
+---
+
+Happy coding!
