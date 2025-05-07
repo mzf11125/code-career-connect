@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
@@ -7,78 +6,113 @@ import { MentorCard } from "@/components/MentorCard";
 import { PricingCard } from "@/components/PricingCard";
 import { Link } from "react-router-dom";
 import { Users, BookOpen, FileText, BriefcaseBusiness, Code, Award, ArrowRight } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const Index = () => {
+  const [isLoaded, setIsLoaded] = useState(false);
+  
+  useEffect(() => {
+    setIsLoaded(true);
+  }, []);
+
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col relative overflow-hidden">
+      {/* Web3 inspired background elements */}
+      <div className="noise"></div>
+      <div className="hex-grid"></div>
+      <div className="grid-bg fixed inset-0 z-0"></div>
+      
+      {/* Animated background blobs - more vibrant and varied */}
+      <div className="fixed inset-0 z-0 overflow-hidden">
+        <div className="absolute top-20 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-[120px] blob-animation"></div>
+        <div className="absolute top-40 right-1/4 w-96 h-96 bg-purple-500/15 rounded-full blur-[120px] blob-animation" style={{ animationDelay: '-5s' }}></div>
+        <div className="absolute -bottom-20 left-1/3 w-96 h-96 bg-csgreen/15 rounded-full blur-[150px] blob-animation" style={{ animationDelay: '-10s' }}></div>
+        <div className="absolute center right-1/3 w-80 h-80 bg-pink-500/10 rounded-full blur-[130px] blob-animation" style={{ animationDelay: '-15s' }}></div>
+      </div>
+      
       <Navbar />
       
-      <main>
-        {/* Hero section */}
-        <section className="relative py-20 px-6 md:px-12 overflow-hidden">
-          {/* Background blobs */}
-          <div className="absolute top-20 left-1/4 w-72 h-72 bg-blue-500/20 rounded-full blur-[120px] blob-animation"></div>
-          <div className="absolute top-40 right-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-[120px] blob-animation"></div>
-          <div className="absolute -bottom-20 left-1/3 w-80 h-80 bg-csgreen/20 rounded-full blur-[120px] blob-animation"></div>
-          
-          <div className="container mx-auto text-center relative z-10">
-            <h1 className="text-4xl md:text-6xl font-bold mb-4">
+      <main className="z-10 relative">
+        {/* Hero section with enhanced styling */}
+        <section className="relative py-32 px-6 md:px-12 overflow-hidden">
+          <div className={`container mx-auto text-center relative z-10 transition-all duration-1000 transform ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+            <h1 className="text-4xl md:text-7xl font-bold mb-4 leading-tight">
               WELCOME TO<br />
-              <span className="bg-gradient-to-r from-white to-csgreen text-transparent bg-clip-text">
+              <span className="bg-gradient-to-r from-csgreen via-blue-400 to-purple-400 text-transparent bg-clip-text text-glow">
                 UnemployedCS Students
               </span>
             </h1>
-            <p className="text-gray-400 max-w-2xl mx-auto mb-8">
+            <p className="text-gray-400 max-w-2xl mx-auto mb-12 text-lg">
               Your ultimate platform for mentorship, learning resources, and job opportunities for CS students and graduates
             </p>
             <Link to="/signup">
-              <Button className="bg-csgreen text-black hover:bg-csgreen/90 px-8 py-6">
-                Start
+              <Button className="bg-csgreen text-black hover:bg-csgreen/90 px-8 py-6 rounded-xl glow relative overflow-hidden group">
+                <span className="relative z-10">Start Your Journey</span>
+                <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity"></div>
               </Button>
             </Link>
+            
+            {/* Web3 decorative elements */}
+            <div className="mt-24 flex justify-center">
+              <div className="flex items-center gap-4">
+                <div className="h-[1px] w-20 bg-gradient-to-r from-transparent via-csgreen/50 to-transparent"></div>
+                <div className="text-csgreen opacity-70">Web3 Inspired</div>
+                <div className="h-[1px] w-20 bg-gradient-to-r from-transparent via-csgreen/50 to-transparent"></div>
+              </div>
+            </div>
           </div>
+          
+          {/* Decorative elements */}
+          <div className="absolute -bottom-10 left-0 right-0 h-20 bg-gradient-to-t from-cssecondary/80 to-transparent z-0"></div>
         </section>
         
-        {/* Features section */}
-        <section className="py-20 px-6 md:px-12 bg-cssecondary">
+        {/* Features section - with web3 card styling */}
+        <section className="py-24 px-6 md:px-12 bg-cssecondary relative z-10">
           <div className="container mx-auto">
             <h2 className="text-3xl font-bold text-center mb-4">OUR FEATURES</h2>
-            <p className="text-gray-400 text-center max-w-2xl mx-auto mb-12">
+            <p className="text-gray-400 text-center max-w-2xl mx-auto mb-16">
               Our platform offers everything you need to accelerate your CS career and land your dream job
             </p>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <FeatureCard 
-                title="Expert Mentors"
-                description="Connect with professionals from top tech companies"
-                icon={<Users />}
-              />
-              <FeatureCard 
-                title="Learning Resources"
-                description="Access curated courses and study materials"
-                icon={<BookOpen />}
-              />
-              <FeatureCard 
-                title="Resume Builder"
-                description="Create standout resumes with AI assistance"
-                icon={<FileText />}
-              />
-              <FeatureCard 
-                title="Job Opportunities"
-                description="Apply to exclusive job listings for new graduates"
-                icon={<BriefcaseBusiness />}
-              />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              <div className="web3-card p-6 relative overflow-hidden group">
+                <div className="text-csgreen mb-4 text-3xl"><Users /></div>
+                <h3 className="text-xl font-bold mb-2">Expert Mentors</h3>
+                <p className="text-gray-400">Connect with professionals from top tech companies</p>
+                <div className="absolute -right-10 -top-10 w-20 h-20 rounded-full bg-csgreen/10 group-hover:bg-csgreen/20 transition-all duration-500"></div>
+              </div>
+              
+              <div className="web3-card p-6 relative overflow-hidden group">
+                <div className="text-csgreen mb-4 text-3xl"><BookOpen /></div>
+                <h3 className="text-xl font-bold mb-2">Learning Resources</h3>
+                <p className="text-gray-400">Access curated courses and study materials</p>
+                <div className="absolute -right-10 -top-10 w-20 h-20 rounded-full bg-csgreen/10 group-hover:bg-csgreen/20 transition-all duration-500"></div>
+              </div>
+              
+              <div className="web3-card p-6 relative overflow-hidden group">
+                <div className="text-csgreen mb-4 text-3xl"><FileText /></div>
+                <h3 className="text-xl font-bold mb-2">Resume Builder</h3>
+                <p className="text-gray-400">Create standout resumes with AI assistance</p>
+                <div className="absolute -right-10 -top-10 w-20 h-20 rounded-full bg-csgreen/10 group-hover:bg-csgreen/20 transition-all duration-500"></div>
+              </div>
+              
+              <div className="web3-card p-6 relative overflow-hidden group">
+                <div className="text-csgreen mb-4 text-3xl"><BriefcaseBusiness /></div>
+                <h3 className="text-xl font-bold mb-2">Job Opportunities</h3>
+                <p className="text-gray-400">Apply to exclusive job listings for new graduates</p>
+                <div className="absolute -right-10 -top-10 w-20 h-20 rounded-full bg-csgreen/10 group-hover:bg-csgreen/20 transition-all duration-500"></div>
+              </div>
             </div>
           </div>
         </section>
         
-        {/* Mentors section */}
-        <section className="py-20 px-6 md:px-12">
+        {/* Mentors section - with improved UI */}
+        <section className="py-24 px-6 md:px-12 relative">
           <div className="container mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-16">
-              <div className="relative flex justify-center md:justify-start" style={{ gap: 24 }}>
-                <div className="w-64 h-64 bg-cssecondary rounded-xl relative z-10 glass" style={{ marginRight: '-5rem' }}></div>
-                <div className="w-64 h-64 bg-csgreen/10 rounded-xl"></div>
+              <div className="relative flex justify-center md:justify-start floating" style={{ gap: 24 }}>
+                <div className="w-64 h-64 bg-cssecondary rounded-xl relative z-10 glass border border-csgreen/30" style={{ marginRight: '-5rem' }}></div>
+                <div className="w-64 h-64 bg-csgreen/10 rounded-xl border border-csgreen/20"></div>
               </div>
               <div>
                 <h2 className="text-3xl font-bold mb-4">Mentors That Make a Difference</h2>
@@ -86,7 +120,7 @@ const Index = () => {
                   Learn from professionals who have been where you are and successfully navigated the tech industry. Our mentors provide personalized guidance to help you achieve your career goals.
                 </p>
                 <Link to="/mentors">
-                  <Button className="bg-csgreen text-black hover:bg-csgreen/90">
+                  <Button className="bg-gradient-to-r from-csgreen to-blue-400 text-black hover:opacity-90 glow">
                     Browse Mentors
                   </Button>
                 </Link>
@@ -94,6 +128,7 @@ const Index = () => {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {/* Keep existing MentorCard components */}
               <MentorCard 
                 name="Sarah Johnson"
                 role="Senior Software Engineer"
@@ -124,10 +159,13 @@ const Index = () => {
               />
             </div>
           </div>
+          
+          {/* Decorative mesh grid */}
+          <div className="absolute bottom-0 left-0 right-0 h-40 opacity-30 bg-gradient-to-t from-cssecondary to-transparent"></div>
         </section>
         
-        {/* Resume Builder section */}
-        <section className="py-20 px-6 md:px-12 bg-cssecondary">
+        {/* Resume Builder section - with web3 styling */}
+        <section className="py-24 px-6 md:px-12 bg-cssecondary relative">
           <div className="container mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
               <div>
@@ -135,36 +173,40 @@ const Index = () => {
                 <p className="text-gray-400 mb-6">
                   Our AI-powered resume builder helps you create professional, ATS-friendly resumes that highlight your strengths and stand out to recruiters.
                 </p>
-                <ul className="space-y-3 mb-6">
-                  <li className="flex items-start gap-2">
-                    <div className="mt-1 text-csgreen"><Code size={18} /></div>
-                    <span>Tailored for tech roles with industry-specific templates</span>
+                <ul className="space-y-4 mb-8">
+                  <li className="flex items-start gap-3 group">
+                    <div className="mt-1 text-csgreen bg-csgreen/10 p-2 rounded-full border border-csgreen/30 group-hover:bg-csgreen/30 transition-all"><Code size={18} /></div>
+                    <span className="pt-1">Tailored for tech roles with industry-specific templates</span>
                   </li>
-                  <li className="flex items-start gap-2">
-                    <div className="mt-1 text-csgreen"><Award size={18} /></div>
-                    <span>AI suggestions to optimize your content for specific job listings</span>
+                  <li className="flex items-start gap-3 group">
+                    <div className="mt-1 text-csgreen bg-csgreen/10 p-2 rounded-full border border-csgreen/30 group-hover:bg-csgreen/30 transition-all"><Award size={18} /></div>
+                    <span className="pt-1">AI suggestions to optimize your content for specific job listings</span>
                   </li>
                 </ul>
                 <Link to="/resume">
-                  <Button className="bg-csgreen text-black hover:bg-csgreen/90">
+                  <Button className="bg-gradient-to-r from-csgreen to-blue-400 text-black hover:opacity-90 glow">
                     Create Your Resume <ArrowRight size={16} className="ml-2" />
                   </Button>
                 </Link>
               </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-gray-800 h-64 rounded-xl"></div>
-                <div className="bg-gray-800 h-64 rounded-xl"></div>
-                <div className="bg-gray-800 h-64 rounded-xl"></div>
+              <div className="grid grid-cols-2 gap-6 relative">
+                <div className="bg-gray-800 h-64 rounded-xl web3-card"></div>
+                <div className="bg-gray-800 h-64 rounded-xl web3-card" style={{ marginTop: '40px' }}></div>
+                <div className="bg-gray-800 h-64 rounded-xl web3-card" style={{ marginTop: '20px' }}></div>
+                
+                {/* Decorative elements */}
+                <div className="absolute -top-10 -right-10 w-20 h-20 rounded-full border border-csgreen/30 opacity-30"></div>
+                <div className="absolute -bottom-10 -left-10 w-16 h-16 rounded-full border border-blue-400/30 opacity-30"></div>
               </div>
             </div>
           </div>
         </section>
         
-        {/* Pricing section */}
-        <section className="py-20 px-6 md:px-12">
+        {/* Pricing section - with enhanced styling */}
+        <section className="py-24 px-6 md:px-12 relative">
           <div className="container mx-auto">
             <h2 className="text-3xl font-bold text-center mb-4">START LANDING JOBS WITH US!</h2>
-            <p className="text-gray-400 text-center max-w-2xl mx-auto mb-12">
+            <p className="text-gray-400 text-center max-w-2xl mx-auto mb-16">
               Choose the plan that suits your needs and start your journey to landing your dream tech job
             </p>
             
@@ -207,6 +249,15 @@ const Index = () => {
                 ]}
               />
             </div>
+            
+            {/* Web3 decorative elements */}
+            <div className="mt-20 flex justify-center">
+              <div className="flex items-center gap-4">
+                <div className="h-[1px] w-20 bg-gradient-to-r from-transparent via-csgreen/50 to-transparent"></div>
+                <div className="text-csgreen opacity-70">Blockchain Secured Payments</div>
+                <div className="h-[1px] w-20 bg-gradient-to-r from-transparent via-csgreen/50 to-transparent"></div>
+              </div>
+            </div>
           </div>
         </section>
       </main>
@@ -217,4 +268,3 @@ const Index = () => {
 };
 
 export default Index;
-
