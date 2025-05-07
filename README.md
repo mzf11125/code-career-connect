@@ -93,11 +93,6 @@ This is a modern React SPA scaffold:
 
 Deployed in a custom server using digital Ocean, you can acces our deployed app here: https://unemployedcsstudents.com/
 
-## Custom Domain
-
-* In Lovable: **Project → Settings → Domains**, click **Connect Domain**. Follow the step-by-step guide at
-  [lovable.dev custom domain docs](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide).
-
 ## Next Steps
 
 * **API Integration**: Add Axios or fetch wrappers; GraphQL via Apollo Client.
