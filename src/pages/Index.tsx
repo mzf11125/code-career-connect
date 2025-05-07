@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
@@ -5,15 +6,20 @@ import { FeatureCard } from "@/components/FeatureCard";
 import { MentorCard } from "@/components/MentorCard";
 import { PricingCard } from "@/components/PricingCard";
 import { Link } from "react-router-dom";
-import { Users, BookOpen, FileText, BriefcaseBusiness, Code, Award, ArrowRight } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Users, BookOpen, FileText, BriefcaseBusiness, Code, Award, ArrowRight, ChevronDown } from "lucide-react";
+import { useEffect, useState, useRef } from "react";
 
 const Index = () => {
   const [isLoaded, setIsLoaded] = useState(false);
+  const featuresRef = useRef<HTMLElement>(null);
   
   useEffect(() => {
     setIsLoaded(true);
   }, []);
+
+  const scrollToNextSection = () => {
+    featuresRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   return (
     <div className="min-h-screen flex flex-col relative overflow-hidden">
@@ -32,28 +38,28 @@ const Index = () => {
       
       <Navbar />
       
-      <main className="z-10 relative">
-        {/* Hero section with enhanced styling */}
-        <section className="relative py-32 px-6 md:px-12 overflow-hidden">
-          <div className={`container mx-auto text-center relative z-10 transition-all duration-1000 transform ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
-            <h1 className="text-4xl md:text-7xl font-bold mb-4 leading-tight">
+      <main className="z-10 relative scroll-container">
+        {/* Hero section with full height and enhanced styling */}
+        <section className="full-screen-section px-6 md:px-12 overflow-hidden">
+          <div className={`container mx-auto text-center relative z-10 transition-all duration-1000 transform hero-content ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 leading-tight">
               WELCOME TO<br />
               <span className="bg-gradient-to-r from-csgreen via-blue-400 to-purple-400 text-transparent bg-clip-text text-glow">
                 UnemployedCS Students
               </span>
             </h1>
-            <p className="text-gray-400 max-w-2xl mx-auto mb-12 text-lg">
+            <p className="text-gray-400 max-w-2xl mx-auto mb-12 text-xl">
               Your ultimate platform for mentorship, learning resources, and job opportunities for CS students and graduates
             </p>
             <Link to="/signup">
               <Button className="bg-csgreen text-black hover:bg-csgreen/90 px-8 py-6 rounded-xl glow relative overflow-hidden group">
-                <span className="relative z-10">Start Your Journey</span>
+                <span className="relative z-10 text-lg font-medium">Start Your Journey</span>
                 <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity"></div>
               </Button>
             </Link>
             
             {/* Web3 decorative elements */}
-            <div className="mt-24 flex justify-center">
+            <div className="mt-32 flex justify-center">
               <div className="flex items-center gap-4">
                 <div className="h-[1px] w-20 bg-gradient-to-r from-transparent via-csgreen/50 to-transparent"></div>
                 <div className="text-csgreen opacity-70">Web3 Inspired</div>
@@ -62,14 +68,22 @@ const Index = () => {
             </div>
           </div>
           
-          {/* Decorative elements */}
-          <div className="absolute -bottom-10 left-0 right-0 h-20 bg-gradient-to-t from-cssecondary/80 to-transparent z-0"></div>
+          {/* Scroll indicator */}
+          <div className="section-divider fade-in-bottom" style={{ animationDelay: '1s' }}>
+            <button 
+              onClick={scrollToNextSection} 
+              className="text-csgreen hover:text-white transition-colors scroll-indicator"
+              aria-label="Scroll to next section"
+            >
+              <ChevronDown size={36} />
+            </button>
+          </div>
         </section>
         
         {/* Features section - with web3 card styling */}
-        <section className="py-24 px-6 md:px-12 bg-cssecondary relative z-10">
+        <section ref={featuresRef} className="full-screen-section px-6 md:px-12 bg-cssecondary relative z-10">
           <div className="container mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-4">OUR FEATURES</h2>
+            <h2 className="text-4xl font-bold text-center mb-4">OUR FEATURES</h2>
             <p className="text-gray-400 text-center max-w-2xl mx-auto mb-16">
               Our platform offers everything you need to accelerate your CS career and land your dream job
             </p>
@@ -103,11 +117,22 @@ const Index = () => {
                 <div className="absolute -right-10 -top-10 w-20 h-20 rounded-full bg-csgreen/10 group-hover:bg-csgreen/20 transition-all duration-500"></div>
               </div>
             </div>
+            
+            {/* Scroll indicator */}
+            <div className="section-divider">
+              <button 
+                onClick={() => document.querySelector('.mentors-section')?.scrollIntoView({ behavior: 'smooth' })} 
+                className="text-csgreen hover:text-white transition-colors scroll-indicator"
+                aria-label="Scroll to next section"
+              >
+                <ChevronDown size={36} />
+              </button>
+            </div>
           </div>
         </section>
         
         {/* Mentors section - with improved UI */}
-        <section className="py-24 px-6 md:px-12 relative">
+        <section className="full-screen-section px-6 md:px-12 relative mentors-section">
           <div className="container mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-16">
               <div className="relative flex justify-center md:justify-start floating" style={{ gap: 24 }}>
@@ -115,7 +140,7 @@ const Index = () => {
                 <div className="w-64 h-64 bg-csgreen/10 rounded-xl border border-csgreen/20"></div>
               </div>
               <div>
-                <h2 className="text-3xl font-bold mb-4">Mentors That Make a Difference</h2>
+                <h2 className="text-4xl font-bold mb-4">Mentors That Make a Difference</h2>
                 <p className="text-gray-400 mb-6">
                   Learn from professionals who have been where you are and successfully navigated the tech industry. Our mentors provide personalized guidance to help you achieve your career goals.
                 </p>
@@ -158,6 +183,17 @@ const Index = () => {
                 imageUrl="/lovable-uploads/Olivia-Rodrigo.png"
               />
             </div>
+            
+            {/* Scroll indicator */}
+            <div className="section-divider">
+              <button 
+                onClick={() => document.querySelector('.resume-builder-section')?.scrollIntoView({ behavior: 'smooth' })} 
+                className="text-csgreen hover:text-white transition-colors scroll-indicator"
+                aria-label="Scroll to next section"
+              >
+                <ChevronDown size={36} />
+              </button>
+            </div>
           </div>
           
           {/* Decorative mesh grid */}
@@ -165,11 +201,11 @@ const Index = () => {
         </section>
         
         {/* Resume Builder section - with web3 styling */}
-        <section className="py-24 px-6 md:px-12 bg-cssecondary relative">
+        <section className="full-screen-section px-6 md:px-12 bg-cssecondary relative resume-builder-section">
           <div className="container mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
               <div>
-                <h2 className="text-3xl font-bold mb-4">Build a Resume That Gets You Hired</h2>
+                <h2 className="text-4xl font-bold mb-4">Build a Resume That Gets You Hired</h2>
                 <p className="text-gray-400 mb-6">
                   Our AI-powered resume builder helps you create professional, ATS-friendly resumes that highlight your strengths and stand out to recruiters.
                 </p>
@@ -199,13 +235,24 @@ const Index = () => {
                 <div className="absolute -bottom-10 -left-10 w-16 h-16 rounded-full border border-blue-400/30 opacity-30"></div>
               </div>
             </div>
+            
+            {/* Scroll indicator */}
+            <div className="section-divider">
+              <button 
+                onClick={() => document.querySelector('.pricing-section')?.scrollIntoView({ behavior: 'smooth' })} 
+                className="text-csgreen hover:text-white transition-colors scroll-indicator"
+                aria-label="Scroll to next section"
+              >
+                <ChevronDown size={36} />
+              </button>
+            </div>
           </div>
         </section>
         
         {/* Pricing section - with enhanced styling */}
-        <section className="py-24 px-6 md:px-12 relative">
+        <section className="full-screen-section px-6 md:px-12 relative pricing-section">
           <div className="container mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-4">START LANDING JOBS WITH US!</h2>
+            <h2 className="text-4xl font-bold text-center mb-4">START LANDING JOBS WITH US!</h2>
             <p className="text-gray-400 text-center max-w-2xl mx-auto mb-16">
               Choose the plan that suits your needs and start your journey to landing your dream tech job
             </p>
