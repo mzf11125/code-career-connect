@@ -99,28 +99,28 @@ const Index = () => {
                 role="Senior Software Engineer"
                 rating={5.0}
                 reviewCount={342}
-                imageUrl="/public/lovable-uploads/3dac3197-5287-43e6-8bb7-1d05f7a74f8c.png"
+                imageUrl="/lovable-uploads/mentor2.jpg"
               />
               <MentorCard 
                 name="David Chen"
                 role="Product Manager"
                 rating={4.9}
                 reviewCount={217}
-                imageUrl="/public/lovable-uploads/75c315fd-034d-4d96-8d6f-6daf038e0965.png"
+                imageUrl="/lovable-uploads/mentor3.jpg"
               />
               <MentorCard 
-                name="Michael Zhang"
+                name="Olivia Stone"
                 role="Tech Lead"
                 rating={5.0}
                 reviewCount={189}
-                imageUrl="/public/lovable-uploads/30dbc055-777d-4b4b-9228-2fc4cfa077db.png"
+                imageUrl="/lovable-uploads/Olivia-Rodrigo.png"
               />
               <MentorCard 
                 name="Jessica Lee"
                 role="UX Designer"
                 rating={4.8}
                 reviewCount={156}
-                imageUrl="/public/lovable-uploads/8f9f5200-1a35-4a55-ac5d-998a35145b4c.png"
+                imageUrl="/lovable-uploads/Olivia-Rodrigo.png"
               />
             </div>
           </div>
