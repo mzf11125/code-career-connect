@@ -2,15 +2,13 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { BookOpen, Award } from "lucide-react";
 import { marked } from "marked";
 import { InteractiveCourseViewer } from "./InteractiveCourseViewer";
-
-const DEFAULT_PROMPT = `Create a comprehensive, milestone-based course roadmap for the following topic, using only free online resources accessible on the internet through scraping or public APIs. Provide an engaging title, a short description, a clear list of course goals, and 4-8 milestone modules. For each module, give a title, learning objectives, and suggest at least two *free* resources (with URLs) to help master the module. Use markdown formatting.`;
+import { generateCourse } from "@/services/courseGeneratorService";
+import { toast } from "sonner";
 
 export function CourseGenerator() {
-  const [apiKey, setApiKey] = useState("");
   const [topic, setTopic] = useState("");
   const [loading, setLoading] = useState(false);
   const [courseMarkdown, setCourseMarkdown] = useState("");
@@ -23,42 +21,26 @@ export function CourseGenerator() {
     setCourseMarkdown("");
     setInteractiveView(false);
     
-    if (!apiKey || apiKey.length < 10) {
-      setError("Please enter a valid Gemini API key.");
-      return;
-    }
     if (!topic.trim()) {
       setError("Please enter a topic.");
       return;
     }
+    
     setLoading(true);
 
     try {
-      const res = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=" + encodeURIComponent(apiKey), {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          contents: [
-            { role: "user", parts: [{ text: DEFAULT_PROMPT + "\n\nTopic: " + topic }]}
-          ]
-        }),
-      });
-      const json = await res.json();
-      // Gemini returns the response in 'candidates'
-      const answer = json?.candidates?.[0]?.content?.parts?.[0]?.text;
-      if (!answer) {
-        setError(
-          "Failed to generate course. Check your API key, or try again later."
-        );
+      const response = await generateCourse(topic);
+      
+      if (!response.success) {
+        setError(response.error || "Failed to generate course");
       } else {
-        setCourseMarkdown(answer);
+        setCourseMarkdown(response.courseMarkdown);
         setInteractiveView(true); // Automatically switch to interactive view
       }
     } catch (err: any) {
       setError("Error: " + err.message || "Unknown error");
     }
+    
     setLoading(false);
   };
 
@@ -80,21 +62,6 @@ export function CourseGenerator() {
             value={topic}
             placeholder="e.g. Web Security, Data Science, Rust..."
             onChange={e => setTopic(e.target.value)}
-          />
-        </div>
-        <div className="flex-1">
-          <label className="block text-sm text-gray-300 mb-1" htmlFor="gemini-api-key">
-            Gemini API Key <span className="text-xs text-gray-400">(required, never stored)</span>
-          </label>
-          <Input
-            id="gemini-api-key"
-            value={apiKey}
-            className="w-full bg-cssecondary border-csgreen"
-            type="password"
-            placeholder="Paste your Gemini API key here..."
-            onChange={e => setApiKey(e.target.value)}
-            autoComplete="off"
-            required
           />
         </div>
         <Button
