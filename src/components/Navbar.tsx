@@ -3,13 +3,16 @@ import { Link } from "react-router-dom";
 import { Logo } from "./Logo";
 import { Button } from "@/components/ui/button";
 import { useLocation } from "react-router-dom";
-import { Menu, X, ChevronDown, Users, BookOpen, FileText, Briefcase } from "lucide-react";
+import { Menu, X, Users, BookOpen, FileText, Briefcase, LogOut, User } from "lucide-react";
 import { useState } from "react";
+import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "sonner";
 
 export const Navbar = () => {
   const location = useLocation();
   const isAuthPage = location.pathname === '/login' || location.pathname === '/signup';
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { user, signOut } = useAuth();
   
   if (isAuthPage) return null;
   
@@ -21,6 +24,11 @@ export const Navbar = () => {
   ];
 
   const isActive = (path: string) => location.pathname === path;
+
+  const handleSignOut = async () => {
+    await signOut();
+    toast.success('Logged out successfully');
+  };
   
   return (
     <nav className="w-full py-4 px-6 md:px-12 flex items-center justify-between backdrop-blur-md bg-csdark/90 sticky top-0 z-50 border-b border-gray-800">
@@ -47,16 +55,36 @@ export const Navbar = () => {
       </div>
       
       <div className="hidden md:flex items-center gap-4">
-        <Link to="/signup">
-          <Button variant="outline" className="border-csgreen text-white hover:bg-csgreen hover:text-black">
-            Sign Up
-          </Button>
-        </Link>
-        <Link to="/login">
-          <Button className="bg-gradient-to-r from-csgreen to-blue-400 text-black hover:opacity-90">
-            Login
-          </Button>
-        </Link>
+        {user ? (
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 text-white">
+              <User size={18} />
+              <span className="text-sm">{user.email}</span>
+            </div>
+            <Button 
+              onClick={handleSignOut}
+              variant="outline" 
+              size="sm"
+              className="border-gray-600 text-white hover:bg-gray-800"
+            >
+              <LogOut size={16} />
+              Sign Out
+            </Button>
+          </div>
+        ) : (
+          <>
+            <Link to="/signup">
+              <Button variant="outline" className="border-csgreen text-white hover:bg-csgreen hover:text-black">
+                Sign Up
+              </Button>
+            </Link>
+            <Link to="/login">
+              <Button className="bg-gradient-to-r from-csgreen to-blue-400 text-black hover:opacity-90">
+                Login
+              </Button>
+            </Link>
+          </>
+        )}
       </div>
       
       <button 
@@ -86,16 +114,35 @@ export const Navbar = () => {
           ))}
           
           <div className="flex flex-col gap-3 mt-2 pt-4 border-t border-gray-800">
-            <Link to="/signup">
-              <Button variant="outline" className="w-full border-csgreen text-white hover:bg-csgreen hover:text-black">
-                Sign Up
-              </Button>
-            </Link>
-            <Link to="/login">
-              <Button className="w-full bg-gradient-to-r from-csgreen to-blue-400 text-black hover:opacity-90">
-                Login
-              </Button>
-            </Link>
+            {user ? (
+              <div className="space-y-3">
+                <div className="flex items-center gap-2 text-white">
+                  <User size={18} />
+                  <span className="text-sm">{user.email}</span>
+                </div>
+                <Button 
+                  onClick={handleSignOut}
+                  variant="outline" 
+                  className="w-full border-gray-600 text-white hover:bg-gray-800"
+                >
+                  <LogOut size={16} />
+                  Sign Out
+                </Button>
+              </div>
+            ) : (
+              <>
+                <Link to="/signup">
+                  <Button variant="outline" className="w-full border-csgreen text-white hover:bg-csgreen hover:text-black">
+                    Sign Up
+                  </Button>
+                </Link>
+                <Link to="/login">
+                  <Button className="w-full bg-gradient-to-r from-csgreen to-blue-400 text-black hover:opacity-90">
+                    Login
+                  </Button>
+                </Link>
+              </>
+            )}
           </div>
         </div>
       )}

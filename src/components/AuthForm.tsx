@@ -3,9 +3,11 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 import { toast } from 'sonner';
+import { useAuth } from '@/contexts/AuthContext';
+import { RoleSelection } from './RoleSelection';
 
 interface AuthFormProps {
   type: 'login' | 'signup';
@@ -14,9 +16,21 @@ interface AuthFormProps {
 export const AuthForm = ({ type }: AuthFormProps) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [fullName, setFullName] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [showRoleSelection, setShowRoleSelection] = useState(false);
+  const [loading, setLoading] = useState(false);
   
-  const handleSubmit = (e: React.FormEvent) => {
+  const { signUp, signIn, user } = useAuth();
+  const navigate = useNavigate();
+
+  // Redirect if already logged in
+  if (user && !showRoleSelection) {
+    navigate('/');
+    return null;
+  }
+  
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     // Simple validation
@@ -24,14 +38,53 @@ export const AuthForm = ({ type }: AuthFormProps) => {
       toast.error('Please fill in all fields');
       return;
     }
+
+    if (type === 'signup' && !fullName) {
+      toast.error('Please enter your full name');
+      return;
+    }
     
-    // Mock auth - would connect to backend in real implementation
-    toast.success(`${type === 'login' ? 'Logged in' : 'Signed up'} successfully!`);
+    setLoading(true);
     
-    // Reset form
-    setEmail('');
-    setPassword('');
+    if (type === 'signup') {
+      const { error } = await signUp(email, password, fullName);
+      
+      if (error) {
+        if (error.message.includes('already registered')) {
+          toast.error('This email is already registered. Please try logging in instead.');
+        } else {
+          toast.error('Signup failed: ' + error.message);
+        }
+      } else {
+        toast.success('Please check your email to verify your account');
+        // Show role selection after successful signup
+        setShowRoleSelection(true);
+      }
+    } else {
+      const { error } = await signIn(email, password);
+      
+      if (error) {
+        if (error.message.includes('Invalid login credentials')) {
+          toast.error('Invalid email or password. Please try again.');
+        } else {
+          toast.error('Login failed: ' + error.message);
+        }
+      } else {
+        toast.success('Logged in successfully!');
+        navigate('/');
+      }
+    }
+    
+    setLoading(false);
   };
+
+  if (showRoleSelection) {
+    return (
+      <div className="w-full max-w-md mx-auto glass px-8 py-10 rounded-xl">
+        <RoleSelection onComplete={() => setShowRoleSelection(false)} />
+      </div>
+    );
+  }
   
   return (
     <div className="w-full max-w-md mx-auto glass px-8 py-10 rounded-xl">
@@ -50,6 +103,20 @@ export const AuthForm = ({ type }: AuthFormProps) => {
       </p>
       
       <form onSubmit={handleSubmit} className="space-y-4">
+        {type === 'signup' && (
+          <div className="space-y-2">
+            <Label htmlFor="fullName">Full Name</Label>
+            <Input
+              id="fullName"
+              type="text"
+              placeholder="Your full name"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              className="bg-gray-900/50 border-gray-800"
+            />
+          </div>
+        )}
+        
         <div className="space-y-2">
           <Label htmlFor="email">Email</Label>
           <Input
@@ -91,8 +158,12 @@ export const AuthForm = ({ type }: AuthFormProps) => {
           )}
         </div>
         
-        <Button type="submit" className="w-full bg-white text-black hover:bg-gray-200">
-          {type === 'login' ? 'Sign In' : 'Sign Up'}
+        <Button 
+          type="submit" 
+          disabled={loading}
+          className="w-full bg-white text-black hover:bg-gray-200"
+        >
+          {loading ? 'Please wait...' : (type === 'login' ? 'Sign In' : 'Sign Up')}
         </Button>
         
         <div className="relative flex items-center justify-center gap-4 my-4">
