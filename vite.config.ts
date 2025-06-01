@@ -31,7 +31,10 @@ export default defineConfig(({ mode }) => ({
               
               req.on('end', async () => {
                 try {
-                  req.body = JSON.parse(body);
+                  // Parse the body and add it to the request object
+                  const parsedBody = JSON.parse(body);
+                  // Extend the request object with the parsed body
+                  (req as any).body = parsedBody;
                   await handleGenerateCourse(req as any, res as any);
                 } catch (error) {
                   console.error('Error handling proxy request:', error);
