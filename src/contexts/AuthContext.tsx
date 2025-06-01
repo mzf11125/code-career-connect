@@ -25,6 +25,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
+        console.log('Auth state changed:', event, session?.user?.id);
         setSession(session);
         setUser(session?.user ?? null);
         setLoading(false);
@@ -33,6 +34,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
+      console.log('Initial session:', session?.user?.id);
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
@@ -72,25 +74,48 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const updateUserRoles = async (roles: string[]) => {
-    if (!user) return { error: 'No user logged in' };
+    if (!user) {
+      console.log('No user logged in');
+      return { error: 'No user logged in' };
+    }
 
-    // First, delete existing roles
-    await supabase
-      .from('user_roles')
-      .delete()
-      .eq('user_id', user.id);
+    console.log('Updating roles for user:', user.id, 'roles:', roles);
 
-    // Then insert new roles
-    const roleInserts = roles.map(role => ({
-      user_id: user.id,
-      role
-    }));
+    try {
+      // First, delete existing roles for this user
+      const { error: deleteError } = await supabase
+        .from('user_roles')
+        .delete()
+        .eq('user_id', user.id);
 
-    const { error } = await supabase
-      .from('user_roles')
-      .insert(roleInserts);
+      if (deleteError) {
+        console.error('Error deleting existing roles:', deleteError);
+        return { error: deleteError.message };
+      }
 
-    return { error };
+      // Then insert new roles
+      const roleInserts = roles.map(role => ({
+        user_id: user.id,
+        role
+      }));
+
+      console.log('Inserting roles:', roleInserts);
+
+      const { error: insertError } = await supabase
+        .from('user_roles')
+        .insert(roleInserts);
+
+      if (insertError) {
+        console.error('Error inserting roles:', insertError);
+        return { error: insertError.message };
+      }
+
+      console.log('Roles updated successfully');
+      return { error: null };
+    } catch (error) {
+      console.error('Unexpected error updating roles:', error);
+      return { error: 'Unexpected error occurred' };
+    }
   };
 
   const getUserRoles = async (): Promise<string[]> => {
@@ -101,7 +126,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       .select('role')
       .eq('user_id', user.id);
 
-    if (error) return [];
+    if (error) {
+      console.error('Error fetching user roles:', error);
+      return [];
+    }
     return data.map(item => item.role);
   };
 
