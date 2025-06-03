@@ -52,6 +52,9 @@ enable_confirmations = false
 [functions.generate-course]
 verify_jwt = false
 
+[functions.enhance-resume]
+verify_jwt = false
+
 [edge-runtime]
 enabled = true
 port = 54330

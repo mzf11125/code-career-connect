@@ -36,6 +36,165 @@ export type Database = {
         }
         Relationships: []
       }
+      resume_enhancements: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          enhanced_content: Json | null
+          enhancement_type: string
+          id: string
+          original_content: Json
+          resume_id: string
+          status: string | null
+          user_id: string
+          user_prompt: string | null
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          enhanced_content?: Json | null
+          enhancement_type: string
+          id?: string
+          original_content: Json
+          resume_id: string
+          status?: string | null
+          user_id: string
+          user_prompt?: string | null
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          enhanced_content?: Json | null
+          enhancement_type?: string
+          id?: string
+          original_content?: Json
+          resume_id?: string
+          status?: string | null
+          user_id?: string
+          user_prompt?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "resume_enhancements_resume_id_fkey"
+            columns: ["resume_id"]
+            isOneToOne: false
+            referencedRelation: "user_resumes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      resume_templates: {
+        Row: {
+          category: string
+          created_at: string
+          description: string | null
+          id: string
+          is_ats_friendly: boolean | null
+          name: string
+          template_data: Json
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_ats_friendly?: boolean | null
+          name: string
+          template_data: Json
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_ats_friendly?: boolean | null
+          name?: string
+          template_data?: Json
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      resume_versions: {
+        Row: {
+          changes_summary: string | null
+          content: Json
+          created_at: string
+          created_by_ai: boolean | null
+          id: string
+          resume_id: string
+          version_number: number
+        }
+        Insert: {
+          changes_summary?: string | null
+          content: Json
+          created_at?: string
+          created_by_ai?: boolean | null
+          id?: string
+          resume_id: string
+          version_number: number
+        }
+        Update: {
+          changes_summary?: string | null
+          content?: Json
+          created_at?: string
+          created_by_ai?: boolean | null
+          id?: string
+          resume_id?: string
+          version_number?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "resume_versions_resume_id_fkey"
+            columns: ["resume_id"]
+            isOneToOne: false
+            referencedRelation: "user_resumes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_resumes: {
+        Row: {
+          content: Json
+          created_at: string
+          id: string
+          is_primary: boolean | null
+          template_id: string | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          content: Json
+          created_at?: string
+          id?: string
+          is_primary?: boolean | null
+          template_id?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          content?: Json
+          created_at?: string
+          id?: string
+          is_primary?: boolean | null
+          template_id?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_resumes_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "resume_templates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string | null

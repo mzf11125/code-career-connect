@@ -4,8 +4,8 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { ResumeOptionCard } from "@/components/ResumeOptionCard";
 import { Button } from "@/components/ui/button";
-import { FileUp, FilePlus, ArrowLeft, ArrowRight, FileText, Mail, ArrowDown } from "lucide-react";
-import { ResumeBuilder } from "@/components/ResumeBuilder";
+import { FileUp, FilePlus, ArrowLeft, FileText, Mail, ArrowDown, Sparkles } from "lucide-react";
+import { EnhancedResumeBuilder } from "@/components/EnhancedResumeBuilder";
 import { ResumeUploader } from "@/components/ResumeUploader";
 import { ResumeTailor } from "@/components/ResumeTailor";
 import { useToast } from "@/hooks/use-toast";
@@ -84,23 +84,24 @@ const Resume = () => {
             <>
               <div className="text-center mb-16">
                 <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                  Let's perfect your resume
+                  AI-Powered Resume Builder
                 </h1>
-                <p className="text-gray-400">
-                  AI-Powered resume maker and enhancer
+                <p className="text-gray-400 flex items-center justify-center gap-2">
+                  <Sparkles className="h-5 w-5 text-csgreen" />
+                  Create ATS-friendly resumes optimized for FAANG/MAANG companies
                 </p>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <ResumeOptionCard 
                   title="I already have one"
-                  description="We'll help you enhance your resume"
+                  description="Upload and enhance your existing resume with AI"
                   icon={<FileUp />}
                   onClick={() => handleOptionSelect('upload')}
                 />
                 <ResumeOptionCard 
                   title="I want to start one"
-                  description="We'll guide you to create your resume"
+                  description="Build from scratch with AI-powered templates and enhancement"
                   icon={<FilePlus />}
                   onClick={() => handleOptionSelect('create')}
                 />
@@ -120,12 +121,12 @@ const Resume = () => {
                   <ArrowLeft className="h-5 w-5" />
                 </Button>
                 <h2 className="text-2xl font-bold">
-                  {resumeType === 'create' ? 'Create Your Resume' : 'Upload Your Resume'}
+                  {resumeType === 'create' ? 'AI Resume Builder' : 'Upload & Enhance Resume'}
                 </h2>
               </div>
               
               {resumeType === 'create' && (
-                <ResumeBuilder 
+                <EnhancedResumeBuilder 
                   onSave={handleResumeCreated} 
                   onCancel={handlePrevious} 
                 />
