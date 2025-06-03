@@ -6,12 +6,15 @@ import { BookOpen, Award } from "lucide-react";
 import { marked } from "marked";
 import { InteractiveCourseViewer } from "./InteractiveCourseViewer";
 import { generateCourse } from "@/services/courseGeneratorService";
+import { CourseData } from "@/services/courseService";
 import { toast } from "sonner";
 
 export function CourseGenerator() {
   const [topic, setTopic] = useState("");
   const [loading, setLoading] = useState(false);
   const [courseMarkdown, setCourseMarkdown] = useState("");
+  const [courseData, setCourseData] = useState<CourseData | null>(null);
+  const [courseId, setCourseId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [interactiveView, setInteractiveView] = useState(false);
 
@@ -19,6 +22,8 @@ export function CourseGenerator() {
     e.preventDefault();
     setError(null);
     setCourseMarkdown("");
+    setCourseData(null);
+    setCourseId(null);
     setInteractiveView(false);
     
     if (!topic.trim()) {
@@ -35,7 +40,13 @@ export function CourseGenerator() {
         setError(response.error || "Failed to generate course");
       } else {
         setCourseMarkdown(response.courseMarkdown);
+        setCourseData(response.courseData);
+        setCourseId(response.courseId);
         setInteractiveView(true); // Automatically switch to interactive view
+        
+        if (response.courseData) {
+          toast.success("Course generated and saved successfully!");
+        }
       }
     } catch (err: any) {
       setError("Error: " + err.message || "Unknown error");
@@ -99,7 +110,11 @@ export function CourseGenerator() {
           </div>
           
           {interactiveView ? (
-            <InteractiveCourseViewer markdown={courseMarkdown} />
+            <InteractiveCourseViewer 
+              courseData={courseData} 
+              courseId={courseId}
+              markdown={courseMarkdown} 
+            />
           ) : (
             <div className="bg-cssecondary rounded-lg p-6 overflow-x-auto">
               <div className="prose prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: marked.parse(courseMarkdown) }} />
