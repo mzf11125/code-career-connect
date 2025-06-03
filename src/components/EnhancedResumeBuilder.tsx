@@ -52,6 +52,19 @@ export const EnhancedResumeBuilder = ({ onSave, onCancel, initialData }: Enhance
     }
   });
 
+  // Helper function to convert form data to ResumeContent
+  const convertToResumeContent = (formData: ResumeFormValues): ResumeContent => {
+    return {
+      fullName: formData.fullName,
+      email: formData.email,
+      phone: formData.phone,
+      summary: formData.summary,
+      skills: formData.skills,
+      experience: formData.experience,
+      education: formData.education,
+    };
+  };
+
   const handleNext = () => {
     if (currentStep < 4) {
       setCurrentStep(currentStep + 1);
@@ -70,7 +83,7 @@ export const EnhancedResumeBuilder = ({ onSave, onCancel, initialData }: Enhance
     try {
       const { data, error } = await saveResume({
         title: resumeTitle,
-        content: formData,
+        content: convertToResumeContent(formData),
         templateId: selectedTemplate?.id,
       });
 
@@ -346,7 +359,7 @@ export const EnhancedResumeBuilder = ({ onSave, onCancel, initialData }: Enhance
       {currentStep === 4 && savedResumeId && (
         <div className="space-y-6">
           <ResumeEnhancer
-            resumeContent={form.getValues()}
+            resumeContent={convertToResumeContent(form.getValues())}
             resumeId={savedResumeId}
             onEnhancementComplete={handleEnhancementComplete}
           />
