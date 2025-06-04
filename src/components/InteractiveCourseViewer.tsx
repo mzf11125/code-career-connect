@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Check, Play, BookOpen, CircleCheck, CirclePlay, MousePointerClick, BookText, ExternalLink } from "lucide-react";
+import { Check, Play, BookOpen, CircleCheck, CirclePlay, MousePointerClick, BookText, ExternalLink, Video, FileText, Brain } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -15,6 +15,32 @@ interface InteractiveCourseViewerProps {
   courseId: string | null;
   markdown: string;
 }
+
+const getResourceIcon = (type: string) => {
+  switch (type) {
+    case 'video':
+      return <Video size={20} className="text-red-500" />;
+    case 'quiz':
+      return <Brain size={20} className="text-purple-500" />;
+    case 'documentation':
+      return <FileText size={20} className="text-blue-500" />;
+    default:
+      return <ExternalLink size={20} className="text-csgreen" />;
+  }
+};
+
+const getResourceBadgeColor = (type: string) => {
+  switch (type) {
+    case 'video':
+      return 'bg-red-500/20 text-red-300';
+    case 'quiz':
+      return 'bg-purple-500/20 text-purple-300';
+    case 'documentation':
+      return 'bg-blue-500/20 text-blue-300';
+    default:
+      return 'bg-gray-500/20 text-gray-300';
+  }
+};
 
 export function InteractiveCourseViewer({ courseData, courseId, markdown }: InteractiveCourseViewerProps) {
   const [activeModule, setActiveModule] = useState(0);
@@ -178,6 +204,15 @@ export function InteractiveCourseViewer({ courseData, courseId, markdown }: Inte
                         <CirclePlay className="mr-2 text-csgreen" size={16} />
                         <span>Estimated time: {module.estimatedTime}</span>
                       </div>
+                      {module.resources.length > 0 && (
+                        <div className="flex flex-wrap gap-1 mt-2">
+                          {module.resources.map((resource, idx) => (
+                            <Badge key={idx} className={`text-xs ${getResourceBadgeColor(resource.type)}`}>
+                              {resource.type}
+                            </Badge>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </CardContent>
                   <CardFooter className="pt-0 px-4 pb-4 flex gap-2">
@@ -219,10 +254,15 @@ export function InteractiveCourseViewer({ courseData, courseId, markdown }: Inte
                   {courseData.modules[activeModule].resources.map((resource, index) => (
                     <div key={index} className="flex items-center justify-between p-4 border border-gray-700 rounded-lg">
                       <div className="flex items-center space-x-3">
-                        <ExternalLink size={20} className="text-csgreen" />
+                        {getResourceIcon(resource.type)}
                         <div>
                           <h4 className="font-medium">{resource.title}</h4>
-                          <p className="text-sm text-gray-400 capitalize">{resource.type}</p>
+                          <p className="text-sm text-gray-400 capitalize flex items-center">
+                            <Badge className={`text-xs mr-2 ${getResourceBadgeColor(resource.type)}`}>
+                              {resource.type}
+                            </Badge>
+                            Learning Resource
+                          </p>
                         </div>
                       </div>
                       <Button 
@@ -231,8 +271,8 @@ export function InteractiveCourseViewer({ courseData, courseId, markdown }: Inte
                         className="border-csgreen text-csgreen hover:bg-csgreen hover:text-black"
                         onClick={() => window.open(resource.url, '_blank')}
                       >
-                        <ExternalLink size={16} className="mr-1" />
-                        Open
+                        {getResourceIcon(resource.type)}
+                        <span className="ml-1">Open</span>
                       </Button>
                     </div>
                   ))}

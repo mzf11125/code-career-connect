@@ -47,9 +47,10 @@ Please format your response EXACTLY like this structure:
 - Objective 3
 
 ### Resources
-- [Resource Title 1](https://example.com/resource1)
-- [Resource Title 2](https://example.com/resource2)
-- [Video Tutorial](https://youtube.com/example)
+- [Video Tutorial: Intro to ${topic}](https://youtube.com/watch?v=example1)
+- [Official Documentation](https://docs.example.com/getting-started)
+- [Interactive Quiz: Basics](https://quiz.example.com/basics)
+- [Practice Exercises](https://codepen.io/example)
 
 ## Module 2: [Module Title]
 [Module description paragraph]
@@ -59,22 +60,27 @@ Please format your response EXACTLY like this structure:
 - Objective 2
 
 ### Resources
-- [Resource Title](https://example.com/resource)
-- [Practice Site](https://example.com/practice)
+- [Advanced Video Tutorial](https://youtube.com/watch?v=example2)
+- [Reference Documentation](https://docs.example.com/advanced)
+- [Knowledge Check Quiz](https://quiz.example.com/advanced)
 
 [Continue with 4-6 modules total]
 
-Make sure to:
-1. Include 4-6 modules
-2. Each module should have 2-4 learning objectives
-3. Each module should have 2-4 FREE online resources with real, working URLs
-4. Focus on practical, hands-on learning
-5. Include a mix of tutorials, documentation, and practice resources
+IMPORTANT REQUIREMENTS:
+1. Include 4-6 modules total
+2. Each module MUST have 3-4 resources including:
+   - At least 1 video tutorial (YouTube or educational platform)
+   - At least 1 documentation/guide link
+   - At least 1 quiz or interactive exercise
+3. Use REAL, working URLs when possible (YouTube, official docs, etc.)
+4. Each module should have 2-4 learning objectives
+5. Focus on practical, hands-on learning
 6. Make it beginner-friendly but comprehensive
+7. Ensure proper markdown formatting with [Title](URL) format for all links
 
 Topic: ${topic}`;
 
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${geminiApiKey}`, {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -89,7 +95,7 @@ Topic: ${topic}`;
           temperature: 0.7,
           topK: 40,
           topP: 0.95,
-          maxOutputTokens: 2048,
+          maxOutputTokens: 3000,
         }
       }),
     });

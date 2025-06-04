@@ -1,4 +1,3 @@
-
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { saveCourse, CourseData, CourseModule } from "./courseService";
@@ -49,7 +48,7 @@ const parseMarkdownToCourseData = (markdown: string): CourseData | null => {
       
       // Check for goals section
       if ((line.toLowerCase().includes('goal') || line.toLowerCase().includes('objective')) && 
-          (line.startsWith('#') || line.startsWith('**'))) {
+          line.startsWith('#')) {
         currentSection = 'goals';
         inLearningObjectives = false;
         inResources = false;
@@ -75,7 +74,7 @@ const parseMarkdownToCourseData = (markdown: string): CourseData | null => {
             description: currentModule.description || '',
             learningObjectives: currentModule.learningObjectives || [],
             resources: currentModule.resources || [],
-            estimatedTime: currentModule.estimatedTime || '20-30 minutes'
+            estimatedTime: currentModule.estimatedTime || '30 minutes'
           });
           currentModuleIndex++;
         }
@@ -86,7 +85,7 @@ const parseMarkdownToCourseData = (markdown: string): CourseData | null => {
           description: '',
           learningObjectives: [],
           resources: [],
-          estimatedTime: '20-30 minutes'
+          estimatedTime: '30 minutes'
         };
         currentSection = 'module';
         inLearningObjectives = false;
@@ -123,36 +122,73 @@ const parseMarkdownToCourseData = (markdown: string): CourseData | null => {
         if (line.startsWith('- ') || line.startsWith('* ') || line.match(/^\d+\./)) {
           const content = line.replace(/^[-*\d.]\s*/, '').trim();
           
-          // Check if it's a resource (contains URL or looks like a link)
-          if (content.includes('http') || content.includes('www.') || inResources) {
+          if (inResources || content.includes('http') || content.includes('www.') || 
+              content.toLowerCase().includes('video') || content.toLowerCase().includes('tutorial') ||
+              content.toLowerCase().includes('documentation') || content.toLowerCase().includes('quiz')) {
+            
+            currentModule.resources = currentModule.resources || [];
+            
+            // Parse markdown link format [Title](URL)
             const urlMatch = content.match(/\[(.*?)\]\((.*?)\)/);
             if (urlMatch) {
-              currentModule.resources = currentModule.resources || [];
+              const resourceTitle = urlMatch[1];
+              const resourceUrl = urlMatch[2];
+              let resourceType = 'article';
+              
+              // Determine resource type based on title and URL
+              if (resourceTitle.toLowerCase().includes('video') || resourceTitle.toLowerCase().includes('youtube') || 
+                  resourceUrl.includes('youtube.com') || resourceUrl.includes('youtu.be')) {
+                resourceType = 'video';
+              } else if (resourceTitle.toLowerCase().includes('quiz') || resourceTitle.toLowerCase().includes('test') ||
+                        resourceTitle.toLowerCase().includes('exercise')) {
+                resourceType = 'quiz';
+              } else if (resourceTitle.toLowerCase().includes('documentation') || resourceTitle.toLowerCase().includes('docs') ||
+                        resourceTitle.toLowerCase().includes('guide')) {
+                resourceType = 'documentation';
+              }
+              
               currentModule.resources.push({
-                title: urlMatch[1],
-                url: urlMatch[2],
-                type: 'article'
+                title: resourceTitle,
+                url: resourceUrl,
+                type: resourceType
               });
             } else {
-              // Simple format like "Title - URL" or just URL
+              // Handle simple format like "Title - URL" or just plain text
               const parts = content.split(/[-–—]|:\s*/).map(p => p.trim());
+              let resourceTitle = content;
+              let resourceUrl = '#';
+              let resourceType = 'article';
+              
               if (parts.length >= 2) {
-                currentModule.resources = currentModule.resources || [];
-                currentModule.resources.push({
-                  title: parts[0],
-                  url: parts[1].includes('http') ? parts[1] : `https://${parts[1]}`,
-                  type: 'article'
-                });
+                resourceTitle = parts[0];
+                resourceUrl = parts[1].includes('http') ? parts[1] : `https://${parts[1]}`;
               } else if (content.includes('http')) {
-                currentModule.resources = currentModule.resources || [];
-                currentModule.resources.push({
-                  title: 'Resource',
-                  url: content,
-                  type: 'article'
-                });
+                const urlPart = content.match(/(https?:\/\/[^\s]+)/);
+                if (urlPart) {
+                  resourceUrl = urlPart[1];
+                  resourceTitle = content.replace(urlPart[1], '').trim() || 'Resource';
+                }
               }
+              
+              // Determine resource type based on content
+              if (resourceTitle.toLowerCase().includes('video') || resourceTitle.toLowerCase().includes('youtube') || 
+                  resourceUrl.includes('youtube.com') || resourceUrl.includes('youtu.be')) {
+                resourceType = 'video';
+              } else if (resourceTitle.toLowerCase().includes('quiz') || resourceTitle.toLowerCase().includes('test') ||
+                        resourceTitle.toLowerCase().includes('exercise')) {
+                resourceType = 'quiz';
+              } else if (resourceTitle.toLowerCase().includes('documentation') || resourceTitle.toLowerCase().includes('docs') ||
+                        resourceTitle.toLowerCase().includes('guide')) {
+                resourceType = 'documentation';
+              }
+              
+              currentModule.resources.push({
+                title: resourceTitle,
+                url: resourceUrl,
+                type: resourceType
+              });
             }
-          } else {
+          } else if (inLearningObjectives || (!inResources && !content.includes('http'))) {
             // It's a learning objective
             currentModule.learningObjectives = currentModule.learningObjectives || [];
             currentModule.learningObjectives.push(content);
@@ -169,7 +205,7 @@ const parseMarkdownToCourseData = (markdown: string): CourseData | null => {
         description: currentModule.description || '',
         learningObjectives: currentModule.learningObjectives || [],
         resources: currentModule.resources || [],
-        estimatedTime: currentModule.estimatedTime || '20-30 minutes'
+        estimatedTime: currentModule.estimatedTime || '30 minutes'
       });
     }
     
@@ -181,11 +217,23 @@ const parseMarkdownToCourseData = (markdown: string): CourseData | null => {
         title: 'Course Content',
         description: 'Generated course content',
         learningObjectives: goals.length > 0 ? goals : ['Complete the course material'],
-        resources: [{
-          title: 'Course Material',
-          url: '#',
-          type: 'article'
-        }],
+        resources: [
+          {
+            title: 'Course Introduction Video',
+            url: 'https://youtube.com/watch?v=example',
+            type: 'video'
+          },
+          {
+            title: 'Official Documentation',
+            url: 'https://docs.example.com',
+            type: 'documentation'
+          },
+          {
+            title: 'Practice Quiz',
+            url: 'https://quiz.example.com',
+            type: 'quiz'
+          }
+        ],
         estimatedTime: '30 minutes'
       });
     }
@@ -195,7 +243,8 @@ const parseMarkdownToCourseData = (markdown: string): CourseData | null => {
       description: description || 'AI-generated course content',
       goals: goals.length > 0 ? goals : ['Learn the fundamentals'],
       modules: modules,
-      modulesCount: modules.length
+      modulesCount: modules.length,
+      totalResources: modules.reduce((total, module) => total + module.resources.length, 0)
     });
     
     return {
@@ -203,7 +252,7 @@ const parseMarkdownToCourseData = (markdown: string): CourseData | null => {
       description: description || 'AI-generated course content',
       goals: goals.length > 0 ? goals : ['Learn the fundamentals'],
       modules,
-      estimatedDuration: `${modules.length * 25} minutes`
+      estimatedDuration: `${modules.length * 30} minutes`
     };
   } catch (error) {
     console.error('Error parsing markdown:', error);
