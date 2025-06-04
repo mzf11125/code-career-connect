@@ -24,20 +24,55 @@ serve(async (req) => {
 
     console.log('Generating course for topic:', topic);
 
-    const fullPrompt = `${prompt}
+    const fullPrompt = `Create a comprehensive course roadmap for: ${topic}
 
-Topic: ${topic}
+Please format your response EXACTLY like this structure:
 
-Please create a comprehensive course roadmap with the following structure:
-- Course title
-- Short description
-- Course goals (3-4 goals)
-- 4-6 milestone modules with:
-  - Module title
-  - Learning objectives
-  - 2-3 free online resources with actual URLs
-  
-Format the response in clean markdown.`;
+# [Course Title]
+
+[Brief course description paragraph]
+
+## Course Goals
+- Goal 1
+- Goal 2
+- Goal 3
+- Goal 4
+
+## Module 1: [Module Title]
+[Module description paragraph]
+
+### Learning Objectives
+- Objective 1
+- Objective 2
+- Objective 3
+
+### Resources
+- [Resource Title 1](https://example.com/resource1)
+- [Resource Title 2](https://example.com/resource2)
+- [Video Tutorial](https://youtube.com/example)
+
+## Module 2: [Module Title]
+[Module description paragraph]
+
+### Learning Objectives
+- Objective 1
+- Objective 2
+
+### Resources
+- [Resource Title](https://example.com/resource)
+- [Practice Site](https://example.com/practice)
+
+[Continue with 4-6 modules total]
+
+Make sure to:
+1. Include 4-6 modules
+2. Each module should have 2-4 learning objectives
+3. Each module should have 2-4 FREE online resources with real, working URLs
+4. Focus on practical, hands-on learning
+5. Include a mix of tutorials, documentation, and practice resources
+6. Make it beginner-friendly but comprehensive
+
+Topic: ${topic}`;
 
     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${geminiApiKey}`, {
       method: 'POST',
