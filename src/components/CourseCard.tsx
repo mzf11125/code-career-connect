@@ -183,7 +183,11 @@ export const CourseCard = ({ title, reviewCount, description, hourlyRate, skills
           </TabsContent>
 
           <TabsContent value="curriculum" className="mt-0">
-            <InteractiveCourseViewer markdown="" />
+            <InteractiveCourseViewer 
+              courseData={null} 
+              courseId={null} 
+              markdown="" 
+            />
           </TabsContent>
 
           <TabsContent value="reviews" className="mt-0">

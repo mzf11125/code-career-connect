@@ -50,7 +50,7 @@ export const saveCourse = async (topic: string, courseData: CourseData): Promise
         title: courseData.title,
         description: courseData.description,
         topic: topic,
-        content: courseData
+        content: courseData as any // Cast to any to handle Json type compatibility
       })
       .select()
       .single();
@@ -60,7 +60,18 @@ export const saveCourse = async (topic: string, courseData: CourseData): Promise
       return { data: null, error: error.message };
     }
 
-    return { data: data as SavedCourse, error: null };
+    // Transform the data to match our SavedCourse interface
+    const savedCourse: SavedCourse = {
+      id: data.id,
+      title: data.title,
+      description: data.description || '',
+      topic: data.topic,
+      content: data.content as CourseData,
+      created_at: data.created_at,
+      updated_at: data.updated_at
+    };
+
+    return { data: savedCourse, error: null };
   } catch (err: any) {
     console.error('Unexpected error saving course:', err);
     return { data: null, error: err.message || "Unknown error occurred" };
@@ -86,7 +97,18 @@ export const getUserCourses = async (): Promise<{ data: SavedCourse[] | null; er
       return { data: null, error: error.message };
     }
 
-    return { data: data as SavedCourse[], error: null };
+    // Transform the data to match our SavedCourse interface
+    const courses: SavedCourse[] = data.map(item => ({
+      id: item.id,
+      title: item.title,
+      description: item.description || '',
+      topic: item.topic,
+      content: item.content as CourseData,
+      created_at: item.created_at,
+      updated_at: item.updated_at
+    }));
+
+    return { data: courses, error: null };
   } catch (err: any) {
     console.error('Unexpected error fetching courses:', err);
     return { data: null, error: err.message || "Unknown error occurred" };
