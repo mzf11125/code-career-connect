@@ -66,7 +66,7 @@ export const saveCourse = async (topic: string, courseData: CourseData): Promise
       title: data.title,
       description: data.description || '',
       topic: data.topic,
-      content: data.content as CourseData,
+      content: data.content as unknown as CourseData,
       created_at: data.created_at,
       updated_at: data.updated_at
     };
@@ -103,7 +103,7 @@ export const getUserCourses = async (): Promise<{ data: SavedCourse[] | null; er
       title: item.title,
       description: item.description || '',
       topic: item.topic,
-      content: item.content as CourseData,
+      content: item.content as unknown as CourseData,
       created_at: item.created_at,
       updated_at: item.updated_at
     }));
