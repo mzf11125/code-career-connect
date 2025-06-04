@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { CourseData, getCourseProgress, updateModuleProgress, CourseProgress } from "@/services/courseService";
 import { toast } from "sonner";
+import { marked } from "marked";
 
 interface InteractiveCourseViewerProps {
   courseData: CourseData | null;
@@ -79,11 +80,23 @@ export function InteractiveCourseViewer({ courseData, courseId, markdown }: Inte
     return (completedModules / courseData.modules.length) * 100;
   };
 
-  // Fallback to mock data if no course data is provided
+  // Fallback to markdown display if no course data is available
   if (!courseData) {
     return (
-      <div className="bg-cssecondary rounded-lg p-6 text-center">
-        <p className="text-gray-400">No course data available. Please generate a course first.</p>
+      <div className="bg-cssecondary rounded-lg p-6">
+        {markdown ? (
+          <div>
+            <div className="mb-4 p-3 bg-yellow-900/20 border border-yellow-700 rounded-lg">
+              <p className="text-yellow-200 text-sm">
+                <BookOpen className="inline mr-2" size={16} />
+                Course generated but not saved to database. Sign in to enable progress tracking and interactive features.
+              </p>
+            </div>
+            <div className="prose prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: marked.parse(markdown) }} />
+          </div>
+        ) : (
+          <p className="text-gray-400 text-center">No course data available. Please generate a course first.</p>
+        )}
       </div>
     );
   }
@@ -175,7 +188,7 @@ export function InteractiveCourseViewer({ courseData, courseId, markdown }: Inte
                     >
                       {isActive ? "Currently Studying" : "Start Module"}
                     </Button>
-                    {!isCompleted && (
+                    {!isCompleted && courseId && (
                       <Button 
                         onClick={() => handleMarkModuleComplete(module.id)}
                         disabled={loading}

@@ -44,8 +44,13 @@ export function CourseGenerator() {
         setCourseId(response.courseId);
         setInteractiveView(true); // Automatically switch to interactive view
         
+        // Show success message regardless of whether saving worked
         if (response.courseData) {
-          toast.success("Course generated and saved successfully!");
+          if (response.courseId) {
+            toast.success("Course generated and saved successfully!");
+          } else {
+            toast.success("Course generated successfully! Note: Could not save to database - you may need to sign in for progress tracking.");
+          }
         }
       }
     } catch (err: any) {
