@@ -39,13 +39,23 @@ export function CourseGenerator() {
       if (!response.success) {
         setError(response.error || "Failed to generate course");
       } else {
-        setCourseMarkdown(response.courseMarkdown);
-        setCourseData(response.courseData);
-        setCourseId(response.courseId);
-        setInteractiveView(true); // Automatically switch to interactive view
+        // Always set the markdown content if we have it
+        if (response.courseMarkdown) {
+          setCourseMarkdown(response.courseMarkdown);
+          setInteractiveView(true); // Automatically switch to interactive view
+        }
         
-        // Show success message regardless of whether saving worked
+        // Set course data and ID if available
         if (response.courseData) {
+          setCourseData(response.courseData);
+        }
+        
+        if (response.courseId) {
+          setCourseId(response.courseId);
+        }
+        
+        // Show success message based on what we have
+        if (response.courseMarkdown) {
           if (response.courseId) {
             toast.success("Course generated and saved successfully!");
           } else {

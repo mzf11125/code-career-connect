@@ -154,24 +154,27 @@ export const generateCourse = async (topic: string): Promise<CourseGenerationRes
     }
     
     console.log('Course generated successfully, parsing content...');
+    console.log('Generated content:', data.courseContent);
     
     // Parse the markdown into structured data
     const courseData = parseMarkdownToCourseData(data.courseContent);
     
-    if (!courseData) {
-      throw new Error("Failed to parse course content");
+    // Always return the markdown content, even if parsing fails
+    let savedCourse = null;
+    let saveError = null;
+    
+    // Try to save the course if we have structured data
+    if (courseData) {
+      const saveResult = await saveCourse(topic, courseData);
+      savedCourse = saveResult.data;
+      saveError = saveResult.error;
+      
+      if (saveError) {
+        console.error('Error saving course:', saveError);
+      } else {
+        console.log('Course saved successfully with ID:', savedCourse?.id);
+      }
     }
-    
-    // Save the course to the database
-    const { data: savedCourse, error: saveError } = await saveCourse(topic, courseData);
-    
-    if (saveError) {
-      console.error('Error saving course:', saveError);
-      // Continue anyway, just show a warning
-      toast.error(`Course generated but not saved: ${saveError}`);
-    }
-    
-    console.log('Course saved successfully with ID:', savedCourse?.id);
     
     return {
       courseMarkdown: data.courseContent,
@@ -181,7 +184,6 @@ export const generateCourse = async (topic: string): Promise<CourseGenerationRes
     };
   } catch (err: any) {
     console.error("Error generating course:", err);
-    toast.error(`Error: ${err.message || "Failed to generate course"}`);
     return {
       courseMarkdown: "",
       courseData: null,
