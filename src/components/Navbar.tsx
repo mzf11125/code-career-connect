@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useLocation } from "react-router-dom";
 import { Menu, X, Users, BookOpen, FileText, Briefcase, LogOut, User } from "lucide-react";
 import { useState } from "react";
-import { useAuth } from "@/contexts/AuthContext";
+import useAuth from "@/hooks/useAuth";
 import { toast } from "sonner";
 
 export const Navbar = () => {
