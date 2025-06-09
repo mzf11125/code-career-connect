@@ -4,10 +4,11 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { ResumeOptionCard } from "@/components/ResumeOptionCard";
 import { Button } from "@/components/ui/button";
-import { FileUp, FilePlus, ArrowLeft, FileText, Mail, ArrowDown, Sparkles } from "lucide-react";
+import { FileUp, FilePlus, ArrowLeft, FileText, Mail, ArrowDown, Sparkles, Download } from "lucide-react";
 import { EnhancedResumeBuilder } from "@/components/EnhancedResumeBuilder";
 import { ResumeUploader } from "@/components/ResumeUploader";
 import { ResumeTailor } from "@/components/ResumeTailor";
+import { downloadResumeAsPDF } from "@/services/resumeDownloadService";
 import { useToast } from "@/hooks/use-toast";
 
 // Types for our resume data
@@ -64,14 +65,60 @@ const Resume = () => {
 
   const handleResumeTailored = (data: TailorData) => {
     setTailorData(data);
-    // In a real application, this would trigger an API call to process the resume
-    // and potentially generate a download or submit to a job application
     toast({
       title: "Application ready!",
       description: "Your tailored resume and cover letter are ready for submission.",
     });
-    // Optionally reset to step 1 or show a success screen
     setStep(4);
+  };
+
+  const handleDownloadResume = async () => {
+    if (resumeData) {
+      try {
+        const result = await downloadResumeAsPDF(resumeData);
+        toast({
+          title: "Download started",
+          description: result.message
+        });
+      } catch (error) {
+        toast({
+          title: "Download failed",
+          description: "There was an error downloading your resume",
+          variant: "destructive"
+        });
+      }
+    }
+  };
+
+  const handleDownloadCoverLetter = () => {
+    // Generate cover letter content
+    const coverLetterContent = `
+Dear Hiring Manager at ${tailorData?.company || '[Company Name]'},
+
+I am writing to express my strong interest in the ${tailorData?.jobTitle || '[Position Title]'} position at your company.
+
+${tailorData?.customCoverLetter || 'I believe my skills and experience make me an ideal candidate for this role.'}
+
+Thank you for considering my application. I look forward to hearing from you.
+
+Best regards,
+${resumeData?.fullName || '[Your Name]'}
+    `.trim();
+
+    const blob = new Blob([coverLetterContent], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${resumeData?.fullName || 'Cover'}_Letter.txt`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    toast({
+      title: "Cover letter downloaded",
+      description: "Your cover letter has been downloaded as a text file."
+    });
   };
   
   return (
@@ -187,8 +234,9 @@ const Resume = () => {
                     variant="outline" 
                     size="sm"
                     className="border-gray-700 hover:bg-gray-700 w-full"
+                    onClick={handleDownloadResume}
                   >
-                    <ArrowDown className="h-4 w-4 mr-2" />
+                    <Download className="h-4 w-4 mr-2" />
                     Download Resume
                   </Button>
                 </div>
@@ -201,8 +249,9 @@ const Resume = () => {
                     variant="outline" 
                     size="sm"
                     className="border-gray-700 hover:bg-gray-700 w-full"
+                    onClick={handleDownloadCoverLetter}
                   >
-                    <ArrowDown className="h-4 w-4 mr-2" />
+                    <Download className="h-4 w-4 mr-2" />
                     Download Cover Letter
                   </Button>
                 </div>

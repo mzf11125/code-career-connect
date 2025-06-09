@@ -4,8 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Wand2, Sparkles, RefreshCw, FileText, Zap } from "lucide-react";
+import { Wand2, Sparkles, RefreshCw, FileText, Zap, Download } from "lucide-react";
 import { enhanceResume, ResumeContent } from "@/services/resumeEnhancementService";
+import { downloadResumeAsPDF } from "@/services/resumeDownloadService";
 import { useToast } from "@/hooks/use-toast";
 
 interface ResumeEnhancerProps {
@@ -18,6 +19,7 @@ export const ResumeEnhancer = ({ resumeContent, resumeId, onEnhancementComplete 
   const [enhancing, setEnhancing] = useState(false);
   const [customPrompt, setCustomPrompt] = useState("");
   const [selectedType, setSelectedType] = useState<string>("");
+  const [currentResumeContent, setCurrentResumeContent] = useState<ResumeContent>(resumeContent);
   const { toast } = useToast();
 
   const enhancementTypes = [
@@ -51,12 +53,13 @@ export const ResumeEnhancer = ({ resumeContent, resumeId, onEnhancementComplete 
     try {
       const result = await enhanceResume({
         enhancementType: type,
-        resumeContent,
+        resumeContent: currentResumeContent,
         userPrompt: type === 'custom' ? customPrompt : undefined,
         resumeId
       });
 
       if (result.success && result.enhancedContent) {
+        setCurrentResumeContent(result.enhancedContent);
         onEnhancementComplete(result.enhancedContent);
         toast({
           title: "Resume enhanced successfully!",
@@ -78,6 +81,22 @@ export const ResumeEnhancer = ({ resumeContent, resumeId, onEnhancementComplete 
     }
   };
 
+  const handleDownload = async () => {
+    try {
+      const result = await downloadResumeAsPDF(currentResumeContent);
+      toast({
+        title: "Download started",
+        description: result.message
+      });
+    } catch (error) {
+      toast({
+        title: "Download failed",
+        description: "There was an error downloading your resume",
+        variant: "destructive"
+      });
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="text-center">
@@ -89,6 +108,28 @@ export const ResumeEnhancer = ({ resumeContent, resumeId, onEnhancementComplete 
           Use AI to make your resume more compelling and ATS-friendly
         </p>
       </div>
+
+      {/* Download Section */}
+      <Card className="bg-cssecondary border-gray-700">
+        <CardHeader>
+          <CardTitle className="text-lg flex items-center gap-2">
+            <Download className="h-5 w-5 text-csgreen" />
+            Download Your Resume
+          </CardTitle>
+          <CardDescription className="text-gray-400">
+            Download your current resume version
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Button
+            onClick={handleDownload}
+            className="w-full bg-csgreen text-black hover:bg-csgreen/90"
+          >
+            <Download className="h-4 w-4 mr-2" />
+            Download Resume
+          </Button>
+        </CardContent>
+      </Card>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {enhancementTypes.map((enhancement) => (
