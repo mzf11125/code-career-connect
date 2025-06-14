@@ -5,7 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Wand2, Sparkles, RefreshCw, FileText, Zap, Download } from "lucide-react";
-import { enhanceResume, ResumeContent } from "@/services/resumeEnhancementService";
+import { enhanceResume, ResumeContent, saveResume } from "@/services/resumeEnhancementService";
 import { downloadResumeAsPDF } from "@/services/resumeDownloadService";
 import { useToast } from "@/hooks/use-toast";
 
@@ -20,6 +20,7 @@ export const ResumeEnhancer = ({ resumeContent, resumeId, onEnhancementComplete 
   const [customPrompt, setCustomPrompt] = useState("");
   const [selectedType, setSelectedType] = useState<string>("");
   const [currentResumeContent, setCurrentResumeContent] = useState<ResumeContent>(resumeContent);
+  const [isOptimizedVersion, setIsOptimizedVersion] = useState(false);
   const { toast } = useToast();
 
   const enhancementTypes = [
@@ -59,11 +60,19 @@ export const ResumeEnhancer = ({ resumeContent, resumeId, onEnhancementComplete 
       });
 
       if (result.success && result.enhancedContent) {
+        // Update the current resume content
         setCurrentResumeContent(result.enhancedContent);
+        setIsOptimizedVersion(true);
+        
+        // Save the optimized resume as a new version in the database
+        await saveOptimizedResume(result.enhancedContent, type);
+        
+        // Notify parent component
         onEnhancementComplete(result.enhancedContent);
+        
         toast({
-          title: "Resume enhanced successfully!",
-          description: `Your resume has been ${type === 'custom' ? 'customized' : type}d using AI.`
+          title: "Resume enhanced and saved!",
+          description: `Your resume has been ${type === 'custom' ? 'customized' : type}d using AI and saved to the database.`
         });
       } else {
         throw new Error(result.error || 'Enhancement failed');
@@ -78,6 +87,29 @@ export const ResumeEnhancer = ({ resumeContent, resumeId, onEnhancementComplete 
     } finally {
       setEnhancing(false);
       setSelectedType("");
+    }
+  };
+
+  const saveOptimizedResume = async (enhancedContent: ResumeContent, enhancementType: string) => {
+    try {
+      // Create a new resume entry for the optimized version
+      const optimizedTitle = `${currentResumeContent.fullName} - ${enhancementType.charAt(0).toUpperCase() + enhancementType.slice(1)}d Resume`;
+      
+      const { data, error } = await saveResume({
+        title: optimizedTitle,
+        content: enhancedContent,
+      });
+
+      if (error) {
+        console.error('Failed to save optimized resume:', error);
+        throw new Error('Failed to save optimized resume to database');
+      }
+
+      console.log('Optimized resume saved successfully:', data);
+      return data;
+    } catch (error) {
+      console.error('Error saving optimized resume:', error);
+      throw error;
     }
   };
 
@@ -107,6 +139,11 @@ export const ResumeEnhancer = ({ resumeContent, resumeId, onEnhancementComplete 
         <p className="text-gray-400">
           Use AI to make your resume more compelling and ATS-friendly
         </p>
+        {isOptimizedVersion && (
+          <Badge className="mt-2 bg-csgreen/20 text-csgreen">
+            Optimized Version - Saved to Database
+          </Badge>
+        )}
       </div>
 
       {/* Download Section */}
@@ -117,7 +154,10 @@ export const ResumeEnhancer = ({ resumeContent, resumeId, onEnhancementComplete 
             Download Your Resume
           </CardTitle>
           <CardDescription className="text-gray-400">
-            Download your current resume version
+            {isOptimizedVersion 
+              ? "Download your optimized resume (saved in database)" 
+              : "Download your current resume version"
+            }
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -126,7 +166,7 @@ export const ResumeEnhancer = ({ resumeContent, resumeId, onEnhancementComplete 
             className="w-full bg-csgreen text-black hover:bg-csgreen/90"
           >
             <Download className="h-4 w-4 mr-2" />
-            Download Resume
+            {isOptimizedVersion ? "Download Optimized Resume" : "Download Resume"}
           </Button>
         </CardContent>
       </Card>

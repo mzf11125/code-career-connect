@@ -91,6 +91,7 @@ export const saveResume = async (resumeData: {
       .single();
 
     if (error) throw error;
+    console.log('Resume saved to database:', data);
     return { data, error: null };
   } catch (error) {
     console.error('Error saving resume:', error);
@@ -98,14 +99,43 @@ export const saveResume = async (resumeData: {
   }
 };
 
+export const updateResumeContent = async (resumeId: string, content: ResumeContent) => {
+  try {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error('User not authenticated');
+
+    const { data, error } = await supabase
+      .from('user_resumes')
+      .update({
+        content: content,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', resumeId)
+      .eq('user_id', user.id)
+      .select()
+      .single();
+
+    if (error) throw error;
+    console.log('Resume content updated in database:', data);
+    return { data, error: null };
+  } catch (error) {
+    console.error('Error updating resume content:', error);
+    return { data: null, error };
+  }
+};
+
 export const getUserResumes = async () => {
   try {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error('User not authenticated');
+
     const { data, error } = await supabase
       .from('user_resumes')
       .select(`
         *,
         template:resume_templates(name, category)
       `)
+      .eq('user_id', user.id)
       .order('created_at', { ascending: false });
 
     if (error) throw error;
@@ -141,6 +171,7 @@ export const createResumeVersion = async (resumeId: string, content: ResumeConte
       .single();
 
     if (error) throw error;
+    console.log('Resume version created:', data);
     return { data, error: null };
   } catch (error) {
     console.error('Error creating resume version:', error);
