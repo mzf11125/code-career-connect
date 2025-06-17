@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -43,6 +44,11 @@
 
   body {
     @apply bg-csdark text-foreground;
+    overflow-x: hidden;
+  }
+  
+  html {
+    overflow-x: hidden;
   }
 }
 
@@ -147,19 +153,23 @@
 .full-screen-section {
   min-height: 100vh;
   width: 100%;
+  max-width: 100vw;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   position: relative;
   scroll-snap-align: start;
+  overflow-x: hidden;
 }
 
 .scroll-container {
   scroll-snap-type: y mandatory;
   overflow-y: auto;
+  overflow-x: hidden;
   height: 100vh;
   scroll-behavior: smooth;
+  max-width: 100vw;
 }
 
 .section-divider {
@@ -228,4 +238,37 @@
     transform: translateY(0);
     opacity: 1;
   }
+}
+
+/* Responsive container fixes */
+.container {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Fix for job cards and buttons overflow */
+.job-card-actions {
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .job-card-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .job-card-actions > * {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Ensure no elements extend beyond viewport */
+* {
+  box-sizing: border-box;
+}
+
+.max-w-screen {
+  max-width: 100vw;
 }

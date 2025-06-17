@@ -42,33 +42,39 @@ const Jobs = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col overflow-x-hidden">
       <Navbar />
-      <main className="flex-grow container mx-auto px-4 py-8">
-        <div className="max-w-5xl mx-auto">
-          <div className="mb-8">
-            <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-csgreen to-blue-400 bg-clip-text text-transparent">
-              Find Your Next Opportunity
-            </h1>
-            <p className="text-gray-400 text-lg">
-              Real-time job listings from LinkedIn, powered by AI
-            </p>
+      <main className="flex-grow w-full max-w-full overflow-x-hidden">
+        <div className="container mx-auto px-4 py-8 max-w-screen">
+          <div className="max-w-5xl mx-auto w-full">
+            <div className="mb-8">
+              <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-csgreen to-blue-400 bg-clip-text text-transparent">
+                Find Your Next Opportunity
+              </h1>
+              <p className="text-gray-400 text-lg">
+                Real-time job listings from LinkedIn, powered by AI
+              </p>
+            </div>
+            
+            <div className="w-full mb-6">
+              <JobSearch 
+                onSearch={(query, loc) => {
+                  setSearchQuery(query);
+                  setLocation(loc);
+                }} 
+              />
+            </div>
+            
+            <div className="w-full">
+              <EnhancedJobList 
+                jobs={jobs} 
+                isLoading={isLoading} 
+                error={error}
+                onSyncJobs={handleSyncJobs}
+                isSyncing={isSyncing}
+              />
+            </div>
           </div>
-          
-          <JobSearch 
-            onSearch={(query, loc) => {
-              setSearchQuery(query);
-              setLocation(loc);
-            }} 
-          />
-          
-          <EnhancedJobList 
-            jobs={jobs} 
-            isLoading={isLoading} 
-            error={error}
-            onSyncJobs={handleSyncJobs}
-            isSyncing={isSyncing}
-          />
         </div>
       </main>
       <Footer />
