@@ -1,6 +1,5 @@
-
 import { useState } from "react";
-import { Star, Calendar, Clock, Video, Smile, BookOpen, Check } from "lucide-react";
+import { Star, Calendar, Clock, Video, Smile, BookOpen, Check, DollarSign } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import {
@@ -19,22 +18,33 @@ import useAuth from "@/hooks/useAuth";
 import { getOptimizedImageUrl, getImageFallback } from "@/utils/imageUtils";
 
 interface MentorCardProps {
+  id: string;
   name: string;
   role: string;
   rating: number;
   reviewCount: number;
   imageUrl: string;
+  expertise?: string[];
+  hourlyRate?: number;
+  bio?: string;
 }
 
-export const MentorCard = ({ name, role, rating, reviewCount, imageUrl }: MentorCardProps) => {
+export const MentorCard = ({ 
+  id, 
+  name, 
+  role, 
+  rating, 
+  reviewCount, 
+  imageUrl, 
+  expertise = [],
+  hourlyRate,
+  bio 
+}: MentorCardProps) => {
   const [chatLoading, setChatLoading] = useState(false);
   const [imageError, setImageError] = useState(false);
   const [showBookingModal, setShowBookingModal] = useState(false);
   const { user } = useAuth();
   const navigate = useNavigate();
-  
-  // Generate a mentor ID based on name (in real app, this would come from props)
-  const mentorId = `mentor-${name.toLowerCase().replace(/\s+/g, '-')}`;
 
   const handleStartChat = async () => {
     if (!user) {
@@ -48,7 +58,7 @@ export const MentorCard = ({ name, role, rating, reviewCount, imageUrl }: Mentor
     try {
       // Create mentor request
       const { data: requestData, error: requestError } = await createMentorRequest(
-        mentorId, 
+        id, 
         `I would like to connect with ${name}`
       );
 
@@ -58,7 +68,7 @@ export const MentorCard = ({ name, role, rating, reviewCount, imageUrl }: Mentor
 
       // Create chat session
       const { data: chatData, error: chatError } = await createChatSession(
-        mentorId,
+        id,
         user.id,
         `Chat with ${name}`
       );
@@ -115,6 +125,14 @@ export const MentorCard = ({ name, role, rating, reviewCount, imageUrl }: Mentor
                   <span className="text-white font-bold">{rating.toFixed(1)}</span>
                 </div>
               </div>
+              {hourlyRate && (
+                <div className="absolute bottom-4 right-4 z-20">
+                  <div className="flex items-center gap-1 bg-black/50 backdrop-blur-sm rounded-lg px-3 py-1">
+                    <DollarSign className="text-csgreen" size={14} />
+                    <span className="text-white text-sm font-medium">{hourlyRate}/hr</span>
+                  </div>
+                </div>
+              )}
             </div>
             <div className="p-6">
               <h3 className="font-bold text-xl mb-2 text-white group-hover:text-csgreen transition-colors">
@@ -184,15 +202,26 @@ export const MentorCard = ({ name, role, rating, reviewCount, imageUrl }: Mentor
                       <span className="font-bold text-xl">{rating.toFixed(1)}</span>
                       <span className="text-gray-400">({reviewCount} reviews)</span>
                     </div>
+
+                    {hourlyRate && (
+                      <div className="flex items-center gap-3 mb-3">
+                        <DollarSign className="text-csgreen" size={20} />
+                        <span className="font-bold text-xl text-csgreen">${hourlyRate}/hr</span>
+                      </div>
+                    )}
                     
                     <div>
                       <h3 className="font-bold text-lg mb-3 text-csgreen">Expertise</h3>
                       <div className="flex flex-wrap gap-2">
-                        {["React", "TypeScript", role.split(" ")[0]].map((skill) => (
+                        {expertise.length > 0 ? expertise.map((skill) => (
                           <Badge key={skill} className="bg-gray-800/80 text-gray-200 hover:bg-csgreen hover:text-black transition-colors">
                             {skill}
                           </Badge>
-                        ))}
+                        )) : (
+                          <Badge className="bg-gray-800/80 text-gray-200">
+                            {role.split(" ")[0]}
+                          </Badge>
+                        )}
                       </div>
                     </div>
                     
@@ -220,9 +249,9 @@ export const MentorCard = ({ name, role, rating, reviewCount, imageUrl }: Mentor
                     About {name.split(" ")[0]}
                   </h2>
                   <p className="text-gray-300 mb-6 leading-relaxed text-lg">
-                    {name.split(" ")[0]} is a {role} with over {Math.floor(Math.random() * 10) + 3} years of industry experience. 
+                    {bio || `${name.split(" ")[0]} is a ${role} with extensive industry experience. 
                     They specialize in building scalable applications and mentoring junior developers. 
-                    {name.split(" ")[0]} has worked with startups and enterprise companies, bringing a wealth of knowledge to their mentoring sessions.
+                    ${name.split(" ")[0]} has worked with startups and enterprise companies, bringing a wealth of knowledge to their mentoring sessions.`}
                   </p>
                   
                   <h3 className="font-bold text-xl mt-8 mb-4 flex items-center gap-3">
@@ -332,7 +361,7 @@ export const MentorCard = ({ name, role, rating, reviewCount, imageUrl }: Mentor
       <SessionBookingModal
         isOpen={showBookingModal}
         onClose={() => setShowBookingModal(false)}
-        mentorId={mentorId}
+        mentorId={id}
         mentorName={name}
       />
     </>
