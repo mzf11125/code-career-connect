@@ -157,6 +157,63 @@ export type Database = {
         }
         Relationships: []
       }
+      jobs: {
+        Row: {
+          company: string
+          created_at: string
+          description: string | null
+          external_id: string | null
+          id: string
+          is_active: boolean | null
+          job_type: string | null
+          location: string
+          posted_date: string | null
+          requirements: string | null
+          responsibilities: string | null
+          salary_range: string | null
+          skills: string[] | null
+          title: string
+          updated_at: string
+          url: string | null
+        }
+        Insert: {
+          company: string
+          created_at?: string
+          description?: string | null
+          external_id?: string | null
+          id?: string
+          is_active?: boolean | null
+          job_type?: string | null
+          location: string
+          posted_date?: string | null
+          requirements?: string | null
+          responsibilities?: string | null
+          salary_range?: string | null
+          skills?: string[] | null
+          title: string
+          updated_at?: string
+          url?: string | null
+        }
+        Update: {
+          company?: string
+          created_at?: string
+          description?: string | null
+          external_id?: string | null
+          id?: string
+          is_active?: boolean | null
+          job_type?: string | null
+          location?: string
+          posted_date?: string | null
+          requirements?: string | null
+          responsibilities?: string | null
+          salary_range?: string | null
+          skills?: string[] | null
+          title?: string
+          updated_at?: string
+          url?: string | null
+        }
+        Relationships: []
+      }
       mentor_requests: {
         Row: {
           created_at: string
@@ -532,6 +589,23 @@ export type Database = {
       has_role: {
         Args: { _user_id: string; _role: string }
         Returns: boolean
+      }
+      upsert_job: {
+        Args: {
+          p_external_id: string
+          p_title: string
+          p_company: string
+          p_location: string
+          p_job_type: string
+          p_description: string
+          p_posted_date: string
+          p_url: string
+          p_skills: string[]
+          p_responsibilities: string
+          p_requirements: string
+          p_salary_range: string
+        }
+        Returns: string
       }
     }
     Enums: {
