@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Star, Calendar, Clock, Video, Smile, BookOpen, Check } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -15,6 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { createMentorRequest, createChatSession } from "@/services/mentorshipService";
 import useAuth from "@/hooks/useAuth";
+import { getOptimizedImageUrl, getImageFallback } from "@/utils/imageUtils";
 
 interface MentorCardProps {
   name: string;
@@ -26,6 +26,7 @@ interface MentorCardProps {
 
 export const MentorCard = ({ name, role, rating, reviewCount, imageUrl }: MentorCardProps) => {
   const [bookingLoading, setBookingLoading] = useState(false);
+  const [imageError, setImageError] = useState(false);
   const { user } = useAuth();
   const navigate = useNavigate();
   
@@ -76,6 +77,9 @@ export const MentorCard = ({ name, role, rating, reviewCount, imageUrl }: Mentor
     }
   };
 
+  const optimizedImageUrl = getOptimizedImageUrl(imageUrl);
+  const fallbackImageUrl = getImageFallback('mentor');
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -83,9 +87,11 @@ export const MentorCard = ({ name, role, rating, reviewCount, imageUrl }: Mentor
           <div className="aspect-square overflow-hidden relative">
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent z-10" />
             <img 
-              src={imageUrl} 
+              src={imageError ? fallbackImageUrl : optimizedImageUrl}
               alt={name} 
               className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-700"
+              onError={() => setImageError(true)}
+              loading="lazy"
             />
             <div className="absolute top-4 right-4 z-20">
               <Badge className="bg-csgreen/90 text-black backdrop-blur-sm border-0 font-medium">
@@ -149,9 +155,10 @@ export const MentorCard = ({ name, role, rating, reviewCount, imageUrl }: Mentor
               <div className="lg:col-span-1">
                 <div className="relative rounded-2xl overflow-hidden mb-6">
                   <img 
-                    src={imageUrl} 
+                    src={imageError ? fallbackImageUrl : optimizedImageUrl}
                     alt={name} 
                     className="w-full aspect-square object-cover rounded-2xl border-2 border-csgreen/20"
+                    onError={() => setImageError(true)}
                   />
                   <div className="absolute top-4 right-4">
                     <div className="bg-csgreen rounded-full p-2 shadow-lg">

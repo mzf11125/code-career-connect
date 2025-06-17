@@ -6,9 +6,11 @@ import { MentorCard } from "@/components/MentorCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Mentors = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
   
   const mentors = [
     {
@@ -17,7 +19,8 @@ const Mentors = () => {
       role: "Senior Software Engineer",
       rating: 5.0,
       reviewCount: 342,
-      imageUrl: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=face"
+      // Fixed broken image URL
+      imageUrl: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=face&auto=format&q=80"
     },
     {
       id: 2,
@@ -25,7 +28,7 @@ const Mentors = () => {
       role: "Product Manager",
       rating: 4.9,
       reviewCount: 217,
-      imageUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face"
+      imageUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face&auto=format&q=80"
     },
     {
       id: 3,
@@ -33,7 +36,7 @@ const Mentors = () => {
       role: "Tech Lead",
       rating: 5.0,
       reviewCount: 189,
-      imageUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face"
+      imageUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face&auto=format&q=80"
     },
     {
       id: 4,
@@ -41,7 +44,7 @@ const Mentors = () => {
       role: "UX Designer",
       rating: 4.8,
       reviewCount: 156,
-      imageUrl: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face"
+      imageUrl: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face&auto=format&q=80"
     },
     {
       id: 5,
@@ -49,7 +52,7 @@ const Mentors = () => {
       role: "Full Stack Developer",
       rating: 4.7,
       reviewCount: 125,
-      imageUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&crop=face"
+      imageUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&crop=face&auto=format&q=80"
     },
     {
       id: 6,
@@ -57,7 +60,7 @@ const Mentors = () => {
       role: "Data Scientist",
       rating: 5.0,
       reviewCount: 98,
-      imageUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop&crop=face"
+      imageUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop&crop=face&auto=format&q=80"
     },
     {
       id: 7,
@@ -65,7 +68,7 @@ const Mentors = () => {
       role: "Mobile Developer",
       rating: 4.9,
       reviewCount: 112,
-      imageUrl: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop&crop=face"
+      imageUrl: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop&crop=face&auto=format&q=80"
     },
     {
       id: 8,
@@ -73,7 +76,7 @@ const Mentors = () => {
       role: "DevOps Engineer",
       rating: 4.8,
       reviewCount: 89,
-      imageUrl: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop&crop=face"
+      imageUrl: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop&crop=face&auto=format&q=80"
     }
   ];
   
@@ -81,6 +84,16 @@ const Mentors = () => {
     mentor.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
     mentor.role.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const handleViewAllMentors = () => {
+    // Clear search to show all mentors
+    setSearchQuery("");
+  };
+
+  const handleChoosePlan = () => {
+    // Navigate to pricing or subscription page
+    navigate("/");
+  };
   
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-csdark via-cssecondary to-csdark">
@@ -132,10 +145,16 @@ const Mentors = () => {
             )}
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Button className="bg-cssecondary hover:bg-gray-700 border border-gray-600 px-8 py-3 rounded-xl transition-all duration-300">
+              <Button 
+                onClick={handleViewAllMentors}
+                className="bg-cssecondary hover:bg-gray-700 border border-gray-600 px-8 py-3 rounded-xl transition-all duration-300"
+              >
                 View All Mentors
               </Button>
-              <Button className="bg-gradient-to-r from-csgreen to-blue-400 text-black hover:opacity-90 px-8 py-3 rounded-xl font-semibold transition-all duration-300">
+              <Button 
+                onClick={handleChoosePlan}
+                className="bg-gradient-to-r from-csgreen to-blue-400 text-black hover:opacity-90 px-8 py-3 rounded-xl font-semibold transition-all duration-300"
+              >
                 Choose Your Plan
               </Button>
             </div>
