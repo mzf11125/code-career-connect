@@ -273,7 +273,7 @@ export function InteractiveCourseViewer({ courseData, courseId, markdown }: Inte
 
   // If courseData exists but doesn't have modules, generate them
   if (courseData && (!courseData.modules || courseData.modules.length === 0)) {
-    enhancedCourseData.modules = generateEducationalContent(courseData.title, courseData.topic || courseData.title);
+    enhancedCourseData.modules = generateEducationalContent(courseData.title, courseData.title);
   }
 
   const calculateProgressPercentage = (): number => {
