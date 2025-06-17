@@ -1,12 +1,12 @@
-
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Users, MessageCircle, CheckCircle, Clock, Calendar, Video } from 'lucide-react';
+import { Users, MessageCircle, CheckCircle, Clock, Calendar, Video, BookOpen } from 'lucide-react';
 import { getMentorRequests, getChatSessions, updateMentorRequestStatus } from '@/services/mentorshipService';
 import { SessionsList } from '@/components/session/SessionsList';
+import { CourseManagement } from '@/components/course/CourseManagement';
 import { toast } from 'sonner';
 
 export const MentorDashboard = () => {
@@ -116,9 +116,12 @@ export const MentorDashboard = () => {
 
       {/* Main Content Tabs */}
       <Tabs defaultValue="overview" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-4 bg-gray-800">
+        <TabsList className="grid w-full grid-cols-5 bg-gray-800">
           <TabsTrigger value="overview" className="data-[state=active]:bg-csgreen data-[state=active]:text-black">
             Overview
+          </TabsTrigger>
+          <TabsTrigger value="courses" className="data-[state=active]:bg-csgreen data-[state=active]:text-black">
+            Courses
           </TabsTrigger>
           <TabsTrigger value="sessions" className="data-[state=active]:bg-csgreen data-[state=active]:text-black">
             Sessions
@@ -179,6 +182,10 @@ export const MentorDashboard = () => {
               )}
             </CardContent>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="courses" className="space-y-6">
+          <CourseManagement />
         </TabsContent>
 
         <TabsContent value="sessions" className="space-y-6">
@@ -243,7 +250,6 @@ export const MentorDashboard = () => {
         </TabsContent>
 
         <TabsContent value="chats" className="space-y-6">
-          {/* Active Chat Sessions */}
           <Card className="bg-gray-900/50 border-gray-800">
             <CardHeader>
               <CardTitle className="text-white">Active Mentoring Sessions</CardTitle>
