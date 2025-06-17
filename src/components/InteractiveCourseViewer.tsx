@@ -42,6 +42,91 @@ const getResourceBadgeColor = (type: string) => {
   }
 };
 
+// Generate sample learning content when course data doesn't have proper modules
+const generateSampleModules = (courseTitle: string, courseTopic: string) => {
+  return [
+    {
+      id: 'intro-module',
+      title: 'Introduction to ' + courseTopic,
+      description: 'Get started with the fundamentals and overview of the course.',
+      learningObjectives: [
+        'Understand the core concepts',
+        'Set up your learning environment',
+        'Preview what you\'ll accomplish'
+      ],
+      estimatedTime: '45 minutes',
+      resources: [
+        {
+          title: 'Welcome Video',
+          type: 'video',
+          url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+        },
+        {
+          title: 'Course Overview PDF',
+          type: 'documentation',
+          url: '#'
+        }
+      ]
+    },
+    {
+      id: 'fundamentals-module',
+      title: 'Core Fundamentals',
+      description: 'Deep dive into the essential concepts you need to master.',
+      learningObjectives: [
+        'Master the basic principles',
+        'Practice with hands-on exercises',
+        'Build your first project'
+      ],
+      estimatedTime: '2 hours',
+      resources: [
+        {
+          title: 'Fundamentals Video Series',
+          type: 'video',
+          url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+        },
+        {
+          title: 'Practice Exercises',
+          type: 'documentation',
+          url: '#'
+        },
+        {
+          title: 'Knowledge Check Quiz',
+          type: 'quiz',
+          url: '#'
+        }
+      ]
+    },
+    {
+      id: 'advanced-module',
+      title: 'Advanced Techniques',
+      description: 'Learn advanced strategies and best practices.',
+      learningObjectives: [
+        'Apply advanced techniques',
+        'Optimize your workflow',
+        'Solve complex challenges'
+      ],
+      estimatedTime: '1.5 hours',
+      resources: [
+        {
+          title: 'Advanced Tutorial',
+          type: 'video',
+          url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+        },
+        {
+          title: 'Best Practices Guide',
+          type: 'documentation',
+          url: '#'
+        },
+        {
+          title: 'Final Assessment',
+          type: 'quiz',
+          url: '#'
+        }
+      ]
+    }
+  ];
+};
+
 export function InteractiveCourseViewer({ courseData, courseId, markdown }: InteractiveCourseViewerProps) {
   const [activeModule, setActiveModule] = useState(0);
   const [activeTab, setActiveTab] = useState("content");
@@ -100,14 +185,26 @@ export function InteractiveCourseViewer({ courseData, courseId, markdown }: Inte
     setLoading(false);
   };
 
-  const calculateProgressPercentage = (): number => {
-    if (!courseData || courseData.modules.length === 0) return 0;
-    const completedModules = courseData.modules.filter(module => isModuleCompleted(module.id)).length;
-    return (completedModules / courseData.modules.length) * 100;
+  // Create enhanced course data with sample modules if needed
+  const enhancedCourseData = courseData || {
+    title: "Sample Course",
+    description: "This course contains sample learning materials",
+    modules: generateSampleModules("Sample Course", "Learning")
   };
 
-  // Fallback to markdown display if no course data is available
-  if (!courseData) {
+  // If courseData exists but doesn't have modules, generate them
+  if (courseData && (!courseData.modules || courseData.modules.length === 0)) {
+    enhancedCourseData.modules = generateSampleModules(courseData.title, courseData.title);
+  }
+
+  const calculateProgressPercentage = (): number => {
+    if (!enhancedCourseData || enhancedCourseData.modules.length === 0) return 0;
+    const completedModules = enhancedCourseData.modules.filter(module => isModuleCompleted(module.id)).length;
+    return (completedModules / enhancedCourseData.modules.length) * 100;
+  };
+
+  // Fallback to markdown display if no course data is available and no courseData
+  if (!courseData && !courseId) {
     return (
       <div className="bg-cssecondary rounded-lg p-6">
         {markdown ? (
@@ -128,19 +225,19 @@ export function InteractiveCourseViewer({ courseData, courseId, markdown }: Inte
   }
 
   const progressPercentage = calculateProgressPercentage();
-  const completedModules = courseData.modules.filter(module => isModuleCompleted(module.id)).length;
+  const completedModules = enhancedCourseData.modules.filter(module => isModuleCompleted(module.id)).length;
 
   return (
     <div className="bg-cssecondary rounded-lg p-6 overflow-hidden">
       <div className="mb-6">
-        <h2 className="text-2xl font-bold mb-2">{courseData.title}</h2>
-        <p className="text-gray-400">{courseData.description}</p>
+        <h2 className="text-2xl font-bold mb-2">{enhancedCourseData.title}</h2>
+        <p className="text-gray-400">{enhancedCourseData.description}</p>
         
         <div className="mt-4">
           <Progress value={progressPercentage} className="h-2 mb-1" />
           <div className="flex justify-between text-xs text-gray-400">
             <span>{Math.round(progressPercentage)}% complete</span>
-            <span>{completedModules}/{courseData.modules.length} modules</span>
+            <span>{completedModules}/{enhancedCourseData.modules.length} modules</span>
           </div>
         </div>
       </div>
@@ -157,7 +254,7 @@ export function InteractiveCourseViewer({ courseData, courseId, markdown }: Inte
 
         <TabsContent value="content" className="mt-0">
           <div className="space-y-4">
-            {courseData.modules.map((module, index) => {
+            {enhancedCourseData.modules.map((module, index) => {
               const isCompleted = isModuleCompleted(module.id);
               const isActive = activeModule === index;
               
@@ -181,7 +278,7 @@ export function InteractiveCourseViewer({ courseData, courseId, markdown }: Inte
                   <CardContent className="pb-4 pt-0 px-4">
                     <CardDescription>{module.description}</CardDescription>
                     
-                    {module.learningObjectives.length > 0 && (
+                    {module.learningObjectives && module.learningObjectives.length > 0 && (
                       <div className="mt-3">
                         <h4 className="text-sm font-medium mb-2">Learning Objectives:</h4>
                         <ul className="text-sm text-gray-400 space-y-1">
@@ -198,13 +295,13 @@ export function InteractiveCourseViewer({ courseData, courseId, markdown }: Inte
                     <div className="mt-3 space-y-2">
                       <div className="flex items-center text-sm">
                         <BookOpen className="mr-2 text-csgreen" size={16} />
-                        <span>{module.resources.length} resources available</span>
+                        <span>{module.resources?.length || 0} resources available</span>
                       </div>
                       <div className="flex items-center text-sm">
                         <CirclePlay className="mr-2 text-csgreen" size={16} />
                         <span>Estimated time: {module.estimatedTime}</span>
                       </div>
-                      {module.resources.length > 0 && (
+                      {module.resources && module.resources.length > 0 && (
                         <div className="flex flex-wrap gap-1 mt-2">
                           {module.resources.map((resource, idx) => (
                             <Badge key={idx} className={`text-xs ${getResourceBadgeColor(resource.type)}`}>
@@ -243,15 +340,15 @@ export function InteractiveCourseViewer({ courseData, courseId, markdown }: Inte
         <TabsContent value="resources" className="mt-0">
           <Card className="bg-csdark border-gray-800">
             <CardHeader>
-              <CardTitle>{courseData.modules[activeModule]?.title} - Resources</CardTitle>
+              <CardTitle>{enhancedCourseData.modules[activeModule]?.title} - Resources</CardTitle>
               <CardDescription>
                 Study materials and resources for this module
               </CardDescription>
             </CardHeader>
             <CardContent>
-              {courseData.modules[activeModule]?.resources.length > 0 ? (
+              {enhancedCourseData.modules[activeModule]?.resources && enhancedCourseData.modules[activeModule].resources.length > 0 ? (
                 <div className="space-y-4">
-                  {courseData.modules[activeModule].resources.map((resource, index) => (
+                  {enhancedCourseData.modules[activeModule].resources.map((resource, index) => (
                     <div key={index} className="flex items-center justify-between p-4 border border-gray-700 rounded-lg">
                       <div className="flex items-center space-x-3">
                         {getResourceIcon(resource.type)}
@@ -278,7 +375,11 @@ export function InteractiveCourseViewer({ courseData, courseId, markdown }: Inte
                   ))}
                 </div>
               ) : (
-                <p className="text-gray-400 text-center py-8">No resources available for this module.</p>
+                <div className="text-center py-8">
+                  <Video className="mx-auto h-12 w-12 text-gray-500 mb-4" />
+                  <p className="text-gray-400 mb-4">No resources available for this module yet.</p>
+                  <p className="text-sm text-gray-500">Resources will be added as the course content is developed.</p>
+                </div>
               )}
             </CardContent>
           </Card>
