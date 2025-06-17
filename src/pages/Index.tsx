@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
@@ -8,10 +7,12 @@ import { PricingCard } from "@/components/PricingCard";
 import { Link } from "react-router-dom";
 import { Users, BookOpen, FileText, BriefcaseBusiness, Code, Award, ArrowRight, ChevronDown } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
+import { useMentors } from "@/hooks/useMentors";
 
 const Index = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const featuresRef = useRef<HTMLElement>(null);
+  const { mentors, loading: mentorsLoading } = useMentors(4); // Limit to 4 mentors for homepage
   
   useEffect(() => {
     setIsLoaded(true);
@@ -224,40 +225,28 @@ const Index = () => {
               </div>
             </div>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-              <MentorCard 
-                id="demo-sarah-chen"
-                name="Sarah Chen"
-                role="Senior Software Engineer at Google"
-                rating={5.0}
-                reviewCount={342}
-                imageUrl="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop&crop=face"
-              />
-              <MentorCard 
-                id="demo-marcus-johnson"
-                name="Marcus Johnson"
-                role="Tech Lead at Microsoft"
-                rating={4.9}
-                reviewCount={217}
-                imageUrl="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face"
-              />
-              <MentorCard 
-                id="demo-emily-rodriguez"
-                name="Emily Rodriguez"
-                role="Senior Product Manager at Meta"
-                rating={5.0}
-                reviewCount={189}
-                imageUrl="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face"
-              />
-              <MentorCard 
-                id="demo-david-park"
-                name="David Park"
-                role="Principal Engineer at Amazon"
-                rating={4.8}
-                reviewCount={156}
-                imageUrl="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face"
-              />
-            </div>
+            {mentorsLoading ? (
+              <div className="flex justify-center py-16">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-csgreen"></div>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+                {mentors.map(mentor => (
+                  <MentorCard 
+                    key={mentor.id}
+                    id={mentor.id}
+                    name={mentor.name}
+                    role={mentor.role}
+                    rating={mentor.rating}
+                    reviewCount={mentor.review_count}
+                    imageUrl={mentor.image_url || ''}
+                    expertise={mentor.expertise}
+                    hourlyRate={mentor.hourly_rate}
+                    bio={mentor.bio}
+                  />
+                ))}
+              </div>
+            )}
             
             {/* Scroll indicator */}
             <div className="section-divider">

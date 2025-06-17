@@ -35,15 +35,13 @@ const Mentors = () => {
       const { data, error } = await getAllMentors();
       if (error) {
         toast.error('Failed to load mentors');
-        // Fallback to mock data if no mentors in database
-        setMentors([]);
+        console.error('Error loading mentors:', error);
       } else {
         setMentors(data || []);
       }
     } catch (error) {
       console.error('Error loading mentors:', error);
       toast.error('Failed to load mentors');
-      setMentors([]);
     } finally {
       setLoading(false);
     }
@@ -59,6 +57,7 @@ const Mentors = () => {
       const { data, error } = await searchMentors(searchQuery.trim());
       if (error) {
         toast.error('Search failed');
+        console.error('Search error:', error);
         // Fallback to local filtering
         const filtered = mentors.filter(mentor => 
           mentor.name.toLowerCase().includes(searchQuery.toLowerCase()) || 

@@ -187,6 +187,57 @@ export type Database = {
         }
         Relationships: []
       }
+      mentors: {
+        Row: {
+          availability_schedule: Json | null
+          bio: string | null
+          created_at: string
+          expertise: string[] | null
+          hourly_rate: number | null
+          id: string
+          image_url: string | null
+          is_available: boolean | null
+          name: string
+          rating: number | null
+          review_count: number | null
+          role: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          availability_schedule?: Json | null
+          bio?: string | null
+          created_at?: string
+          expertise?: string[] | null
+          hourly_rate?: number | null
+          id?: string
+          image_url?: string | null
+          is_available?: boolean | null
+          name: string
+          rating?: number | null
+          review_count?: number | null
+          role: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          availability_schedule?: Json | null
+          bio?: string | null
+          created_at?: string
+          expertise?: string[] | null
+          hourly_rate?: number | null
+          id?: string
+          image_url?: string | null
+          is_available?: boolean | null
+          name?: string
+          rating?: number | null
+          review_count?: number | null
+          role?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       messages: {
         Row: {
           chat_session_id: string
