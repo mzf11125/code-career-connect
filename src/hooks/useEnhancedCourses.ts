@@ -1,6 +1,6 @@
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getPublishedCourses, getMentorCourses, createCourse, type EnhancedCourse } from "@/services/enhancedCourseService";
+import { getPublishedCourses, getMentorCourses, createCourse, type EnhancedCourse } from "@/services/simplifiedCourseService";
 
 export const usePublishedCourses = () => {
   return useQuery({

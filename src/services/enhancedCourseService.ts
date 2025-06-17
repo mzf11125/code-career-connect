@@ -170,14 +170,12 @@ export const createCourse = async (courseData: Partial<EnhancedCourse>): Promise
   }
 };
 
-// Module Management
+// Module Management - Using generic supabase queries
 export const getCourseModules = async (courseId: string): Promise<{ data: CourseModule[] | null; error: string | null }> => {
   try {
-    const { data, error } = await supabase
-      .from('course_modules')
-      .select('*')
-      .eq('course_id', courseId)
-      .order('order_index', { ascending: true });
+    const { data, error } = await supabase.rpc('select_course_modules', {
+      p_course_id: courseId
+    });
 
     if (error) {
       console.error('Error fetching course modules:', error);
@@ -193,11 +191,15 @@ export const getCourseModules = async (courseId: string): Promise<{ data: Course
 
 export const createModule = async (moduleData: Partial<CourseModule>): Promise<{ data: CourseModule | null; error: string | null }> => {
   try {
-    const { data, error } = await supabase
-      .from('course_modules')
-      .insert(moduleData)
-      .select()
-      .single();
+    const { data, error } = await supabase.rpc('insert_course_module', {
+      p_course_id: moduleData.course_id,
+      p_title: moduleData.title,
+      p_description: moduleData.description,
+      p_order_index: moduleData.order_index,
+      p_video_url: moduleData.video_url,
+      p_content: moduleData.content,
+      p_estimated_duration: moduleData.estimated_duration
+    });
 
     if (error) {
       console.error('Error creating module:', error);
@@ -214,11 +216,9 @@ export const createModule = async (moduleData: Partial<CourseModule>): Promise<{
 // Quiz Management
 export const getModuleQuiz = async (moduleId: string): Promise<{ data: Quiz | null; error: string | null }> => {
   try {
-    const { data, error } = await supabase
-      .from('quizzes')
-      .select('*')
-      .eq('module_id', moduleId)
-      .single();
+    const { data, error } = await supabase.rpc('select_module_quiz', {
+      p_module_id: moduleId
+    });
 
     if (error && error.code !== 'PGRST116') {
       console.error('Error fetching quiz:', error);
@@ -234,11 +234,9 @@ export const getModuleQuiz = async (moduleId: string): Promise<{ data: Quiz | nu
 
 export const getQuizQuestions = async (quizId: string): Promise<{ data: QuizQuestion[] | null; error: string | null }> => {
   try {
-    const { data, error } = await supabase
-      .from('quiz_questions')
-      .select('*')
-      .eq('quiz_id', quizId)
-      .order('order_index', { ascending: true });
+    const { data, error } = await supabase.rpc('select_quiz_questions', {
+      p_quiz_id: quizId
+    });
 
     if (error) {
       console.error('Error fetching quiz questions:', error);
@@ -260,17 +258,13 @@ export const submitQuizAttempt = async (quizId: string, answers: Record<string, 
       return { data: null, error: "User not authenticated" };
     }
 
-    const { data, error } = await supabase
-      .from('quiz_attempts')
-      .insert({
-        user_id: user.id,
-        quiz_id: quizId,
-        score,
-        answers,
-        passed
-      })
-      .select()
-      .single();
+    const { data, error } = await supabase.rpc('insert_quiz_attempt', {
+      p_user_id: user.id,
+      p_quiz_id: quizId,
+      p_score: score,
+      p_answers: answers,
+      p_passed: passed
+    });
 
     if (error) {
       console.error('Error submitting quiz attempt:', error);
@@ -296,15 +290,13 @@ export const updateModuleProgress = async (
       return { error: "User not authenticated" };
     }
 
-    const { error } = await supabase
-      .from('student_module_progress')
-      .upsert({
-        user_id: user.id,
-        module_id: moduleId,
-        ...updates,
-        last_accessed: new Date().toISOString(),
-        ...(updates.completed && { completed_at: new Date().toISOString() })
-      });
+    const { error } = await supabase.rpc('upsert_module_progress', {
+      p_user_id: user.id,
+      p_module_id: moduleId,
+      p_completed: updates.completed,
+      p_video_watched: updates.video_watched,
+      p_quiz_passed: updates.quiz_passed
+    });
 
     if (error) {
       console.error('Error updating module progress:', error);
@@ -326,12 +318,10 @@ export const getModuleProgress = async (moduleId: string): Promise<{ data: Stude
       return { data: null, error: "User not authenticated" };
     }
 
-    const { data, error } = await supabase
-      .from('student_module_progress')
-      .select('*')
-      .eq('user_id', user.id)
-      .eq('module_id', moduleId)
-      .single();
+    const { data, error } = await supabase.rpc('select_module_progress', {
+      p_user_id: user.id,
+      p_module_id: moduleId
+    });
 
     if (error && error.code !== 'PGRST116') {
       console.error('Error fetching module progress:', error);
@@ -348,11 +338,9 @@ export const getModuleProgress = async (moduleId: string): Promise<{ data: Stude
 // Learning Resources
 export const getModuleResources = async (moduleId: string): Promise<{ data: LearningResource[] | null; error: string | null }> => {
   try {
-    const { data, error } = await supabase
-      .from('learning_resources')
-      .select('*')
-      .eq('module_id', moduleId)
-      .order('order_index', { ascending: true });
+    const { data, error } = await supabase.rpc('select_learning_resources', {
+      p_module_id: moduleId
+    });
 
     if (error) {
       console.error('Error fetching learning resources:', error);
