@@ -42,85 +42,164 @@ const getResourceBadgeColor = (type: string) => {
   }
 };
 
-// Generate sample learning content when course data doesn't have proper modules
-const generateSampleModules = (courseTitle: string, courseTopic: string) => {
+// Generate meaningful learning content with real educational resources
+const generateEducationalContent = (courseTitle: string, courseTopic: string) => {
+  const topicLower = courseTopic.toLowerCase();
+  
+  // Determine course category and generate appropriate resources
+  const getResourcesForTopic = (topic: string) => {
+    if (topic.includes('javascript') || topic.includes('js') || topic.includes('web development')) {
+      return {
+        introVideo: 'https://www.youtube.com/watch?v=PkZNo7MFNFg',
+        freeCodeCamp: 'https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/',
+        mdn: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript',
+        practiceUrl: 'https://codepen.io/',
+        additionalVideo: 'https://www.youtube.com/watch?v=hdI2bqOjy3c'
+      };
+    } else if (topic.includes('python')) {
+      return {
+        introVideo: 'https://www.youtube.com/watch?v=rfscVS0vtbw',
+        freeCodeCamp: 'https://www.freecodecamp.org/learn/scientific-computing-with-python/',
+        mdn: 'https://docs.python.org/3/tutorial/',
+        practiceUrl: 'https://repl.it/',
+        additionalVideo: 'https://www.youtube.com/watch?v=8DvywoWv6fI'
+      };
+    } else if (topic.includes('react')) {
+      return {
+        introVideo: 'https://www.youtube.com/watch?v=Tn6-PIqc4UM',
+        freeCodeCamp: 'https://www.freecodecamp.org/learn/front-end-development-libraries/',
+        mdn: 'https://react.dev/learn',
+        practiceUrl: 'https://codesandbox.io/',
+        additionalVideo: 'https://www.youtube.com/watch?v=bMknfKXIFA8'
+      };
+    } else if (topic.includes('data') || topic.includes('analytics')) {
+      return {
+        introVideo: 'https://www.youtube.com/watch?v=ua-CiDNNj30',
+        freeCodeCamp: 'https://www.freecodecamp.org/learn/data-analysis-with-python/',
+        mdn: 'https://www.kaggle.com/learn',
+        practiceUrl: 'https://colab.research.google.com/',
+        additionalVideo: 'https://www.youtube.com/watch?v=r-uOLxNrNk8'
+      };
+    } else {
+      // Default generic programming/tech resources
+      return {
+        introVideo: 'https://www.youtube.com/watch?v=zOjov-2OZ0E',
+        freeCodeCamp: 'https://www.freecodecamp.org/learn/',
+        mdn: 'https://developer.mozilla.org/en-US/',
+        practiceUrl: 'https://github.com/',
+        additionalVideo: 'https://www.youtube.com/watch?v=UvBl2_0DNm0'
+      };
+    }
+  };
+
+  const resources = getResourcesForTopic(topicLower);
+
   return [
     {
       id: 'intro-module',
-      title: 'Introduction to ' + courseTopic,
-      description: 'Get started with the fundamentals and overview of the course.',
+      title: `Introduction to ${courseTopic}`,
+      description: 'Get started with the fundamentals and core concepts. This module provides a comprehensive overview and sets up your learning foundation.',
       learningObjectives: [
-        'Understand the core concepts',
-        'Set up your learning environment',
-        'Preview what you\'ll accomplish'
+        `Understand what ${courseTopic} is and its real-world applications`,
+        'Set up your development environment and tools',
+        'Learn the basic terminology and concepts',
+        'Complete your first hands-on exercise'
       ],
-      estimatedTime: '45 minutes',
+      estimatedTime: '2-3 hours',
       resources: [
         {
-          title: 'Welcome Video',
+          title: `${courseTopic} Fundamentals - Video Tutorial`,
           type: 'video',
-          url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+          url: resources.introVideo,
+          description: 'Comprehensive introduction video covering the basics'
         },
         {
-          title: 'Course Overview PDF',
+          title: 'Official Documentation & Getting Started Guide',
           type: 'documentation',
-          url: '#'
+          url: resources.mdn,
+          description: 'Complete reference documentation and beginner tutorials'
+        },
+        {
+          title: `Introduction to ${courseTopic} - Knowledge Check`,
+          type: 'quiz',
+          url: '#quiz-intro',
+          description: 'Test your understanding of the core concepts'
         }
       ]
     },
     {
       id: 'fundamentals-module',
-      title: 'Core Fundamentals',
-      description: 'Deep dive into the essential concepts you need to master.',
+      title: 'Core Concepts & Hands-on Practice',
+      description: 'Deep dive into essential concepts with practical exercises. Build real projects while learning best practices.',
       learningObjectives: [
-        'Master the basic principles',
-        'Practice with hands-on exercises',
-        'Build your first project'
+        'Master the fundamental building blocks and syntax',
+        'Write clean, efficient, and maintainable code',
+        'Debug common issues and solve problems independently',
+        'Build and deploy your first complete project'
       ],
-      estimatedTime: '2 hours',
+      estimatedTime: '4-6 hours',
       resources: [
         {
-          title: 'Fundamentals Video Series',
+          title: 'FreeCodeCamp Interactive Course',
           type: 'video',
-          url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+          url: resources.freeCodeCamp,
+          description: 'Complete interactive curriculum with hands-on projects'
         },
         {
-          title: 'Practice Exercises',
+          title: 'Advanced Concepts Tutorial Series',
+          type: 'video',
+          url: resources.additionalVideo,
+          description: 'In-depth video series covering advanced topics'
+        },
+        {
+          title: 'Practice Exercises & Code Challenges',
           type: 'documentation',
-          url: '#'
+          url: resources.practiceUrl,
+          description: 'Interactive coding environment for practice'
         },
         {
-          title: 'Knowledge Check Quiz',
+          title: 'Core Concepts Assessment',
           type: 'quiz',
-          url: '#'
+          url: '#quiz-fundamentals',
+          description: 'Comprehensive quiz covering all fundamental topics'
         }
       ]
     },
     {
-      id: 'advanced-module',
-      title: 'Advanced Techniques',
-      description: 'Learn advanced strategies and best practices.',
+      id: 'practical-module',
+      title: 'Real-World Projects & Best Practices',
+      description: 'Apply your knowledge to build portfolio-worthy projects. Learn industry standards and professional development practices.',
       learningObjectives: [
-        'Apply advanced techniques',
-        'Optimize your workflow',
-        'Solve complex challenges'
+        'Build complex, real-world applications from scratch',
+        'Implement industry best practices and design patterns',
+        'Optimize performance and handle edge cases',
+        'Deploy applications and manage production environments'
       ],
-      estimatedTime: '1.5 hours',
+      estimatedTime: '6-8 hours',
       resources: [
         {
-          title: 'Advanced Tutorial',
+          title: 'Project-Based Learning Workshop',
           type: 'video',
-          url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+          url: 'https://www.youtube.com/watch?v=t3jx0EC-Y3c',
+          description: 'Build complete projects step-by-step'
         },
         {
-          title: 'Best Practices Guide',
+          title: 'Best Practices & Code Review Guide',
           type: 'documentation',
-          url: '#'
+          url: resources.mdn,
+          description: 'Professional development standards and code quality guidelines'
         },
         {
-          title: 'Final Assessment',
+          title: 'Portfolio Project Templates',
+          type: 'documentation',
+          url: resources.practiceUrl,
+          description: 'Starter templates and project ideas for your portfolio'
+        },
+        {
+          title: 'Final Project Assessment',
           type: 'quiz',
-          url: '#'
+          url: '#quiz-final',
+          description: 'Capstone project evaluation and certification quiz'
         }
       ]
     }
@@ -185,16 +264,16 @@ export function InteractiveCourseViewer({ courseData, courseId, markdown }: Inte
     setLoading(false);
   };
 
-  // Create enhanced course data with sample modules if needed
+  // Create enhanced course data with educational modules
   const enhancedCourseData = courseData || {
-    title: "Sample Course",
-    description: "This course contains sample learning materials",
-    modules: generateSampleModules("Sample Course", "Learning")
+    title: "Complete Programming Course",
+    description: "Comprehensive course with real-world projects and industry-standard practices",
+    modules: generateEducationalContent("Complete Programming Course", "Programming")
   };
 
   // If courseData exists but doesn't have modules, generate them
   if (courseData && (!courseData.modules || courseData.modules.length === 0)) {
-    enhancedCourseData.modules = generateSampleModules(courseData.title, courseData.title);
+    enhancedCourseData.modules = generateEducationalContent(courseData.title, courseData.topic || courseData.title);
   }
 
   const calculateProgressPercentage = (): number => {
@@ -295,7 +374,7 @@ export function InteractiveCourseViewer({ courseData, courseId, markdown }: Inte
                     <div className="mt-3 space-y-2">
                       <div className="flex items-center text-sm">
                         <BookOpen className="mr-2 text-csgreen" size={16} />
-                        <span>{module.resources?.length || 0} resources available</span>
+                        <span>{module.resources?.length || 0} learning resources available</span>
                       </div>
                       <div className="flex items-center text-sm">
                         <CirclePlay className="mr-2 text-csgreen" size={16} />
@@ -340,9 +419,9 @@ export function InteractiveCourseViewer({ courseData, courseId, markdown }: Inte
         <TabsContent value="resources" className="mt-0">
           <Card className="bg-csdark border-gray-800">
             <CardHeader>
-              <CardTitle>{enhancedCourseData.modules[activeModule]?.title} - Resources</CardTitle>
+              <CardTitle>{enhancedCourseData.modules[activeModule]?.title} - Learning Resources</CardTitle>
               <CardDescription>
-                Study materials and resources for this module
+                High-quality educational content from trusted sources
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -352,14 +431,19 @@ export function InteractiveCourseViewer({ courseData, courseId, markdown }: Inte
                     <div key={index} className="flex items-center justify-between p-4 border border-gray-700 rounded-lg">
                       <div className="flex items-center space-x-3">
                         {getResourceIcon(resource.type)}
-                        <div>
+                        <div className="flex-1">
                           <h4 className="font-medium">{resource.title}</h4>
-                          <p className="text-sm text-gray-400 capitalize flex items-center">
+                          <p className="text-sm text-gray-400 mt-1">{resource.description}</p>
+                          <div className="flex items-center mt-2">
                             <Badge className={`text-xs mr-2 ${getResourceBadgeColor(resource.type)}`}>
                               {resource.type}
                             </Badge>
-                            Learning Resource
-                          </p>
+                            <span className="text-xs text-gray-500">
+                              {resource.type === 'video' ? 'Video Tutorial' : 
+                               resource.type === 'quiz' ? 'Interactive Quiz' : 
+                               'Documentation & Reading'}
+                            </span>
+                          </div>
                         </div>
                       </div>
                       <Button 
