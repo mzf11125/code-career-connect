@@ -6,7 +6,7 @@ export interface CourseModule {
   title: string;
   description: string;
   learningObjectives: string[];
-  resources: { title: string; url: string; type: string }[];
+  resources: { title: string; url: string; type: string; description: string }[];
   estimatedTime: string;
 }
 
