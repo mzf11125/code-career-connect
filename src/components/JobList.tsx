@@ -10,6 +10,20 @@ interface JobListProps {
 }
 
 export const JobList = ({ jobs, isLoading, error }: JobListProps) => {
+  const formatPostedDate = (dateString?: string) => {
+    if (!dateString) return 'Recently';
+    
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffTime = Math.abs(now.getTime() - date.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    if (diffDays === 1) return '1 day ago';
+    if (diffDays < 7) return `${diffDays} days ago`;
+    if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
+    return `${Math.floor(diffDays / 30)} months ago`;
+  };
+
   if (isLoading) {
     return <div className="text-center py-8">Loading jobs...</div>;
   }
@@ -43,11 +57,11 @@ export const JobList = ({ jobs, isLoading, error }: JobListProps) => {
             </div>
             <div className="flex items-center gap-1">
               <Briefcase className="h-4 w-4" />
-              <span>{job.type}</span>
+              <span>{job.job_type || 'Full-time'}</span>
             </div>
             <div className="flex items-center gap-1">
               <Calendar className="h-4 w-4" />
-              <span>{job.posted}</span>
+              <span>{formatPostedDate(job.posted_date)}</span>
             </div>
           </div>
           
