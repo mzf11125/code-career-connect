@@ -35,18 +35,6 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
       setSession(session);
       setUser(session?.user ?? null);
       
-      // If user just signed in via email verification, check if they have roles
-      if (event === 'SIGNED_IN' && session?.user) {
-        const roles = await getUserRoles(session.user.id);
-        if (isMounted && roles.length === 0) {
-          // Redirect to role selection if no roles set
-          window.location.href = '/role-selection';
-        } else if (isMounted) {
-          // Redirect to home if roles are already set
-          window.location.href = '/';
-        }
-      }
-      
       if (isMounted) {
         setLoading(false);
       }
@@ -68,7 +56,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
       isMounted = false;
       subscription.unsubscribe();
     };
-  }, [getUserRoles]);
+  }, []);
 
   const signUp = async (email: string, password: string, fullName: string) => {
     try {
