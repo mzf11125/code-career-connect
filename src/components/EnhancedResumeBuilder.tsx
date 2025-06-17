@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
+import { Label } from "@/components/ui/label";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -332,7 +333,7 @@ export const EnhancedResumeBuilder = ({ onSave, onCancel, initialData }: Enhance
           </div>
           
           <div className="max-w-md mx-auto">
-            <FormLabel>Resume Title</FormLabel>
+            <Label className="text-white">Resume Title</Label>
             <Input 
               value={resumeTitle}
               onChange={(e) => setResumeTitle(e.target.value)}
