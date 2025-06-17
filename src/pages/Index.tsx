@@ -350,7 +350,7 @@ const Index = () => {
                 <div className="line-through">
                   <PricingCard 
                     title="Graduate"
-                    price={30}
+                    price={5}
                     description="Ideal for recent graduates serious about their job search"
                     features={[
                       "Everything in Student plan",
@@ -368,7 +368,7 @@ const Index = () => {
                 <div className="line-through">
                   <PricingCard 
                     title="Professional"
-                    price={50}
+                    price={10}
                     description="For experienced professionals looking to level up their career"
                     features={[
                       "Everything in Graduate plan",
