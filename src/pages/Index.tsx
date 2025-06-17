@@ -80,42 +80,73 @@ const Index = () => {
           </div>
         </section>
         
-        {/* Features section - with web3 card styling */}
-        <section ref={featuresRef} className="full-screen-section px-6 md:px-12 bg-cssecondary relative z-10">
-          <div className="container mx-auto">
-            <h2 className="text-4xl font-bold text-center mb-4">OUR FEATURES</h2>
-            <p className="text-gray-400 text-center max-w-2xl mx-auto mb-16">
-              Our platform offers everything you need to accelerate your CS career and land your dream job
-            </p>
+        {/* Features section - enhanced with better styling */}
+        <section ref={featuresRef} className="full-screen-section px-6 md:px-12 relative z-10">
+          <div className="absolute inset-0 bg-gradient-to-b from-cssecondary/80 via-cssecondary to-cssecondary/80"></div>
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(74,227,181,0.05),transparent_70%)]"></div>
+          
+          <div className="container mx-auto relative z-10">
+            <div className="text-center mb-20">
+              <div className="inline-block bg-csgreen/10 border border-csgreen/30 rounded-full px-6 py-2 mb-6">
+                <span className="text-csgreen font-semibold text-sm uppercase tracking-wider">Platform Features</span>
+              </div>
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+                Everything You Need to Succeed
+              </h2>
+              <p className="text-gray-400 text-xl max-w-3xl mx-auto leading-relaxed">
+                Our comprehensive platform provides all the tools and resources to accelerate your CS career and land your dream job
+              </p>
+            </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              <div className="web3-card p-6 relative overflow-hidden group">
-                <div className="text-csgreen mb-4 text-3xl"><Users /></div>
-                <h3 className="text-xl font-bold mb-2">Expert Mentors</h3>
-                <p className="text-gray-400">Connect with professionals from top tech companies</p>
-                <div className="absolute -right-10 -top-10 w-20 h-20 rounded-full bg-csgreen/10 group-hover:bg-csgreen/20 transition-all duration-500"></div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+              <div className="group relative">
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-csgreen to-blue-400 rounded-2xl blur opacity-20 group-hover:opacity-40 transition-opacity"></div>
+                <div className="relative bg-cssecondary/90 backdrop-blur-sm p-8 rounded-2xl border border-gray-800/50 hover:border-csgreen/30 transition-all duration-300 hover:transform hover:scale-[1.02]">
+                  <div className="text-csgreen mb-6 p-3 bg-csgreen/10 rounded-xl w-fit">
+                    <Users size={32} />
+                  </div>
+                  <h3 className="text-xl font-bold mb-4 text-white group-hover:text-csgreen transition-colors">Expert Mentors</h3>
+                  <p className="text-gray-400 leading-relaxed">Connect with seasoned professionals from top tech companies who provide personalized guidance</p>
+                </div>
               </div>
               
-              <div className="web3-card p-6 relative overflow-hidden group">
-                <div className="text-csgreen mb-4 text-3xl"><BookOpen /></div>
-                <h3 className="text-xl font-bold mb-2">Learning Resources</h3>
-                <p className="text-gray-400">Access curated courses and study materials</p>
-                <div className="absolute -right-10 -top-10 w-20 h-20 rounded-full bg-csgreen/10 group-hover:bg-csgreen/20 transition-all duration-500"></div>
+              <div className="group relative">
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-400 to-purple-400 rounded-2xl blur opacity-20 group-hover:opacity-40 transition-opacity"></div>
+                <div className="relative bg-cssecondary/90 backdrop-blur-sm p-8 rounded-2xl border border-gray-800/50 hover:border-blue-400/30 transition-all duration-300 hover:transform hover:scale-[1.02]">
+                  <div className="text-blue-400 mb-6 p-3 bg-blue-400/10 rounded-xl w-fit">
+                    <BookOpen size={32} />
+                  </div>
+                  <h3 className="text-xl font-bold mb-4 text-white group-hover:text-blue-400 transition-colors">Learning Resources</h3>
+                  <p className="text-gray-400 leading-relaxed">Access curated courses, tutorials, and study materials tailored to current industry demands</p>
+                </div>
               </div>
               
-              <div className="web3-card p-6 relative overflow-hidden group">
-                <div className="text-csgreen mb-4 text-3xl"><FileText /></div>
-                <h3 className="text-xl font-bold mb-2">Resume Builder</h3>
-                <p className="text-gray-400">Create standout resumes with AI assistance</p>
-                <div className="absolute -right-10 -top-10 w-20 h-20 rounded-full bg-csgreen/10 group-hover:bg-csgreen/20 transition-all duration-500"></div>
+              <div className="group relative">
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-400 to-pink-400 rounded-2xl blur opacity-20 group-hover:opacity-40 transition-opacity"></div>
+                <div className="relative bg-cssecondary/90 backdrop-blur-sm p-8 rounded-2xl border border-gray-800/50 hover:border-purple-400/30 transition-all duration-300 hover:transform hover:scale-[1.02]">
+                  <div className="text-purple-400 mb-6 p-3 bg-purple-400/10 rounded-xl w-fit">
+                    <FileText size={32} />
+                  </div>
+                  <h3 className="text-xl font-bold mb-4 text-white group-hover:text-purple-400 transition-colors">Resume Builder</h3>
+                  <p className="text-gray-400 leading-relaxed">Create standout, ATS-friendly resumes with AI-powered suggestions and industry templates</p>
+                </div>
               </div>
               
-              <div className="web3-card p-6 relative overflow-hidden group">
-                <div className="text-csgreen mb-4 text-3xl"><BriefcaseBusiness /></div>
-                <h3 className="text-xl font-bold mb-2">Job Opportunities</h3>
-                <p className="text-gray-400">Apply to exclusive job listings for new graduates</p>
-                <div className="absolute -right-10 -top-10 w-20 h-20 rounded-full bg-csgreen/10 group-hover:bg-csgreen/20 transition-all duration-500"></div>
+              <div className="group relative">
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-pink-400 to-csgreen rounded-2xl blur opacity-20 group-hover:opacity-40 transition-opacity"></div>
+                <div className="relative bg-cssecondary/90 backdrop-blur-sm p-8 rounded-2xl border border-gray-800/50 hover:border-pink-400/30 transition-all duration-300 hover:transform hover:scale-[1.02]">
+                  <div className="text-pink-400 mb-6 p-3 bg-pink-400/10 rounded-xl w-fit">
+                    <BriefcaseBusiness size={32} />
+                  </div>
+                  <h3 className="text-xl font-bold mb-4 text-white group-hover:text-pink-400 transition-colors">Job Opportunities</h3>
+                  <p className="text-gray-400 leading-relaxed">Apply to exclusive job listings specifically curated for new graduates and entry-level positions</p>
+                </div>
               </div>
+            </div>
+            
+            {/* Divider */}
+            <div className="flex justify-center mb-8">
+              <div className="h-[1px] w-32 bg-gradient-to-r from-transparent via-csgreen/50 to-transparent"></div>
             </div>
             
             {/* Scroll indicator */}
@@ -131,53 +162,93 @@ const Index = () => {
           </div>
         </section>
         
-        {/* Mentors section - with improved UI */}
+        {/* Mentors section - cleaned up and improved */}
         <section className="full-screen-section px-6 md:px-12 relative mentors-section">
           <div className="container mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-16">
-              <div className="relative flex justify-center md:justify-start floating" style={{ gap: 24 }}>
-                <div className="w-64 h-64 bg-cssecondary rounded-xl relative z-10 glass border border-csgreen/30" style={{ marginRight: '-5rem' }}></div>
-                <div className="w-64 h-64 bg-csgreen/10 rounded-xl border border-csgreen/20"></div>
-              </div>
-              <div>
-                <h2 className="text-4xl font-bold mb-4">Mentors That Make a Difference</h2>
-                <p className="text-gray-400 mb-6">
-                  Learn from professionals who have been where you are and successfully navigated the tech industry. Our mentors provide personalized guidance to help you achieve your career goals.
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center mb-20">
+              <div className="order-2 md:order-1">
+                <div className="inline-block bg-csgreen/10 border border-csgreen/30 rounded-full px-6 py-2 mb-6">
+                  <span className="text-csgreen font-semibold text-sm uppercase tracking-wider">Expert Guidance</span>
+                </div>
+                <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+                  Mentors That Make a Difference
+                </h2>
+                <p className="text-gray-400 text-lg mb-8 leading-relaxed">
+                  Learn from industry professionals who have successfully navigated the tech landscape. Our mentors provide personalized guidance, career insights, and practical advice to help you achieve your goals faster.
                 </p>
+                <div className="space-y-4 mb-8">
+                  <div className="flex items-center gap-3">
+                    <div className="w-2 h-2 bg-csgreen rounded-full"></div>
+                    <span className="text-gray-300">1-on-1 personalized sessions</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-2 h-2 bg-csgreen rounded-full"></div>
+                    <span className="text-gray-300">Industry-specific career guidance</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-2 h-2 bg-csgreen rounded-full"></div>
+                    <span className="text-gray-300">Portfolio and resume reviews</span>
+                  </div>
+                </div>
                 <Link to="/mentors">
-                  <Button className="bg-gradient-to-r from-csgreen to-blue-400 text-black hover:opacity-90 glow">
-                    Browse Mentors
+                  <Button className="bg-gradient-to-r from-csgreen to-blue-400 text-black hover:opacity-90 px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:scale-105">
+                    Browse All Mentors <ArrowRight size={20} className="ml-2" />
                   </Button>
                 </Link>
               </div>
+              
+              <div className="order-1 md:order-2 relative">
+                <div className="absolute -inset-4 bg-gradient-to-r from-csgreen/20 to-blue-400/20 rounded-3xl blur-2xl"></div>
+                <div className="relative bg-cssecondary/50 backdrop-blur-sm rounded-2xl p-8 border border-gray-800/50">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-4">
+                      <div className="w-full aspect-square bg-gradient-to-br from-csgreen/20 to-blue-400/20 rounded-xl flex items-center justify-center">
+                        <Users size={48} className="text-csgreen" />
+                      </div>
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-white">500+</div>
+                        <div className="text-sm text-gray-400">Expert Mentors</div>
+                      </div>
+                    </div>
+                    <div className="space-y-4">
+                      <div className="w-full aspect-square bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-xl flex items-center justify-center">
+                        <Award size={48} className="text-blue-400" />
+                      </div>
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-white">10k+</div>
+                        <div className="text-sm text-gray-400">Success Stories</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {/* Updated mentor cards with real Unsplash photos */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
               <MentorCard 
                 name="Sarah Chen"
                 role="Senior Software Engineer at Google"
                 rating={5.0}
                 reviewCount={342}
-                imageUrl="https://images.unsplash.com/photo-1494790108755-2616b612b5c5?w=400&h=400&fit=crop&crop=face"
+                imageUrl="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop&crop=face"
               />
               <MentorCard 
                 name="Marcus Johnson"
-                role="Full Stack Developer at Microsoft"
+                role="Tech Lead at Microsoft"
                 rating={4.9}
                 reviewCount={217}
                 imageUrl="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face"
               />
               <MentorCard 
                 name="Emily Rodriguez"
-                role="Tech Lead at Meta"
+                role="Senior Product Manager at Meta"
                 rating={5.0}
                 reviewCount={189}
                 imageUrl="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face"
               />
               <MentorCard 
                 name="David Park"
-                role="Senior DevOps Engineer at Amazon"
+                role="Principal Engineer at Amazon"
                 rating={4.8}
                 reviewCount={156}
                 imageUrl="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face"
@@ -195,9 +266,6 @@ const Index = () => {
               </button>
             </div>
           </div>
-          
-          {/* Decorative mesh grid */}
-          <div className="absolute bottom-0 left-0 right-0 h-40 opacity-30 bg-gradient-to-t from-cssecondary to-transparent"></div>
         </section>
         
         {/* Resume Builder section - with web3 styling and sample resume */}
