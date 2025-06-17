@@ -10,6 +10,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Mentors from "./pages/Mentors";
 import Courses from "./pages/Courses";
+import CourseDetail from "./pages/CourseDetail";
 import Resume from "./pages/Resume";
 import NotFound from "./pages/NotFound";
 import Jobs from "./pages/Jobs";
@@ -32,6 +33,7 @@ const App = () => (
             <Route path="/signup" element={<Signup />} />
             <Route path="/mentors" element={<Mentors />} />
             <Route path="/courses" element={<Courses />} />
+            <Route path="/courses/:courseId" element={<CourseDetail />} />
             <Route path="/resume" element={<Resume />} />
             <Route path="/jobs" element={<Jobs />} />
             <Route path="/dashboard" element={<Dashboard />} />
