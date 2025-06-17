@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
@@ -261,57 +262,64 @@ const Index = () => {
           </div>
         </section>
         
-        {/* Resume Builder section - with web3 styling and sample resume */}
-        <section className="full-screen-section px-6 md:px-12 bg-cssecondary relative resume-builder-section">
-          <div className="container mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-              <div>
-                <h2 className="text-4xl font-bold mb-4">Build a Resume That Gets You Hired</h2>
-                <p className="text-gray-400 mb-6">
+        {/* Resume Builder section - optimized for no vertical scrolling */}
+        <section className="full-screen-section px-6 md:px-12 bg-cssecondary relative resume-builder-section overflow-hidden">
+          <div className="container mx-auto h-full flex items-center">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-center w-full">
+              <div className="space-y-4 md:space-y-6">
+                <h2 className="text-3xl md:text-4xl font-bold">Build a Resume That Gets You Hired</h2>
+                <p className="text-gray-400 text-base md:text-lg leading-relaxed">
                   Our AI-powered resume builder helps you create professional, ATS-friendly resumes that highlight your strengths and stand out to recruiters.
                 </p>
-                <ul className="space-y-4 mb-8">
+                <ul className="space-y-3 md:space-y-4">
                   <li className="flex items-start gap-3 group">
-                    <div className="mt-1 text-csgreen bg-csgreen/10 p-2 rounded-full border border-csgreen/30 group-hover:bg-csgreen/30 transition-all"><Code size={18} /></div>
-                    <span className="pt-1">Tailored for tech roles with industry-specific templates</span>
+                    <div className="mt-1 text-csgreen bg-csgreen/10 p-2 rounded-full border border-csgreen/30 group-hover:bg-csgreen/30 transition-all flex-shrink-0">
+                      <Code size={16} />
+                    </div>
+                    <span className="pt-1 text-sm md:text-base">Tailored for tech roles with industry-specific templates</span>
                   </li>
                   <li className="flex items-start gap-3 group">
-                    <div className="mt-1 text-csgreen bg-csgreen/10 p-2 rounded-full border border-csgreen/30 group-hover:bg-csgreen/30 transition-all"><Award size={18} /></div>
-                    <span className="pt-1">AI suggestions to optimize your content for specific job listings</span>
+                    <div className="mt-1 text-csgreen bg-csgreen/10 p-2 rounded-full border border-csgreen/30 group-hover:bg-csgreen/30 transition-all flex-shrink-0">
+                      <Award size={16} />
+                    </div>
+                    <span className="pt-1 text-sm md:text-base">AI suggestions to optimize your content for specific job listings</span>
                   </li>
                 </ul>
-                <Link to="/resume">
-                  <Button className="bg-gradient-to-r from-csgreen to-blue-400 text-black hover:opacity-90 glow">
-                    Create Your Resume <ArrowRight size={16} className="ml-2" />
-                  </Button>
-                </Link>
+                <div className="pt-2">
+                  <Link to="/resume">
+                    <Button className="bg-gradient-to-r from-csgreen to-blue-400 text-black hover:opacity-90 glow">
+                      Create Your Resume <ArrowRight size={16} className="ml-2" />
+                    </Button>
+                  </Link>
+                </div>
               </div>
-              <div className="relative">
-                {/* Sample resume image */}
-                <div className="bg-white rounded-xl shadow-2xl p-6 web3-card border border-csgreen/20 max-w-md mx-auto">
+              
+              <div className="relative flex justify-center">
+                {/* Sample resume image - constrained height */}
+                <div className="bg-white rounded-xl shadow-2xl p-4 md:p-6 web3-card border border-csgreen/20 max-w-xs md:max-w-sm w-full">
                   <img 
                     src="https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=600&h=800&fit=crop" 
                     alt="Professional Resume Sample" 
-                    className="w-full h-auto rounded-lg"
+                    className="w-full h-auto rounded-lg max-h-[300px] md:max-h-[400px] object-cover"
                   />
                 </div>
                 
-                {/* Decorative elements */}
-                <div className="absolute -top-10 -right-10 w-20 h-20 rounded-full border border-csgreen/30 opacity-30"></div>
-                <div className="absolute -bottom-10 -left-10 w-16 h-16 rounded-full border border-blue-400/30 opacity-30"></div>
+                {/* Decorative elements - smaller and positioned to not cause overflow */}
+                <div className="absolute -top-4 -right-4 w-12 h-12 rounded-full border border-csgreen/30 opacity-30"></div>
+                <div className="absolute -bottom-4 -left-4 w-10 h-10 rounded-full border border-blue-400/30 opacity-30"></div>
               </div>
             </div>
-            
-            {/* Scroll indicator */}
-            <div className="section-divider">
-              <button 
-                onClick={() => document.querySelector('.pricing-section')?.scrollIntoView({ behavior: 'smooth' })} 
-                className="text-csgreen hover:text-white transition-colors scroll-indicator"
-                aria-label="Scroll to next section"
-              >
-                <ChevronDown size={36} />
-              </button>
-            </div>
+          </div>
+          
+          {/* Scroll indicator */}
+          <div className="section-divider">
+            <button 
+              onClick={() => document.querySelector('.pricing-section')?.scrollIntoView({ behavior: 'smooth' })} 
+              className="text-csgreen hover:text-white transition-colors scroll-indicator"
+              aria-label="Scroll to next section"
+            >
+              <ChevronDown size={36} />
+            </button>
           </div>
         </section>
         
