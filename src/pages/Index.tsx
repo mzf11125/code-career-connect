@@ -226,6 +226,7 @@ const Index = () => {
             
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
               <MentorCard 
+                id="demo-sarah-chen"
                 name="Sarah Chen"
                 role="Senior Software Engineer at Google"
                 rating={5.0}
@@ -233,6 +234,7 @@ const Index = () => {
                 imageUrl="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop&crop=face"
               />
               <MentorCard 
+                id="demo-marcus-johnson"
                 name="Marcus Johnson"
                 role="Tech Lead at Microsoft"
                 rating={4.9}
@@ -240,6 +242,7 @@ const Index = () => {
                 imageUrl="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face"
               />
               <MentorCard 
+                id="demo-emily-rodriguez"
                 name="Emily Rodriguez"
                 role="Senior Product Manager at Meta"
                 rating={5.0}
@@ -247,6 +250,7 @@ const Index = () => {
                 imageUrl="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face"
               />
               <MentorCard 
+                id="demo-david-park"
                 name="David Park"
                 role="Principal Engineer at Amazon"
                 rating={4.8}

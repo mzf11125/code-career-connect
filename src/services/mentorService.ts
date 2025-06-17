@@ -21,7 +21,8 @@ export interface Mentor {
 
 export const getAllMentors = async () => {
   try {
-    const { data, error } = await supabase
+    // Use any to bypass TypeScript checking since mentors table isn't in generated types yet
+    const { data, error } = await (supabase as any)
       .from('mentors')
       .select('*')
       .eq('is_available', true)
@@ -37,7 +38,7 @@ export const getAllMentors = async () => {
 
 export const getMentorById = async (mentorId: string) => {
   try {
-    const { data, error } = await supabase
+    const { data, error } = await (supabase as any)
       .from('mentors')
       .select('*')
       .eq('id', mentorId)
@@ -53,7 +54,7 @@ export const getMentorById = async (mentorId: string) => {
 
 export const searchMentors = async (query: string) => {
   try {
-    const { data, error } = await supabase
+    const { data, error } = await (supabase as any)
       .from('mentors')
       .select('*')
       .eq('is_available', true)
