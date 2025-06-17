@@ -24,18 +24,23 @@ export const createSession = async (sessionData: {
   notes?: string;
 }) => {
   try {
+    // Get current user
+    const { data: user } = await supabase.auth.getUser();
+    if (!user.user) throw new Error('Not authenticated');
+
     // Generate a Google Meet link (simplified - in production you'd use Google Meet API)
     const meetLink = `https://meet.google.com/${Math.random().toString(36).substring(2, 15)}`;
     
     const { data, error } = await supabase
       .from('sessions')
-      .insert([
-        {
-          ...sessionData,
-          meet_link: meetLink,
-          duration_minutes: sessionData.duration_minutes || 60,
-        }
-      ])
+      .insert({
+        mentor_id: sessionData.mentor_id,
+        learner_id: user.user.id,
+        scheduled_at: sessionData.scheduled_at,
+        duration_minutes: sessionData.duration_minutes || 60,
+        meet_link: meetLink,
+        notes: sessionData.notes,
+      })
       .select()
       .single();
 
@@ -44,13 +49,11 @@ export const createSession = async (sessionData: {
     // Create a chat session for the booking
     await supabase
       .from('chat_sessions')
-      .insert([
-        {
-          mentor_id: sessionData.mentor_id,
-          learner_id: (await supabase.auth.getUser()).data.user?.id,
-          title: `Session Discussion - ${new Date(sessionData.scheduled_at).toLocaleDateString()}`,
-        }
-      ]);
+      .insert({
+        mentor_id: sessionData.mentor_id,
+        learner_id: user.user.id,
+        title: `Session Discussion - ${new Date(sessionData.scheduled_at).toLocaleDateString()}`,
+      });
 
     return { data, error: null };
   } catch (error) {
