@@ -17,7 +17,7 @@ const Mentors = () => {
       role: "Senior Software Engineer",
       rating: 5.0,
       reviewCount: 342,
-      imageUrl: "/public/lovable-uploads/3dac3197-5287-43e6-8bb7-1d05f7a74f8c.png"
+      imageUrl: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=face"
     },
     {
       id: 2,
@@ -25,7 +25,7 @@ const Mentors = () => {
       role: "Product Manager",
       rating: 4.9,
       reviewCount: 217,
-      imageUrl: "/public/lovable-uploads/75c315fd-034d-4d96-8d6f-6daf038e0965.png"
+      imageUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face"
     },
     {
       id: 3,
@@ -33,7 +33,7 @@ const Mentors = () => {
       role: "Tech Lead",
       rating: 5.0,
       reviewCount: 189,
-      imageUrl: "/public/lovable-uploads/30dbc055-777d-4b4b-9228-2fc4cfa077db.png"
+      imageUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face"
     },
     {
       id: 4,
@@ -41,7 +41,7 @@ const Mentors = () => {
       role: "UX Designer",
       rating: 4.8,
       reviewCount: 156,
-      imageUrl: "/public/lovable-uploads/8f9f5200-1a35-4a55-ac5d-998a35145b4c.png"
+      imageUrl: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face"
     },
     {
       id: 5,
@@ -49,7 +49,7 @@ const Mentors = () => {
       role: "Full Stack Developer",
       rating: 4.7,
       reviewCount: 125,
-      imageUrl: "/public/lovable-uploads/8f9f5200-1a35-4a55-ac5d-998a35145b4c.png"
+      imageUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&crop=face"
     },
     {
       id: 6,
@@ -57,7 +57,7 @@ const Mentors = () => {
       role: "Data Scientist",
       rating: 5.0,
       reviewCount: 98,
-      imageUrl: "/public/lovable-uploads/3dac3197-5287-43e6-8bb7-1d05f7a74f8c.png"
+      imageUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop&crop=face"
     },
     {
       id: 7,
@@ -65,7 +65,7 @@ const Mentors = () => {
       role: "Mobile Developer",
       rating: 4.9,
       reviewCount: 112,
-      imageUrl: "/public/lovable-uploads/30dbc055-777d-4b4b-9228-2fc4cfa077db.png"
+      imageUrl: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop&crop=face"
     },
     {
       id: 8,
@@ -73,7 +73,7 @@ const Mentors = () => {
       role: "DevOps Engineer",
       rating: 4.8,
       reviewCount: 89,
-      imageUrl: "/public/lovable-uploads/75c315fd-034d-4d96-8d6f-6daf038e0965.png"
+      imageUrl: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop&crop=face"
     }
   ];
   
@@ -83,30 +83,35 @@ const Mentors = () => {
   );
   
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-csdark via-cssecondary to-csdark">
       <Navbar />
       
       <main className="flex-grow">
-        <section className="py-16 px-6 md:px-12">
-          <div className="container mx-auto">
-            <h1 className="text-4xl font-bold text-center mb-4">Meet our mentors</h1>
-            <p className="text-gray-400 text-center mb-12 max-w-2xl mx-auto">
-              Connect with experienced professionals who can guide you through your CS career journey
-            </p>
+        <section className="py-20 px-6 md:px-12">
+          <div className="container mx-auto max-w-7xl">
+            <div className="text-center mb-16">
+              <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-csgreen to-blue-400 bg-clip-text text-transparent">
+                Meet our mentors
+              </h1>
+              <p className="text-gray-300 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
+                Connect with experienced professionals who can guide you through your CS career journey. 
+                Get personalized mentorship from industry experts who've been where you want to go.
+              </p>
+            </div>
             
-            <div className="max-w-md mx-auto mb-12">
+            <div className="max-w-2xl mx-auto mb-16">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
                 <Input 
-                  placeholder="Search mentors by name or role..."
-                  className="pl-10 bg-cssecondary border-gray-800"
+                  placeholder="Search mentors by name or expertise..."
+                  className="pl-12 pr-4 py-4 text-lg bg-cssecondary/80 border-gray-700 rounded-2xl backdrop-blur-sm hover:border-csgreen/50 focus:border-csgreen transition-all duration-300"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-16">
               {filteredMentors.map(mentor => (
                 <MentorCard 
                   key={mentor.id}
@@ -119,9 +124,20 @@ const Mentors = () => {
               ))}
             </div>
             
-            <div className="flex justify-center">
-              <Button className="bg-cssecondary hover:bg-gray-800 mr-4">View All</Button>
-              <Button className="bg-csgreen text-black hover:bg-csgreen/90">Choose Plan</Button>
+            {filteredMentors.length === 0 && (
+              <div className="text-center py-16">
+                <div className="text-gray-400 text-xl mb-4">No mentors found</div>
+                <p className="text-gray-500">Try adjusting your search terms</p>
+              </div>
+            )}
+            
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <Button className="bg-cssecondary hover:bg-gray-700 border border-gray-600 px-8 py-3 rounded-xl transition-all duration-300">
+                View All Mentors
+              </Button>
+              <Button className="bg-gradient-to-r from-csgreen to-blue-400 text-black hover:opacity-90 px-8 py-3 rounded-xl font-semibold transition-all duration-300">
+                Choose Your Plan
+              </Button>
             </div>
           </div>
         </section>
