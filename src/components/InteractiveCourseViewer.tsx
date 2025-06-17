@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Check, Play, BookOpen, CircleCheck, CirclePlay, MousePointerClick, BookText, ExternalLink, Video, FileText, Brain } from "lucide-react";
@@ -5,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { CourseData, getCourseProgress, updateModuleProgress, CourseProgress } from "@/services/courseService";
+import { CourseData, getCourseProgress, updateModuleProgress, CourseProgress, saveCourse } from "@/services/courseService";
 import { toast } from "sonner";
 import { marked } from "marked";
 
@@ -216,6 +217,7 @@ export function InteractiveCourseViewer({ courseData, courseId, markdown }: Inte
   const [activeTab, setActiveTab] = useState("content");
   const [progress, setProgress] = useState<CourseProgress[]>([]);
   const [loading, setLoading] = useState(false);
+  const [enhancedCourseData, setEnhancedCourseData] = useState<CourseData | null>(null);
 
   // Load user progress when component mounts
   useEffect(() => {
@@ -223,6 +225,75 @@ export function InteractiveCourseViewer({ courseData, courseId, markdown }: Inte
       loadProgress();
     }
   }, [courseId]);
+
+  // Initialize and potentially save enhanced course data
+  useEffect(() => {
+    initializeCourseData();
+  }, [courseData]);
+
+  const initializeCourseData = async () => {
+    let initialCourseData = courseData || {
+      title: "Complete Programming Course",
+      description: "Comprehensive course with real-world projects and industry-standard practices",
+      modules: generateEducationalContent("Complete Programming Course", "Programming"),
+      goals: [],
+      estimatedDuration: "4 weeks"
+    };
+
+    // If courseData exists but doesn't have modules, generate them based on the actual course data
+    if (courseData && (!courseData.modules || courseData.modules.length === 0)) {
+      // Enhanced logic to detect course topic from the course data
+      let topicToUse = courseData.title;
+      
+      // Check if the course object has content or description that might contain topic info
+      if (courseData.description) {
+        topicToUse = courseData.description;
+      }
+      
+      // Enhanced topic detection from title
+      const titleLower = courseData.title.toLowerCase();
+      if (titleLower.includes('python')) {
+        topicToUse = 'Python Programming';
+      } else if (titleLower.includes('web development') || titleLower.includes('html') || titleLower.includes('css') || titleLower.includes('javascript')) {
+        topicToUse = 'Web Development';
+      } else if (titleLower.includes('react')) {
+        topicToUse = 'React Development';
+      } else if (titleLower.includes('data')) {
+        topicToUse = 'Data Science';
+      }
+      
+      const generatedModules = generateEducationalContent(courseData.title, topicToUse);
+      
+      // Create enhanced course data with generated modules
+      initialCourseData = {
+        ...courseData,
+        modules: generatedModules,
+        estimatedDuration: "4 weeks"
+      };
+
+      // Save the enhanced course data to Supabase if we have a courseId and user is authenticated
+      if (courseId) {
+        await saveEnhancedCourseData(initialCourseData, topicToUse);
+      }
+    }
+
+    setEnhancedCourseData(initialCourseData);
+  };
+
+  const saveEnhancedCourseData = async (enhancedData: CourseData, topic: string) => {
+    try {
+      const { data, error } = await saveCourse(topic, enhancedData);
+      if (error) {
+        console.error('Error saving enhanced course data:', error);
+        toast.error("Failed to save course enhancements");
+      } else {
+        console.log('Enhanced course data saved successfully:', data);
+        toast.success("Course content enhanced and saved!");
+      }
+    } catch (err) {
+      console.error('Unexpected error saving enhanced course:', err);
+    }
+  };
 
   const loadProgress = async () => {
     if (!courseId) return;
@@ -269,48 +340,14 @@ export function InteractiveCourseViewer({ courseData, courseId, markdown }: Inte
     setLoading(false);
   };
 
-  // Create enhanced course data with educational modules
-  const enhancedCourseData = courseData || {
-    title: "Complete Programming Course",
-    description: "Comprehensive course with real-world projects and industry-standard practices",
-    modules: generateEducationalContent("Complete Programming Course", "Programming"),
-    goals: [],
-    estimatedDuration: "4 weeks"
-  };
-
-  // If courseData exists but doesn't have modules, generate them based on the actual course data
-  if (courseData && (!courseData.modules || courseData.modules.length === 0)) {
-    // Enhanced logic to detect course topic from the course data
-    let topicToUse = courseData.title;
-    
-    // Check if the course object has content or description that might contain topic info
-    if (courseData.description) {
-      topicToUse = courseData.description;
-    }
-    
-    // Enhanced topic detection from title
-    const titleLower = courseData.title.toLowerCase();
-    if (titleLower.includes('python')) {
-      topicToUse = 'Python Programming';
-    } else if (titleLower.includes('web development') || titleLower.includes('html') || titleLower.includes('css') || titleLower.includes('javascript')) {
-      topicToUse = 'Web Development';
-    } else if (titleLower.includes('react')) {
-      topicToUse = 'React Development';
-    } else if (titleLower.includes('data')) {
-      topicToUse = 'Data Science';
-    }
-    
-    enhancedCourseData.modules = generateEducationalContent(courseData.title, topicToUse);
-  }
-
   const calculateProgressPercentage = (): number => {
     if (!enhancedCourseData || enhancedCourseData.modules.length === 0) return 0;
     const completedModules = enhancedCourseData.modules.filter(module => isModuleCompleted(module.id)).length;
     return (completedModules / enhancedCourseData.modules.length) * 100;
   };
 
-  // Fallback to markdown display if no course data is available and no courseData
-  if (!courseData && !courseId) {
+  // Fallback to markdown display if no course data is available
+  if (!enhancedCourseData) {
     return (
       <div className="bg-cssecondary rounded-lg p-6">
         {markdown ? (
