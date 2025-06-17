@@ -364,6 +364,45 @@ export type Database = {
           },
         ]
       }
+      sessions: {
+        Row: {
+          created_at: string
+          duration_minutes: number
+          id: string
+          learner_id: string
+          meet_link: string | null
+          mentor_id: string
+          notes: string | null
+          scheduled_at: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          duration_minutes?: number
+          id?: string
+          learner_id: string
+          meet_link?: string | null
+          mentor_id: string
+          notes?: string | null
+          scheduled_at: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          duration_minutes?: number
+          id?: string
+          learner_id?: string
+          meet_link?: string | null
+          mentor_id?: string
+          notes?: string | null
+          scheduled_at?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_resumes: {
         Row: {
           content: Json

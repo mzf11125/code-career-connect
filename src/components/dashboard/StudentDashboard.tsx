@@ -13,10 +13,12 @@ import {
   MessageCircle,
   Calendar,
   TrendingUp,
-  Target
+  Target,
+  Video
 } from 'lucide-react';
 import { ChatSessionList } from '@/components/chat/ChatSessionList';
 import { ChatInterface } from '@/components/chat/ChatInterface';
+import { SessionsList } from '@/components/session/SessionsList';
 
 export const StudentDashboard = () => {
   const [selectedChatId, setSelectedChatId] = useState<string>('');
@@ -103,12 +105,15 @@ export const StudentDashboard = () => {
 
       {/* Main Content Tabs */}
       <Tabs defaultValue="overview" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-4 bg-gray-800">
+        <TabsList className="grid w-full grid-cols-5 bg-gray-800">
           <TabsTrigger value="overview" className="data-[state=active]:bg-csgreen data-[state=active]:text-black">
             Overview
           </TabsTrigger>
           <TabsTrigger value="courses" className="data-[state=active]:bg-csgreen data-[state=active]:text-black">
             Courses
+          </TabsTrigger>
+          <TabsTrigger value="sessions" className="data-[state=active]:bg-csgreen data-[state=active]:text-black">
+            Sessions
           </TabsTrigger>
           <TabsTrigger value="mentors" className="data-[state=active]:bg-csgreen data-[state=active]:text-black">
             Mentors
@@ -188,6 +193,10 @@ export const StudentDashboard = () => {
               </div>
             </CardContent>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="sessions" className="space-y-6">
+          <SessionsList userType="learner" />
         </TabsContent>
 
         <TabsContent value="mentors" className="space-y-6">

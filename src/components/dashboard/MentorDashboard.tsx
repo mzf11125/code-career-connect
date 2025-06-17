@@ -3,8 +3,10 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Users, MessageCircle, CheckCircle, Clock } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Users, MessageCircle, CheckCircle, Clock, Calendar, Video } from 'lucide-react';
 import { getMentorRequests, getChatSessions, updateMentorRequestStatus } from '@/services/mentorshipService';
+import { SessionsList } from '@/components/session/SessionsList';
 import { toast } from 'sonner';
 
 export const MentorDashboard = () => {
@@ -112,88 +114,172 @@ export const MentorDashboard = () => {
         </Card>
       </div>
 
-      {/* Pending Mentor Requests */}
-      <Card className="bg-gray-900/50 border-gray-800">
-        <CardHeader>
-          <CardTitle className="text-white">Pending Mentor Requests</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {pendingRequests === 0 ? (
-            <p className="text-gray-400">No pending requests.</p>
-          ) : (
-            <div className="space-y-4">
-              {mentorRequests
-                .filter(req => req.status === 'pending')
-                .map((request) => (
-                  <div key={request.id} className="flex items-center justify-between p-4 bg-gray-800/50 rounded-lg">
-                    <div className="flex-1">
-                      <h3 className="font-medium text-white">Mentorship Request</h3>
-                      <p className="text-sm text-gray-400">
-                        {request.message || 'No message provided'}
-                      </p>
-                      <p className="text-xs text-gray-500 mt-1">
-                        Requested: {new Date(request.created_at).toLocaleDateString()}
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => handleRequestAction(request.id, 'rejected')}
-                        className="border-red-600 text-red-600 hover:bg-red-600 hover:text-white"
-                      >
-                        Decline
-                      </Button>
-                      <Button
-                        size="sm"
-                        onClick={() => handleRequestAction(request.id, 'accepted')}
-                        className="bg-csgreen text-black hover:bg-csgreen/90"
-                      >
-                        Accept
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-            </div>
-          )}
-        </CardContent>
-      </Card>
+      {/* Main Content Tabs */}
+      <Tabs defaultValue="overview" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-4 bg-gray-800">
+          <TabsTrigger value="overview" className="data-[state=active]:bg-csgreen data-[state=active]:text-black">
+            Overview
+          </TabsTrigger>
+          <TabsTrigger value="sessions" className="data-[state=active]:bg-csgreen data-[state=active]:text-black">
+            Sessions
+          </TabsTrigger>
+          <TabsTrigger value="requests" className="data-[state=active]:bg-csgreen data-[state=active]:text-black">
+            Requests
+          </TabsTrigger>
+          <TabsTrigger value="chats" className="data-[state=active]:bg-csgreen data-[state=active]:text-black">
+            Messages
+          </TabsTrigger>
+        </TabsList>
 
-      {/* Active Chat Sessions */}
-      <Card className="bg-gray-900/50 border-gray-800">
-        <CardHeader>
-          <CardTitle className="text-white">Active Mentoring Sessions</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {activeSessions === 0 ? (
-            <p className="text-gray-400">No active sessions.</p>
-          ) : (
-            <div className="space-y-4">
-              {chatSessions
-                .filter(session => session.status === 'active')
-                .slice(0, 5)
-                .map((session) => (
-                  <div key={session.id} className="flex items-center justify-between p-4 bg-gray-800/50 rounded-lg">
-                    <div className="flex-1">
-                      <h3 className="font-medium text-white">{session.title}</h3>
-                      <p className="text-sm text-gray-400">
-                        Last activity: {new Date(session.last_message_at).toLocaleDateString()}
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      {session.unread_count_mentor > 0 && (
-                        <Badge variant="destructive">{session.unread_count_mentor}</Badge>
+        <TabsContent value="overview" className="space-y-6">
+          {/* Pending Mentor Requests */}
+          <Card className="bg-gray-900/50 border-gray-800">
+            <CardHeader>
+              <CardTitle className="text-white">Recent Activity</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {pendingRequests === 0 ? (
+                <p className="text-gray-400">No pending requests.</p>
+              ) : (
+                <div className="space-y-4">
+                  {mentorRequests
+                    .filter(req => req.status === 'pending')
+                    .slice(0, 3)
+                    .map((request) => (
+                      <div key={request.id} className="flex items-center justify-between p-4 bg-gray-800/50 rounded-lg">
+                        <div className="flex-1">
+                          <h3 className="font-medium text-white">New Mentorship Request</h3>
+                          <p className="text-sm text-gray-400">
+                            {request.message || 'No message provided'}
+                          </p>
+                          <p className="text-xs text-gray-500 mt-1">
+                            Requested: {new Date(request.created_at).toLocaleDateString()}
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => handleRequestAction(request.id, 'rejected')}
+                            className="border-red-600 text-red-600 hover:bg-red-600 hover:text-white"
+                          >
+                            Decline
+                          </Button>
+                          <Button
+                            size="sm"
+                            onClick={() => handleRequestAction(request.id, 'accepted')}
+                            className="bg-csgreen text-black hover:bg-csgreen/90"
+                          >
+                            Accept
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="sessions" className="space-y-6">
+          <SessionsList userType="mentor" />
+        </TabsContent>
+
+        <TabsContent value="requests" className="space-y-6">
+          <Card className="bg-gray-900/50 border-gray-800">
+            <CardHeader>
+              <CardTitle className="text-white">Mentorship Requests</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {mentorRequests.length === 0 ? (
+                <p className="text-gray-400">No requests yet.</p>
+              ) : (
+                <div className="space-y-4">
+                  {mentorRequests.map((request) => (
+                    <div key={request.id} className="flex items-center justify-between p-4 bg-gray-800/50 rounded-lg">
+                      <div className="flex-1">
+                        <h3 className="font-medium text-white">Mentorship Request</h3>
+                        <p className="text-sm text-gray-400">
+                          {request.message || 'No message provided'}
+                        </p>
+                        <div className="flex items-center gap-4 mt-2">
+                          <p className="text-xs text-gray-500">
+                            Requested: {new Date(request.created_at).toLocaleDateString()}
+                          </p>
+                          <Badge className={
+                            request.status === 'pending' ? 'bg-orange-100 text-orange-800' :
+                            request.status === 'accepted' ? 'bg-green-100 text-green-800' :
+                            'bg-red-100 text-red-800'
+                          }>
+                            {request.status}
+                          </Badge>
+                        </div>
+                      </div>
+                      {request.status === 'pending' && (
+                        <div className="flex items-center gap-2">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => handleRequestAction(request.id, 'rejected')}
+                            className="border-red-600 text-red-600 hover:bg-red-600 hover:text-white"
+                          >
+                            Decline
+                          </Button>
+                          <Button
+                            size="sm"
+                            onClick={() => handleRequestAction(request.id, 'accepted')}
+                            className="bg-csgreen text-black hover:bg-csgreen/90"
+                          >
+                            Accept
+                          </Button>
+                        </div>
                       )}
-                      <Button size="sm" variant="outline">
-                        Open Chat
-                      </Button>
                     </div>
-                  </div>
-                ))}
-            </div>
-          )}
-        </CardContent>
-      </Card>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="chats" className="space-y-6">
+          {/* Active Chat Sessions */}
+          <Card className="bg-gray-900/50 border-gray-800">
+            <CardHeader>
+              <CardTitle className="text-white">Active Mentoring Sessions</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {activeSessions === 0 ? (
+                <p className="text-gray-400">No active sessions.</p>
+              ) : (
+                <div className="space-y-4">
+                  {chatSessions
+                    .filter(session => session.status === 'active')
+                    .slice(0, 10)
+                    .map((session) => (
+                      <div key={session.id} className="flex items-center justify-between p-4 bg-gray-800/50 rounded-lg">
+                        <div className="flex-1">
+                          <h3 className="font-medium text-white">{session.title}</h3>
+                          <p className="text-sm text-gray-400">
+                            Last activity: {new Date(session.last_message_at).toLocaleDateString()}
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          {session.unread_count_mentor > 0 && (
+                            <Badge variant="destructive">{session.unread_count_mentor}</Badge>
+                          )}
+                          <Button size="sm" variant="outline">
+                            Open Chat
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };
