@@ -38,7 +38,7 @@ export const RoleSelection = ({ onComplete }: RoleSelectionProps) => {
       toast.error('Failed to set roles: ' + error.message);
     } else {
       toast.success('Roles set successfully!');
-      navigate('/');
+      navigate('/dashboard');
       onComplete();
     }
     setLoading(false);
@@ -54,16 +54,16 @@ export const RoleSelection = ({ onComplete }: RoleSelectionProps) => {
       <div className="space-y-4">
         <Card 
           className={`p-6 cursor-pointer border-2 transition-all ${
-            selectedRoles.includes('student') 
+            selectedRoles.includes('learner') 
               ? 'border-csgreen bg-csgreen/10' 
               : 'border-gray-800 hover:border-gray-700'
           }`}
-          onClick={() => toggleRole('student')}
+          onClick={() => toggleRole('learner')}
         >
           <div className="flex items-center gap-4">
-            <BookOpen size={24} className={selectedRoles.includes('student') ? 'text-csgreen' : 'text-gray-400'} />
+            <BookOpen size={24} className={selectedRoles.includes('learner') ? 'text-csgreen' : 'text-gray-400'} />
             <div>
-              <h3 className="font-semibold">Student</h3>
+              <h3 className="font-semibold">Learner</h3>
               <p className="text-sm text-gray-400">Access courses, mentorship, and career resources</p>
             </div>
           </div>

@@ -9,6 +9,80 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      chat_sessions: {
+        Row: {
+          created_at: string
+          id: string
+          last_message_at: string | null
+          learner_id: string
+          mentor_id: string
+          status: string
+          title: string
+          unread_count_learner: number | null
+          unread_count_mentor: number | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          last_message_at?: string | null
+          learner_id: string
+          mentor_id: string
+          status?: string
+          title?: string
+          unread_count_learner?: number | null
+          unread_count_mentor?: number | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          last_message_at?: string | null
+          learner_id?: string
+          mentor_id?: string
+          status?: string
+          title?: string
+          unread_count_learner?: number | null
+          unread_count_mentor?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      course_enrollments: {
+        Row: {
+          course_id: string
+          enrolled_at: string
+          id: string
+          learner_id: string
+          progress_percentage: number | null
+          status: string
+        }
+        Insert: {
+          course_id: string
+          enrolled_at?: string
+          id?: string
+          learner_id: string
+          progress_percentage?: number | null
+          status?: string
+        }
+        Update: {
+          course_id?: string
+          enrolled_at?: string
+          id?: string
+          learner_id?: string
+          progress_percentage?: number | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "course_enrollments_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       course_progress: {
         Row: {
           completed_at: string | null
@@ -82,6 +156,68 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      mentor_requests: {
+        Row: {
+          created_at: string
+          id: string
+          learner_id: string
+          mentor_id: string
+          message: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          learner_id: string
+          mentor_id: string
+          message?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          learner_id?: string
+          mentor_id?: string
+          message?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      messages: {
+        Row: {
+          chat_session_id: string
+          content: string
+          created_at: string
+          id: string
+          sender_id: string
+        }
+        Insert: {
+          chat_session_id: string
+          content: string
+          created_at?: string
+          id?: string
+          sender_id: string
+        }
+        Update: {
+          chat_session_id?: string
+          content?: string
+          created_at?: string
+          id?: string
+          sender_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_chat_session_id_fkey"
+            columns: ["chat_session_id"]
+            isOneToOne: false
+            referencedRelation: "chat_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {
@@ -303,10 +439,13 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: { _user_id: string; _role: string }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "student" | "mentor" | "learner"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -421,6 +560,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["student", "mentor", "learner"],
+    },
   },
 } as const

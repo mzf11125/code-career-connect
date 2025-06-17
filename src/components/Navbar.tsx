@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Logo } from "./Logo";
 import { Button } from "@/components/ui/button";
 import { useLocation } from "react-router-dom";
-import { Menu, X, Users, BookOpen, FileText, Briefcase, LogOut, User } from "lucide-react";
+import { Menu, X, Users, BookOpen, FileText, Briefcase, LogOut, User, LayoutDashboard } from "lucide-react";
 import { useState } from "react";
 import useAuth from "@/hooks/useAuth";
 import { toast } from "sonner";
@@ -17,6 +17,7 @@ export const Navbar = () => {
   if (isAuthPage) return null;
   
   const navItems = [
+    { name: "Dashboard", path: "/dashboard", icon: <LayoutDashboard size={18} /> },
     { name: "Mentors", path: "/mentors", icon: <Users size={18} /> },
     { name: "Courses", path: "/courses", icon: <BookOpen size={18} /> },
     { name: "Resume", path: "/resume", icon: <FileText size={18} /> },
@@ -35,7 +36,7 @@ export const Navbar = () => {
       <Logo />
       
       <div className="hidden md:flex items-center gap-8">
-        {navItems.map((item) => (
+        {user && navItems.map((item) => (
           <Link 
             key={item.path}
             to={item.path} 
@@ -97,7 +98,7 @@ export const Navbar = () => {
       {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div className="absolute top-full left-0 right-0 bg-csdark border-b border-gray-800 py-4 px-6 md:hidden flex flex-col gap-4">
-          {navItems.map((item) => (
+          {user && navItems.map((item) => (
             <Link 
               key={item.path}
               to={item.path} 

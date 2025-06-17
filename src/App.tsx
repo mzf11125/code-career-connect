@@ -15,6 +15,7 @@ import NotFound from "./pages/NotFound";
 import Jobs from "./pages/Jobs";
 import RoleSelectionPage from "./pages/RoleSelectionPage";
 import AuthCallback from "./pages/AuthCallback";
+import Dashboard from "./pages/Dashboard";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +34,7 @@ const App = () => (
             <Route path="/courses" element={<Courses />} />
             <Route path="/resume" element={<Resume />} />
             <Route path="/jobs" element={<Jobs />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/role-selection" element={<RoleSelectionPage />} />
             <Route path="/auth/callback" element={<AuthCallback />} />
             <Route path="*" element={<NotFound />} />
