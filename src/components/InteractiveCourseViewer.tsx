@@ -45,54 +45,60 @@ const getResourceBadgeColor = (type: string) => {
 // Generate meaningful learning content with real educational resources
 const generateEducationalContent = (courseTitle: string, courseTopic: string) => {
   const topicLower = courseTopic.toLowerCase();
+  const titleLower = courseTitle.toLowerCase();
   
   // Determine course category and generate appropriate resources
-  const getResourcesForTopic = (topic: string) => {
-    if (topic.includes('javascript') || topic.includes('js') || topic.includes('web development')) {
-      return {
-        introVideo: 'https://www.youtube.com/watch?v=PkZNo7MFNFg',
-        freeCodeCamp: 'https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/',
-        mdn: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript',
-        practiceUrl: 'https://codepen.io/',
-        additionalVideo: 'https://www.youtube.com/watch?v=hdI2bqOjy3c'
-      };
-    } else if (topic.includes('python')) {
+  const getResourcesForTopic = (topic: string, title: string) => {
+    if (topic.includes('python') || title.includes('python')) {
       return {
         introVideo: 'https://www.youtube.com/watch?v=rfscVS0vtbw',
         freeCodeCamp: 'https://www.freecodecamp.org/learn/scientific-computing-with-python/',
-        mdn: 'https://docs.python.org/3/tutorial/',
-        practiceUrl: 'https://repl.it/',
-        additionalVideo: 'https://www.youtube.com/watch?v=8DvywoWv6fI'
+        docs: 'https://docs.python.org/3/tutorial/',
+        practiceUrl: 'https://replit.com/languages/python3',
+        additionalVideo: 'https://www.youtube.com/watch?v=8DvywoWv6fI',
+        projectVideo: 'https://www.youtube.com/watch?v=8ext9G7xspg'
       };
-    } else if (topic.includes('react')) {
+    } else if (topic.includes('web development') || title.includes('web development') || topic.includes('html') || topic.includes('css') || topic.includes('javascript')) {
+      return {
+        introVideo: 'https://www.youtube.com/watch?v=PkZNo7MFNFg',
+        freeCodeCamp: 'https://www.freecodecamp.org/learn/2022/responsive-web-design/',
+        docs: 'https://developer.mozilla.org/en-US/docs/Learn',
+        practiceUrl: 'https://codepen.io/',
+        additionalVideo: 'https://www.youtube.com/watch?v=hdI2bqOjy3c',
+        projectVideo: 'https://www.youtube.com/watch?v=G3e-cpL7ofc'
+      };
+    } else if (topic.includes('react') || title.includes('react')) {
       return {
         introVideo: 'https://www.youtube.com/watch?v=Tn6-PIqc4UM',
         freeCodeCamp: 'https://www.freecodecamp.org/learn/front-end-development-libraries/',
-        mdn: 'https://react.dev/learn',
+        docs: 'https://react.dev/learn',
         practiceUrl: 'https://codesandbox.io/',
-        additionalVideo: 'https://www.youtube.com/watch?v=bMknfKXIFA8'
+        additionalVideo: 'https://www.youtube.com/watch?v=bMknfKXIFA8',
+        projectVideo: 'https://www.youtube.com/watch?v=hQAHSlTtcmY'
       };
-    } else if (topic.includes('data') || topic.includes('analytics')) {
+    } else if (topic.includes('data') || topic.includes('analytics') || title.includes('data')) {
       return {
         introVideo: 'https://www.youtube.com/watch?v=ua-CiDNNj30',
         freeCodeCamp: 'https://www.freecodecamp.org/learn/data-analysis-with-python/',
-        mdn: 'https://www.kaggle.com/learn',
+        docs: 'https://www.kaggle.com/learn',
         practiceUrl: 'https://colab.research.google.com/',
-        additionalVideo: 'https://www.youtube.com/watch?v=r-uOLxNrNk8'
+        additionalVideo: 'https://www.youtube.com/watch?v=r-uOLxNrNk8',
+        projectVideo: 'https://www.youtube.com/watch?v=vmEHCJofslg'
       };
     } else {
       // Default generic programming/tech resources
       return {
         introVideo: 'https://www.youtube.com/watch?v=zOjov-2OZ0E',
         freeCodeCamp: 'https://www.freecodecamp.org/learn/',
-        mdn: 'https://developer.mozilla.org/en-US/',
+        docs: 'https://developer.mozilla.org/en-US/',
         practiceUrl: 'https://github.com/',
-        additionalVideo: 'https://www.youtube.com/watch?v=UvBl2_0DNm0'
+        additionalVideo: 'https://www.youtube.com/watch?v=UvBl2_0DNm0',
+        projectVideo: 'https://www.youtube.com/watch?v=8uhO4jGY4DA'
       };
     }
   };
 
-  const resources = getResourcesForTopic(topicLower);
+  const resources = getResourcesForTopic(topicLower, titleLower);
 
   return [
     {
@@ -116,7 +122,7 @@ const generateEducationalContent = (courseTitle: string, courseTopic: string) =>
         {
           title: 'Official Documentation & Getting Started Guide',
           type: 'documentation',
-          url: resources.mdn,
+          url: resources.docs,
           description: 'Complete reference documentation and beginner tutorials'
         },
         {
@@ -180,13 +186,13 @@ const generateEducationalContent = (courseTitle: string, courseTopic: string) =>
         {
           title: 'Project-Based Learning Workshop',
           type: 'video',
-          url: 'https://www.youtube.com/watch?v=t3jx0EC-Y3c',
+          url: resources.projectVideo,
           description: 'Build complete projects step-by-step'
         },
         {
           title: 'Best Practices & Code Review Guide',
           type: 'documentation',
-          url: resources.mdn,
+          url: resources.docs,
           description: 'Professional development standards and code quality guidelines'
         },
         {
@@ -268,12 +274,16 @@ export function InteractiveCourseViewer({ courseData, courseId, markdown }: Inte
   const enhancedCourseData = courseData || {
     title: "Complete Programming Course",
     description: "Comprehensive course with real-world projects and industry-standard practices",
-    modules: generateEducationalContent("Complete Programming Course", "Programming")
+    modules: generateEducationalContent("Complete Programming Course", "Programming"),
+    goals: [],
+    estimatedDuration: "4 weeks"
   };
 
-  // If courseData exists but doesn't have modules, generate them
+  // If courseData exists but doesn't have modules, generate them based on the actual course data
   if (courseData && (!courseData.modules || courseData.modules.length === 0)) {
-    enhancedCourseData.modules = generateEducationalContent(courseData.title, courseData.title);
+    // For enhanced course data from the simplified service, we need to get topic from the course object itself
+    const topicToUse = (courseData as any).topic || courseData.title;
+    enhancedCourseData.modules = generateEducationalContent(courseData.title, topicToUse);
   }
 
   const calculateProgressPercentage = (): number => {
