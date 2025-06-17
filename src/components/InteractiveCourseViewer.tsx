@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Check, Play, BookOpen, CircleCheck, CirclePlay, MousePointerClick, BookText, ExternalLink, Video, FileText, Brain } from "lucide-react";
@@ -281,8 +280,26 @@ export function InteractiveCourseViewer({ courseData, courseId, markdown }: Inte
 
   // If courseData exists but doesn't have modules, generate them based on the actual course data
   if (courseData && (!courseData.modules || courseData.modules.length === 0)) {
-    // For enhanced course data from the simplified service, we need to get topic from the course object itself
-    const topicToUse = (courseData as any).topic || courseData.title;
+    // Enhanced logic to detect course topic from the course data
+    let topicToUse = courseData.title;
+    
+    // Check if the course object has content or description that might contain topic info
+    if (courseData.description) {
+      topicToUse = courseData.description;
+    }
+    
+    // Enhanced topic detection from title
+    const titleLower = courseData.title.toLowerCase();
+    if (titleLower.includes('python')) {
+      topicToUse = 'Python Programming';
+    } else if (titleLower.includes('web development') || titleLower.includes('html') || titleLower.includes('css') || titleLower.includes('javascript')) {
+      topicToUse = 'Web Development';
+    } else if (titleLower.includes('react')) {
+      topicToUse = 'React Development';
+    } else if (titleLower.includes('data')) {
+      topicToUse = 'Data Science';
+    }
+    
     enhancedCourseData.modules = generateEducationalContent(courseData.title, topicToUse);
   }
 
