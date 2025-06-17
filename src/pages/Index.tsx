@@ -153,34 +153,34 @@ const Index = () => {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {/* Keep existing MentorCard components */}
+              {/* Updated mentor cards with real Unsplash photos */}
               <MentorCard 
-                name="Sarah Johnson"
-                role="Senior Software Engineer"
+                name="Sarah Chen"
+                role="Senior Software Engineer at Google"
                 rating={5.0}
                 reviewCount={342}
-                imageUrl="/lovable-uploads/mentor2.jpg"
+                imageUrl="https://images.unsplash.com/photo-1494790108755-2616b612b5c5?w=400&h=400&fit=crop&crop=face"
               />
               <MentorCard 
-                name="David Chen"
-                role="Product Manager"
+                name="Marcus Johnson"
+                role="Full Stack Developer at Microsoft"
                 rating={4.9}
                 reviewCount={217}
-                imageUrl="/lovable-uploads/mentor3.jpg"
+                imageUrl="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face"
               />
               <MentorCard 
-                name="Olivia Stone"
-                role="Tech Lead"
+                name="Emily Rodriguez"
+                role="Tech Lead at Meta"
                 rating={5.0}
                 reviewCount={189}
-                imageUrl="/lovable-uploads/Olivia-Rodrigo.png"
+                imageUrl="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face"
               />
               <MentorCard 
-                name="Jessica Lee"
-                role="UX Designer"
+                name="David Park"
+                role="Senior DevOps Engineer at Amazon"
                 rating={4.8}
                 reviewCount={156}
-                imageUrl="/lovable-uploads/Olivia-Rodrigo.png"
+                imageUrl="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face"
               />
             </div>
             
@@ -200,7 +200,7 @@ const Index = () => {
           <div className="absolute bottom-0 left-0 right-0 h-40 opacity-30 bg-gradient-to-t from-cssecondary to-transparent"></div>
         </section>
         
-        {/* Resume Builder section - with web3 styling */}
+        {/* Resume Builder section - with web3 styling and sample resume */}
         <section className="full-screen-section px-6 md:px-12 bg-cssecondary relative resume-builder-section">
           <div className="container mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
@@ -225,10 +225,15 @@ const Index = () => {
                   </Button>
                 </Link>
               </div>
-              <div className="grid grid-cols-2 gap-6 relative">
-                <div className="bg-gray-800 h-64 rounded-xl web3-card"></div>
-                <div className="bg-gray-800 h-64 rounded-xl web3-card" style={{ marginTop: '40px' }}></div>
-                <div className="bg-gray-800 h-64 rounded-xl web3-card" style={{ marginTop: '20px' }}></div>
+              <div className="relative">
+                {/* Sample resume image */}
+                <div className="bg-white rounded-xl shadow-2xl p-6 web3-card border border-csgreen/20 max-w-md mx-auto">
+                  <img 
+                    src="https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=600&h=800&fit=crop" 
+                    alt="Professional Resume Sample" 
+                    className="w-full h-auto rounded-lg"
+                  />
+                </div>
                 
                 {/* Decorative elements */}
                 <div className="absolute -top-10 -right-10 w-20 h-20 rounded-full border border-csgreen/30 opacity-30"></div>
@@ -249,59 +254,79 @@ const Index = () => {
           </div>
         </section>
         
-        {/* Pricing section - with enhanced styling */}
+        {/* Pricing section - marked as currently free */}
         <section className="full-screen-section px-6 md:px-12 relative pricing-section">
           <div className="container mx-auto">
-            <h2 className="text-4xl font-bold text-center mb-4">START LANDING JOBS WITH US!</h2>
-            <p className="text-gray-400 text-center max-w-2xl mx-auto mb-16">
-              Choose the plan that suits your needs and start your journey to landing your dream tech job
-            </p>
+            <div className="text-center mb-8">
+              <div className="inline-block bg-csgreen/20 border border-csgreen/40 rounded-full px-6 py-2 mb-4">
+                <span className="text-csgreen font-semibold">🎉 CURRENTLY FREE FOR ALL USERS! 🎉</span>
+              </div>
+              <h2 className="text-4xl font-bold mb-4 line-through opacity-50">START LANDING JOBS WITH US!</h2>
+              <p className="text-gray-400 max-w-2xl mx-auto mb-16">
+                All features are currently available for free during our beta phase. Future pricing shown below.
+              </p>
+            </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <PricingCard 
-                title="Student"
-                price={0}
-                description="Perfect for students just starting their job search"
-                features={[
-                  "Access to basic resources",
-                  "Resume builder",
-                  "Job listings view",
-                  "Community access"
-                ]}
-              />
-              <PricingCard 
-                title="Graduate"
-                price={30}
-                description="Ideal for recent graduates serious about their job search"
-                features={[
-                  "Everything in Student plan",
-                  "1:1 mentorship sessions",
-                  "Resume review by professionals",
-                  "Mock interview practice",
-                  "Priority job application"
-                ]}
-                highlighted
-              />
-              <PricingCard 
-                title="Professional"
-                price={50}
-                description="For experienced professionals looking to level up their career"
-                features={[
-                  "Everything in Graduate plan",
-                  "Career strategy sessions",
-                  "Skill gap analysis",
-                  "Personalized learning path",
-                  "Executive mentorship access",
-                  "Exclusive job opportunities"
-                ]}
-              />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 opacity-50">
+              <div className="relative">
+                <div className="absolute inset-0 bg-red-500/10 rounded-xl"></div>
+                <div className="line-through">
+                  <PricingCard 
+                    title="Student"
+                    price={0}
+                    description="Perfect for students just starting their job search"
+                    features={[
+                      "Access to basic resources",
+                      "Resume builder",
+                      "Job listings view",
+                      "Community access"
+                    ]}
+                  />
+                </div>
+              </div>
+              <div className="relative">
+                <div className="absolute inset-0 bg-red-500/10 rounded-xl"></div>
+                <div className="line-through">
+                  <PricingCard 
+                    title="Graduate"
+                    price={30}
+                    description="Ideal for recent graduates serious about their job search"
+                    features={[
+                      "Everything in Student plan",
+                      "1:1 mentorship sessions",
+                      "Resume review by professionals",
+                      "Mock interview practice",
+                      "Priority job application"
+                    ]}
+                    highlighted
+                  />
+                </div>
+              </div>
+              <div className="relative">
+                <div className="absolute inset-0 bg-red-500/10 rounded-xl"></div>
+                <div className="line-through">
+                  <PricingCard 
+                    title="Professional"
+                    price={50}
+                    description="For experienced professionals looking to level up their career"
+                    features={[
+                      "Everything in Graduate plan",
+                      "Career strategy sessions",
+                      "Skill gap analysis",
+                      "Personalized learning path",
+                      "Executive mentorship access",
+                      "Exclusive job opportunities"
+                    ]}
+                  />
+                </div>
+              </div>
             </div>
             
             {/* Web3 decorative elements */}
             <div className="mt-20 flex justify-center">
               <div className="flex items-center gap-4">
                 <div className="h-[1px] w-20 bg-gradient-to-r from-transparent via-csgreen/50 to-transparent"></div>
-                <div className="text-csgreen opacity-70">Blockchain Secured Payments</div>
+                <div className="text-csgreen opacity-70">Enjoy Free Access During Beta</div>
                 <div className="h-[1px] w-20 bg-gradient-to-r from-transparent via-csgreen/50 to-transparent"></div>
               </div>
             </div>
