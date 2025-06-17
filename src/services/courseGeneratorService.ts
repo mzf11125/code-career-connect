@@ -150,7 +150,8 @@ const parseMarkdownToCourseData = (markdown: string): CourseData | null => {
               currentModule.resources.push({
                 title: resourceTitle,
                 url: resourceUrl,
-                type: resourceType
+                type: resourceType,
+                description: `${resourceType === 'video' ? 'Video tutorial' : resourceType === 'quiz' ? 'Interactive quiz' : 'Documentation and reading material'} for ${resourceTitle}`
               });
             } else {
               // Handle simple format like "Title - URL" or just plain text
@@ -185,7 +186,8 @@ const parseMarkdownToCourseData = (markdown: string): CourseData | null => {
               currentModule.resources.push({
                 title: resourceTitle,
                 url: resourceUrl,
-                type: resourceType
+                type: resourceType,
+                description: `${resourceType === 'video' ? 'Video tutorial' : resourceType === 'quiz' ? 'Interactive quiz' : 'Documentation and reading material'} for ${resourceTitle}`
               });
             }
           } else if (inLearningObjectives || (!inResources && !content.includes('http'))) {
@@ -221,17 +223,20 @@ const parseMarkdownToCourseData = (markdown: string): CourseData | null => {
           {
             title: 'Course Introduction Video',
             url: 'https://youtube.com/watch?v=example',
-            type: 'video'
+            type: 'video',
+            description: 'Comprehensive introduction video covering the course basics and fundamentals'
           },
           {
             title: 'Official Documentation',
             url: 'https://docs.example.com',
-            type: 'documentation'
+            type: 'documentation',
+            description: 'Complete reference documentation and beginner tutorials'
           },
           {
             title: 'Practice Quiz',
             url: 'https://quiz.example.com',
-            type: 'quiz'
+            type: 'quiz',
+            description: 'Interactive quiz to test your understanding of the core concepts'
           }
         ],
         estimatedTime: '30 minutes'
