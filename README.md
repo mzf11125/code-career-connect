@@ -75,7 +75,7 @@ UnemployedCSStudents is a comprehensive career acceleration platform designed sp
 
 ### Installation
 
-```bash
+````bash
 # Clone the repository
 git clone https://github.com/mzf11125/unemployedcsstudents.git
 cd unemployedcsstudents
@@ -89,9 +89,6 @@ cp .env.example .env.local
 
 # Start development server
 npm run dev
-```
-
-````
 
 ### Available Scripts
 
