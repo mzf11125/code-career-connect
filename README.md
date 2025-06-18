@@ -83,14 +83,10 @@ cd unemployedcsstudents
 # Install dependencies
 npm install
 
-# Set up environment variables
-cp .env.example .env.local
-# Edit .env.local with your configuration
-
 # Start development server
 npm run dev
 
-````
+```
 
 ### Available Scripts
 
@@ -109,7 +105,7 @@ npm run type-check   # Run TypeScript type checking
 npm run test         # Run tests
 npm run test:watch   # Run tests in watch mode
 npm run test:coverage # Generate test coverage report
-````
+```
 
 ## 📁 Project Structure
 
