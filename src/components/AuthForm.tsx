@@ -1,47 +1,48 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Link, useNavigate } from "react-router-dom";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
-import { toast } from 'sonner';
-import useAuth from '@/hooks/useAuth';
-import { supabase } from '@/integrations/supabase/client';
-import { RoleSelection } from './RoleSelection';
+import { toast } from "sonner";
+import useAuth from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
+import { RoleSelection } from "./RoleSelection";
 
 interface AuthFormProps {
-  type: 'login' | 'signup';
+  type: "login" | "signup";
 }
 
 export const AuthForm = ({ type }: AuthFormProps) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [fullName, setFullName] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showRoleSelection, setShowRoleSelection] = useState(false);
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
-  
+
   const { signUp, signIn, user, updateUserRoles } = useAuth();
   const navigate = useNavigate();
 
   // Redirect if already logged in
   useEffect(() => {
     if (user && !showRoleSelection) {
-      navigate('/');
+      navigate("/");
     }
   }, [user, showRoleSelection, navigate]);
 
   // Check if we're coming back from OAuth
   useEffect(() => {
     const checkSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
       if (session?.user) {
         const roles = await supabase
-          .from('user_roles')
-          .select('role')
-          .eq('user_id', session.user.id);
+          .from("user_roles")
+          .select("role")
+          .eq("user_id", session.user.id);
 
         if (!roles.data || roles.data.length === 0) {
           setShowRoleSelection(true);
@@ -51,51 +52,56 @@ export const AuthForm = ({ type }: AuthFormProps) => {
 
     checkSession();
   }, []);
-  
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Simple validation
     if (!email || !password) {
-      toast.error('Please fill in all fields');
+      toast.error("Please fill in all fields");
       return;
     }
 
-    if (type === 'signup' && !fullName) {
-      toast.error('Please enter your full name');
+    if (type === "signup" && !fullName) {
+      toast.error("Please enter your full name");
       return;
     }
-    
+
     setLoading(true);
-    
+
     try {
-      if (type === 'signup') {
+      if (type === "signup") {
         const { error } = await signUp(email, password, fullName);
-        
+
         if (error) {
-          if (error.message.includes('already registered')) {
-            toast.error('This email is already registered. Please try logging in instead.');
+          if (error.message.includes("already registered")) {
+            toast.error(
+              "This email is already registered. Please try logging in instead."
+            );
           } else {
             throw error;
           }
         } else {
-          toast.success('Please check your email to verify your account');
+          toast.success("Please check your email to verify your account");
           // The user will be redirected to role selection after email verification
         }
       } else {
         const { error } = await signIn(email, password);
-        
+
         if (error) {
-          if (error.message.includes('Invalid login credentials')) {
-            toast.error('Invalid email or password. Please try again.');
+          if (error.message.includes("Invalid login credentials")) {
+            toast.error("Invalid email or password. Please try again.");
           } else {
             throw error;
           }
         }
       }
     } catch (error: unknown) {
-      console.error('Auth error:', error);
-      const errorMessage = error instanceof Error ? error.message : 'An error occurred. Please try again.';
+      console.error("Auth error:", error);
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "An error occurred. Please try again.";
       toast.error(errorMessage);
     } finally {
       setLoading(false);
@@ -105,23 +111,23 @@ export const AuthForm = ({ type }: AuthFormProps) => {
   const handleGoogleSignIn = async () => {
     try {
       setGoogleLoading(true);
-      const redirectUrl = `${window.location.origin}/auth/callback`;
-      
+      const redirectUrl = `https://unemployedcsstudents.com/auth/callback`;
+
       const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
+        provider: "google",
         options: {
           redirectTo: redirectUrl,
           queryParams: {
-            access_type: 'offline',
-            prompt: 'consent',
+            access_type: "offline",
+            prompt: "consent",
           },
         },
       });
 
       if (error) throw error;
     } catch (error) {
-      console.error('Google sign in error:', error);
-      toast.error('Failed to sign in with Google. Please try again.');
+      console.error("Google sign in error:", error);
+      toast.error("Failed to sign in with Google. Please try again.");
       setGoogleLoading(false);
     }
   };
@@ -129,32 +135,34 @@ export const AuthForm = ({ type }: AuthFormProps) => {
   if (showRoleSelection) {
     return (
       <div className="w-full max-w-md mx-auto glass px-8 py-10 rounded-xl">
-        <RoleSelection onComplete={() => {
-          setShowRoleSelection(false);
-          navigate('/');
-        }} />
+        <RoleSelection
+          onComplete={() => {
+            setShowRoleSelection(false);
+            navigate("/");
+          }}
+        />
       </div>
     );
   }
-  
+
   return (
     <div className="w-full max-w-md mx-auto glass px-8 py-10 rounded-xl">
       <div className="absolute -z-10 top-0 left-0 w-full h-full">
         <div className="absolute top-20 left-40 w-72 h-72 bg-blue-500/30 rounded-full blur-[100px] blob-animation"></div>
         <div className="absolute bottom-20 right-40 w-72 h-72 bg-csgreen/30 rounded-full blur-[100px] blob-animation"></div>
       </div>
-      
+
       <h2 className="text-2xl font-bold mb-6 text-center">
-        {type === 'login' ? 'Hey, welcome back!' : 'Hey, welcome!'}
+        {type === "login" ? "Hey, welcome back!" : "Hey, welcome!"}
       </h2>
       <p className="text-gray-400 text-center mb-8">
-        {type === 'login' 
-          ? 'Please enter your information to log in' 
-          : 'Please create your account to sign up'}
+        {type === "login"
+          ? "Please enter your information to log in"
+          : "Please create your account to sign up"}
       </p>
-      
+
       <form onSubmit={handleSubmit} className="space-y-4">
-        {type === 'signup' && (
+        {type === "signup" && (
           <div className="space-y-2">
             <Label htmlFor="fullName">Full Name</Label>
             <Input
@@ -167,7 +175,7 @@ export const AuthForm = ({ type }: AuthFormProps) => {
             />
           </div>
         )}
-        
+
         <div className="space-y-2">
           <Label htmlFor="email">Email</Label>
           <Input
@@ -179,7 +187,7 @@ export const AuthForm = ({ type }: AuthFormProps) => {
             className="bg-gray-900/50 border-gray-800"
           />
         </div>
-        
+
         <div className="space-y-2">
           <Label htmlFor="password">Password</Label>
           <div className="relative">
@@ -199,8 +207,8 @@ export const AuthForm = ({ type }: AuthFormProps) => {
               {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
           </div>
-          
-          {type === 'login' && (
+
+          {type === "login" && (
             <div className="flex justify-end">
               <Link to="/forgot-password" className="text-sm text-csgreen">
                 Forgot Password?
@@ -208,24 +216,28 @@ export const AuthForm = ({ type }: AuthFormProps) => {
             </div>
           )}
         </div>
-        
-        <Button 
-          type="submit" 
+
+        <Button
+          type="submit"
           disabled={loading}
           className="w-full bg-white text-black hover:bg-gray-200"
         >
-          {loading ? 'Please wait...' : (type === 'login' ? 'Sign In' : 'Sign Up')}
+          {loading
+            ? "Please wait..."
+            : type === "login"
+            ? "Sign In"
+            : "Sign Up"}
         </Button>
-        
+
         <div className="relative flex items-center justify-center gap-4 my-4">
           <div className="h-px flex-1 bg-gray-800"></div>
           <span className="text-gray-500 text-sm">or</span>
           <div className="h-px flex-1 bg-gray-800"></div>
         </div>
-        
-        <Button 
-          type="button" 
-          variant="outline" 
+
+        <Button
+          type="button"
+          variant="outline"
           onClick={handleGoogleSignIn}
           disabled={googleLoading || loading}
           className="w-full border-gray-800 text-white hover:bg-gray-800 flex items-center justify-center gap-2"
@@ -255,18 +267,24 @@ export const AuthForm = ({ type }: AuthFormProps) => {
                   fill="#EA4335"
                 />
               </svg>
-              Sign {type === 'login' ? 'in' : 'up'} with Google
+              Sign {type === "login" ? "in" : "up"} with Google
             </>
           )}
         </Button>
-        
-        {type === 'login' ? (
+
+        {type === "login" ? (
           <p className="text-sm text-gray-400 text-center mt-6">
-            Don't have an account yet? <Link to="/signup" className="text-csgreen">Sign up</Link>
+            Don't have an account yet?{" "}
+            <Link to="/signup" className="text-csgreen">
+              Sign up
+            </Link>
           </p>
         ) : (
           <p className="text-sm text-gray-400 text-center mt-6">
-            Already have an account? <Link to="/login" className="text-csgreen">Sign in</Link>
+            Already have an account?{" "}
+            <Link to="/login" className="text-csgreen">
+              Sign in
+            </Link>
           </p>
         )}
       </form>
