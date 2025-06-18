@@ -2,8 +2,6 @@
 
 <div align="center">
 
-![UnemployedCSStudents Logo](https://via.placeholder.com/300x100/4AE3B5/000000?text=UnemployedCSStudents)
-
 **Your ultimate platform for mentorship, learning resources, and job opportunities for CS students and graduates**
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-unemployedcsstudents.com-4AE3B5?style=for-the-badge&logo=web&logoColor=white)](https://unemployedcsstudents.com)
