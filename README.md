@@ -123,9 +123,7 @@ unemployedcsstudents/
 │   │   └── ...
 │   ├── hooks/            # Custom React hooks
 │   ├── services/         # API services and external integrations
-│   ├── utils/            # Utility functions
-│   ├── types/            # TypeScript type definitions
-│   └── styles/           # Global styles and Tailwind config
+│   └── utils/            # Utility functions
 ├── supabase/
 │   ├── functions/        # Edge functions
 │   └── migrations/       # Database migrations
@@ -261,7 +259,7 @@ If you encounter any issues or have questions:
 1. Check our [FAQ](docs/FAQ.md)
 2. Search existing [GitHub Issues](https://github.com/mzf11125/unemployedcsstudents/issues)
 3. Create a new issue with detailed information
-4. Join our [Discord community](https://discord.gg/unemployedcs) for real-time help
+4. Join our [Discord community](https://discord.gg/HE6NVsJP5t) for real-time help
 
 ## 📄 License
 
@@ -277,8 +275,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Muhammad Zidan Fatonie** - _Full Stack Developer_
 
-- 📧 Email: [zidanfatonie@gmail.com](mailto:zidanfatonie@gmail.com)
-- 🔗 LinkedIn: [Muhammad Zidan Fatonie](https://linkedin.com/in/muhammad-zidan-fatonie)
+- 📧 Email: [zidanfatonie@gmail.com](mailto:mzidanfatonie@gmail.com)
+- 🔗 LinkedIn: [Muhammad Zidan Fatonie](https://linkedin.com/in/mzidanfatonie)
 - 🐙 GitHub: [@mzf11125](https://github.com/mzf11125)
 
 </div>
@@ -290,10 +288,11 @@ We're always looking for contributors to help improve UnemployedCSStudents. Whet
 ## 🙏 Acknowledgments
 
 - **Supabase** for providing an excellent backend platform
-- **Vercel** for hosting and deployment solutions
+- **Digital Ocean** for hosting and deployment solutions
 - **shadcn/ui** for the beautiful component library
 - **Tailwind CSS** for the utility-first CSS framework
 - **React community** for continuous innovation and support
+- **Lovable** for being the best copilot on this project
 
 ## 📈 Project Stats
 
